@@ -31,7 +31,10 @@
 	},
 	"keywords": [],
 	"author": "Daymon Littrell-Reyes",
-	"repository": "daymxn/rbxts-expect",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/daymxn/rbxts-expect.git"
+	},
 	"bugs": {
 		"url": "https://github.com/daymxn/rbxts-expect/issues"
 	},
@@ -50,7 +53,7 @@
 	"devDependencies": {
 		"@changesets/cli": "^2.27.7",
 		"@rbxts/compiler-types": "^2.3.0-types.1",
-		"@rbxts/testez": "https://github.com/daymxn/testez#patch-1",
+		"@rbxts/testez": "git+https://github.com/daymxn/testez.git#patch-1",
 		"@rbxts/types": "^1.0.795",
 		"@types/fs-extra": "^11.0.4",
 		"@types/node": "^22.5.0",
