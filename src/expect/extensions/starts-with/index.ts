@@ -15,8 +15,5 @@
  * limitations under the License.
  */
 
-import "./expect/extensions";
-
-export { Assertion, expect, extendMethods } from "./expect";
-export { ExpectMessageBuilder } from "./message";
-export { Placeholder, place } from "./message/placeholders";
+// TODO(): string starts with, or array starts with
+// also support endsWith in a different folder

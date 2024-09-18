@@ -15,8 +15,23 @@
  * limitations under the License.
  */
 
-import "./expect/extensions";
+/// <reference types="@rbxts/testez/globals" />
 
-export { Assertion, expect, extendMethods } from "./expect";
-export { ExpectMessageBuilder } from "./message";
-export { Placeholder, place } from "./message/placeholders";
+import { expect } from "@src/index";
+
+export = () => {
+  describe("noop", () => {
+    it("return the source instance", () => {
+      const source = expect(5);
+      expect(source.to).to.equal(source.be);
+    });
+
+    it("all work", () => {
+      expect(
+        5
+      ).to.the.and.be.been.is.an.a.or.of.that.which.does.still.also.but.have.equal(
+        5
+      );
+    });
+  });
+};

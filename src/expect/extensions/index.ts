@@ -15,8 +15,15 @@
  * limitations under the License.
  */
 
-import "./expect/extensions";
-
-export { Assertion, expect, extendMethods } from "./expect";
-export { ExpectMessageBuilder } from "./message";
-export { Placeholder, place } from "./message/placeholders";
+import "./any-of";
+import "./array";
+import "./empty";
+import "./enum";
+import "./equal";
+import "./include";
+import "./instance-of";
+import "./length";
+import "./negations";
+import "./noops";
+import "./substring";
+import "./throws";

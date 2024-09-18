@@ -15,8 +15,4 @@
  * limitations under the License.
  */
 
-import "./expect/extensions";
-
-export { Assertion, expect, extendMethods } from "./expect";
-export { ExpectMessageBuilder } from "./message";
-export { Placeholder, place } from "./message/placeholders";
+export type InferArrayElement<T> = T extends (infer U)[] ? U : never;

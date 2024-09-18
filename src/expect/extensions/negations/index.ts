@@ -15,8 +15,13 @@
  * limitations under the License.
  */
 
-import "./expect/extensions";
+import { extendNegations } from "@src/expect/extend";
 
-export { Assertion, expect, extendMethods } from "./expect";
-export { ExpectMessageBuilder } from "./message";
-export { Placeholder, place } from "./message/placeholders";
+declare module "@rbxts/expect" {
+  interface Assertion<T> {
+    readonly not: this;
+    readonly never: this;
+  }
+}
+
+extendNegations(["not", "never"]);

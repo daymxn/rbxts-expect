@@ -15,8 +15,5 @@
  * limitations under the License.
  */
 
-import "./expect/extensions";
-
-export { Assertion, expect, extendMethods } from "./expect";
-export { ExpectMessageBuilder } from "./message";
-export { Placeholder, place } from "./message/placeholders";
+// TODO: compares two objects to see if the values on the right are all in the left and equal the same
+// also support matchExactly for matching both ways (wouldn't this just be deepEqual) though? so probably an alias for deep equal

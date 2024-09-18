@@ -15,8 +15,17 @@
  * limitations under the License.
  */
 
-import "./expect/extensions";
+import { Proxy } from "@src/util/proxy";
 
-export { Assertion, expect, extendMethods } from "./expect";
-export { ExpectMessageBuilder } from "./message";
-export { Placeholder, place } from "./message/placeholders";
+export interface Assertion<T = unknown> {
+  readonly value: T;
+  _self: this;
+  _negated: boolean;
+  _proxy?: Proxy<T>;
+}
+
+export interface ArrayAssertion<T> extends Assertion<T[]> {}
+
+export type InferArrayElement<T> = T extends (infer U)[] ? U : never;
+
+export type TypeChecker<T> = (value: T) => boolean | string | void;

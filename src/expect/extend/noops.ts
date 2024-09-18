@@ -15,8 +15,12 @@
  * limitations under the License.
  */
 
-import "./expect/extensions";
+const nopMethods: Set<string> = new Set();
 
-export { Assertion, expect, extendMethods } from "./expect";
-export { ExpectMessageBuilder } from "./message";
-export { Placeholder, place } from "./message/placeholders";
+export function extendNOPs(methods: ReadonlyArray<string>) {
+  methods.forEach((it) => nopMethods.add(it));
+}
+
+export function getNOPExtensions(): ReadonlySet<string> {
+  return nopMethods;
+}

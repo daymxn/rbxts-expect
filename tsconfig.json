@@ -29,13 +29,6 @@
 		"tsBuildInfoFile": "out/tsconfig.tsbuildinfo",
 		"declaration": true,
 		"declarationMap": true,
-		"plugins": [
-			{
-				"transform": "rbxts-transformer-reflection",
-				"reflectAllCalls": true,
-				"autoRegister": true
-			}
-		]
 	},
 	"include": [
 		"src/**/*"
@@ -44,6 +37,7 @@
 		"example/**/*",
 		"out/**/*",
 		"wiki/**/*",
-		"scripts/**/*"
+		"scripts/**/*",
+		//"**/*.spec.ts"
 	]
 }

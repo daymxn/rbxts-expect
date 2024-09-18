@@ -15,8 +15,18 @@
  * limitations under the License.
  */
 
-import "./expect/extensions";
-
-export { Assertion, expect, extendMethods } from "./expect";
-export { ExpectMessageBuilder } from "./message";
-export { Placeholder, place } from "./message/placeholders";
+export {
+  AssertMethodResult,
+  CustomMethodImpl,
+  CustomMethodImpls,
+  extendMethods,
+  getMethodExtensions,
+} from "./methods";
+export { extendNegations, getNegationExtensions } from "./negations";
+export { extendNOPs, getNOPExtensions } from "./noops";
+export {
+  CustomPropertyImpl,
+  CustomPropertyImpls,
+  extendProperties,
+  getPropertyExtensions,
+} from "./properties";

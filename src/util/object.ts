@@ -15,8 +15,22 @@
  * limitations under the License.
  */
 
-import "./expect/extensions";
+import Object from "@rbxts/object-utils";
+import { t } from "@rbxts/t";
 
-export { Assertion, expect, extendMethods } from "./expect";
-export { ExpectMessageBuilder } from "./message";
-export { Placeholder, place } from "./message/placeholders";
+export function mapObjectValues<T extends object>(
+  object: T,
+  callback: (value: NonNullable<T[keyof T]>) => unknown
+): T {
+  const mapped = Object.entries(object).map(([key, value]) => [
+    key,
+    callback(value as never),
+  ]);
+
+  return Object.fromEntries(mapped as never) as T;
+}
+
+/** @internal */
+export function isArray(element: unknown): element is defined[] {
+  return t.array(t.any)(element);
+}

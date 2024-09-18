@@ -15,8 +15,18 @@
  * limitations under the License.
  */
 
-import "./expect/extensions";
+/// <reference types="@rbxts/testez/globals" />
 
-export { Assertion, expect, extendMethods } from "./expect";
-export { ExpectMessageBuilder } from "./message";
-export { Placeholder, place } from "./message/placeholders";
+import { expect } from "@src/index";
+
+export = () => {
+  describe("negations", () => {
+    it("cancel each other out", () => {
+      expect(5).to.not.not.equal(5);
+    });
+
+    it("all work", () => {
+      expect(5).to.not.never.equal(5);
+    });
+  });
+};

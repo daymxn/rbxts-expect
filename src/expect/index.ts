@@ -15,8 +15,18 @@
  * limitations under the License.
  */
 
-import "./expect/extensions";
+import "./extensions";
 
-export { Assertion, expect, extendMethods } from "./expect";
-export { ExpectMessageBuilder } from "./message";
-export { Placeholder, place } from "./message/placeholders";
+export { expect } from "./expect";
+export {
+  AssertMethodResult,
+  CustomMethodImpl,
+  CustomMethodImpls,
+  CustomPropertyImpl,
+  CustomPropertyImpls,
+  extendMethods,
+  extendNOPs,
+  extendNegations,
+  extendProperties,
+} from "./extend";
+export { Assertion, InferArrayElement } from "./types";

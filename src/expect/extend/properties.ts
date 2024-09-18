@@ -15,8 +15,23 @@
  * limitations under the License.
  */
 
-import "./expect/extensions";
+import { Assertion } from "@src/expect/types";
 
-export { Assertion, expect, extendMethods } from "./expect";
-export { ExpectMessageBuilder } from "./message";
-export { Placeholder, place } from "./message/placeholders";
+export type CustomPropertyImpl<T = unknown> = (source: Assertion<T>) => unknown;
+
+export type CustomPropertyImpls<T> = {
+  [key: string]: CustomPropertyImpl<T>;
+};
+
+let assertionProperties: CustomPropertyImpls<unknown> = {};
+
+export function extendProperties(properties: CustomPropertyImpls<never>) {
+  assertionProperties = {
+    ...assertionProperties,
+    ...(properties as CustomPropertyImpls<unknown>),
+  };
+}
+
+export function getPropertyExtensions(): Readonly<typeof assertionProperties> {
+  return assertionProperties;
+}

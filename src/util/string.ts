@@ -15,8 +15,26 @@
  * limitations under the License.
  */
 
-import "./expect/extensions";
+const SPECIAL_CHARS = [
+  "$",
+  "%",
+  "^",
+  "*",
+  "(",
+  ")",
+  ".",
+  "[",
+  "]",
+  "+",
+  "-",
+  "?",
+];
+const SPECIAL_CHARS_PATTERN = `[${SPECIAL_CHARS.map((it) => `%${it}`).join("")}]`;
 
-export { Assertion, expect, extendMethods } from "./expect";
-export { ExpectMessageBuilder } from "./message";
-export { Placeholder, place } from "./message/placeholders";
+export function escape(str: string) {
+  return str.gsub(SPECIAL_CHARS_PATTERN, "%%%0")[0];
+}
+
+export function matches(str: string, pattern: string) {
+  return !str.match(pattern).isEmpty();
+}

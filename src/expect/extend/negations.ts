@@ -15,8 +15,12 @@
  * limitations under the License.
  */
 
-import "./expect/extensions";
+const negations: Set<string> = new Set();
 
-export { Assertion, expect, extendMethods } from "./expect";
-export { ExpectMessageBuilder } from "./message";
-export { Placeholder, place } from "./message/placeholders";
+export function extendNegations(methods: ReadonlyArray<string>) {
+  methods.forEach((it) => negations.add(it));
+}
+
+export function getNegationExtensions(): ReadonlySet<string> {
+  return negations;
+}

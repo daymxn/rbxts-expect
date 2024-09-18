@@ -15,8 +15,4 @@
  * limitations under the License.
  */
 
-import "./expect/extensions";
-
-export { Assertion, expect, extendMethods } from "./expect";
-export { ExpectMessageBuilder } from "./message";
-export { Placeholder, place } from "./message/placeholders";
+// TODO(): ensures an array or sortable object is sorted. optionally can provide a sort algo

@@ -15,8 +15,5 @@
  * limitations under the License.
  */
 
-import "./expect/extensions";
-
-export { Assertion, expect, extendMethods } from "./expect";
-export { ExpectMessageBuilder } from "./message";
-export { Placeholder, place } from "./message/placeholders";
+// TODO(): checks if they all return true for your check
+// should we rename anyOf to oneOf and use any instead of some here?
