@@ -17,6 +17,7 @@
 
 import "./any-of";
 import "./array";
+import "./deep-equal";
 import "./empty";
 import "./enum";
 import "./equal";

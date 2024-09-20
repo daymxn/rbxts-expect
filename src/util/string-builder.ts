@@ -15,9 +15,9 @@
  * limitations under the License.
  */
 
-import { HttpService } from "@rbxts/services";
-import StringUtils from "@rbxts/string-utils";
-
+/**
+ * @internal
+ */
 export class StringBuilder {
   private value: string;
   constructor(initialValue?: string) {
@@ -39,28 +39,8 @@ export class StringBuilder {
     return !this.value.match(pattern).isEmpty();
   }
 
-  public removeSuffix(str: string): this {
-    if (StringUtils.endsWith(this.value, str)) {
-      const suffixLength = str.size();
-      this.value = StringUtils.slice(
-        this.value,
-        0,
-        this.value.size() - suffixLength
-      );
-    }
-    return this;
-  }
-
-  public replace(
-    match: string,
-    replacement?: unknown,
-    wrap: string = ""
-  ): this {
-    const value = typeIs(replacement, "string")
-      ? replacement
-      : this.tryToEncode(replacement);
-
-    this.value = this.value.gsub(match, `${wrap}${value}${wrap}`)[0];
+  public replace(match: string, replacement: string): this {
+    this.value = this.value.gsub(match, tostring(replacement))[0];
 
     return this;
   }
@@ -93,17 +73,5 @@ export class StringBuilder {
 
   public build() {
     return this.value;
-  }
-
-  private tryToEncode(value: unknown) {
-    try {
-      const result = HttpService.JSONEncode(value);
-      if (result === "nil") return tostring(value);
-
-      return result;
-    } catch (e) {
-      warn(e);
-      return tostring(value);
-    }
   }
 }

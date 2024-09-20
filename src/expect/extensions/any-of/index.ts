@@ -49,10 +49,54 @@ const anyOf: CustomMethodImpl<defined> = (
 
 declare module "@rbxts/expect" {
   interface Assertion<T> {
-    anyOf<R>(values: R[]): Assertion<R>;
+    /**
+     * Asserts that the expected value is _shallow_ equal to any of the provided `values`.
+     *
+     * @remarks
+     * When used after an `enum` call, the output message will use
+     * the enum key as the value.
+     *
+     * @param values - An array of values to check for
+     *
+     * @example
+     * Basic Usage:
+     * ```ts
+     * expect(1).to.be.anyOf([1,2,3]);
+     * expect(0).to.not.be.anyOf([1,2,3]);
+     * ```
+     *
+     * @example
+     * Enum Usage:
+     * ```ts
+     * enum Sport {
+     *   Basketball,
+     *   Football,
+     *   Soccer
+     * }
+     *
+     * expect(Sport.Basketball).to.be.the.enum(Sport).and.to.be.anyOf([Football, Soccer]);
+     * // Expected 'Basketball' (enum/number) to be any of ["Football", "Soccer"]
+     * ```
+     *
+     * @see {@link Assertion.oneOf | oneOf}
+     *
+     * @public
+     */
+    anyOf<R = T>(values: R[]): Assertion<R>;
+
+    /**
+     * Asserts that the expected value is _shallow_ equal to any of the provided `values`.
+     *
+     * @remarks
+     * _Type alias for {@link Assertion.anyOf | anyOf}._
+     *
+     * @param values - An array of values to check for
+     */
+    oneOf<R = T>(values: R[]): Assertion<R>;
   }
 }
 
 extendMethods({
   anyOf: anyOf,
+  oneOf: anyOf,
 });

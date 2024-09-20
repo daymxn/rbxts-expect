@@ -21,16 +21,19 @@
 export type PropertyAccess = string[];
 export type MethodCalled = [string, unknown[]];
 
+/**
+ * @internal
+ */
 export function computeFullProxyPath<T>(proxy: Proxy<T>) {
-  let path = proxy._proxy_path;
-  let current = proxy._proxy_parent;
+  let path = getProxyPath(proxy);
+  let current = getProxyParent(proxy);
 
   while (current) {
-    if (current._proxy_path !== undefined) {
-      path = `${current._proxy_path}.${path}`;
+    if (getProxyPath(current) !== undefined) {
+      path = `${getProxyPath(current)}.${path}`;
     }
 
-    current = current._proxy_parent;
+    current = getProxyParent(current);
   }
 
   return path;
@@ -60,19 +63,26 @@ const proxyProperties = [
 
 export type Proxy<T> = T & ProxyInstance<T>;
 
-// TODO(): propogate any errors out, so this isn't included in the stack
 function OnIndex<T>(Self: Proxy<T>, index: unknown) {
-  // log access
-  // return a proxy version of the object if it's a table
-  // should we make a new proxy on every access though, or should we only do it on the first access?
   if (proxyProperties.includes(tostring(index))) {
-    return rawget(Self, index);
+    throw `You can't acces '${index}' directly. Instead, either use 'rawget', or call one of the helper methods like 'getProxyValue'.`;
   }
 
   return proxy(rawget(Self._proxy_value, index), Self, tostring(index));
 }
 
-// TODO(): add functionality in expect() to check if value is a proxy
+export function getProxyValue<T>(proxy: Proxy<T>) {
+  return rawget(proxy, "_proxy_value") as T;
+}
+
+export function getProxyPath(proxy: Proxy<unknown>) {
+  return rawget(proxy, "_proxy_path") as string | undefined;
+}
+
+export function getProxyParent(proxy: Proxy<unknown>) {
+  return rawget(proxy, "_proxy_parent") as Proxy<unknown> | undefined;
+}
+
 export function proxy<T>(
   value: T,
   parent?: Proxy<unknown>,

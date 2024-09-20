@@ -17,6 +17,9 @@
 
 import { includes } from "@rbxts/string-utils";
 
+/**
+ * @internal
+ */
 export interface Person {
   name: string;
   age: number;
@@ -48,7 +51,14 @@ export const TEST_SON: Person = {
 };
 
 /**
- * @internal
+ * TODO()
+ *
+ * Helper function for testing error messages
+ *
+ * @param callback
+ * @param messages
+ *
+ * @public
  */
 export function err(callback: () => unknown, ...messages: string[]) {
   try {

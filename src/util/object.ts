@@ -18,6 +18,9 @@
 import Object from "@rbxts/object-utils";
 import { t } from "@rbxts/t";
 
+/**
+ * @internal
+ */
 export function mapObjectValues<T extends object>(
   object: T,
   callback: (value: NonNullable<T[keyof T]>) => unknown
@@ -30,7 +33,9 @@ export function mapObjectValues<T extends object>(
   return Object.fromEntries(mapped as never) as T;
 }
 
-/** @internal */
+/**
+ * @internal
+ */
 export function isArray(element: unknown): element is defined[] {
   return t.array(t.any)(element);
 }

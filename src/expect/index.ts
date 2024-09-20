@@ -17,16 +17,19 @@
 
 import "./extensions";
 
+export {
+  ExpectConfig,
+  getDefaultExpectConfig,
+  resetDefaultExpectConfig,
+  setDefaultExpectConfig,
+} from "./config";
 export { expect } from "./expect";
 export {
   AssertMethodResult,
   CustomMethodImpl,
   CustomMethodImpls,
-  CustomPropertyImpl,
-  CustomPropertyImpls,
   extendMethods,
   extendNOPs,
   extendNegations,
-  extendProperties,
 } from "./extend";
 export { Assertion, InferArrayElement } from "./types";

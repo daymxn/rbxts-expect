@@ -28,4 +28,4 @@ export interface ArrayAssertion<T> extends Assertion<T[]> {}
 
 export type InferArrayElement<T> = T extends (infer U)[] ? U : never;
 
-export type TypeChecker<T> = (value: T) => boolean | string | void;
+export type TypeChecker<T = defined> = (value: T) => boolean | string | void;

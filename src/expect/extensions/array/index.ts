@@ -131,21 +131,135 @@ const array: CustomMethodImpl<unknown> = (source, actual, targetType) => {
 declare module "@rbxts/expect" {
   interface Assertion<T> {
     /**
-     * Helper type for checking if a value has already passed an array check.
+     * Helper property for checking if a value has already passed an array check.
+     *
+     * @remarks
+     * Is set by {@link Assertion.array | array} passing.
+     *
+     * Can be used in other expect methods to skip checking if their
+     * actual value is an array, or to toggle certain logic if it is.
+     *
+     * @public
      */
     is_array?: boolean;
 
     /**
-     * Does some stuff
+     * Asserts that the expected value is an array.
+     *
+     * @remarks
+     * An array is classified as a table of incrementing number keys that start at `1`,
+     * and without any holes.
+     *
+     * @example
+     * ```ts
+     * expect([1,2,3]).to.be.an.array();
+     * expect({ name: "daymon" }).to.not.be.an.array();
+     * ```
+     *
+     * @public
      */
     array(): Assertion<T extends unknown[] ? T : T[]>;
 
+    /**
+     * Asserts that the expected value is an array of type `typeName`.
+     *
+     * @remarks
+     * Each element in the array has its type checked via
+     * {@link https://github.com/roblox-ts/compiler-types/blob/a13fdb1171895c7ed1a7f091d18031534e988886/types/callMacros.d.ts#L11 | typeOf}.
+     *
+     * @example
+     * ```ts
+     * expect([1,2,3]).to.be.an.array("number");
+     * expect([new Vector3()]).to.be.an.array("Vector3");
+     * ```
+     *
+     * @public
+     */
     array<I extends keyof CheckableTypes>(typeName: I): Assertion<I[]>;
+
+    /**
+     * Asserts that the expected value is an array of type `I`, according to
+     * a custom callback {@link TypeChecker}.
+     *
+     * @example
+     * ```ts
+     * const isNumber: TypeChecker = (value) => {
+     *   return typeOf(value) === "number";
+     * }
+     *
+     * expect([1,2,3]).to.be.an.array(isNumber);
+     * ```
+     *
+     * @public
+     */
     array<I>(checker: TypeChecker<I>): Assertion<I[]>;
+
+    /**
+     * Asserts that the expected value is an array of type `I`, according to
+     * a a provided {@link https://github.com/osyrisrblx/t | t check}.
+     *
+     * @example
+     * ```ts
+     * expect([1,2,3]).to.be.an.array(t.number);
+     * ```
+     *
+     * @public
+     */
     array<I>(tChecker: t.check<I>): Assertion<I[]>;
 
+    /**
+     * Asserts that the expected value is an array of type `typeName`.
+     *
+     * @remarks
+     * Each element in the array has its type checked via
+     * {@link https://github.com/roblox-ts/compiler-types/blob/a13fdb1171895c7ed1a7f091d18031534e988886/types/callMacros.d.ts#L11 | typeOf}.
+     *
+     * _Type alias for the `array` version of this_
+     *
+     * @example
+     * ```ts
+     * expect([1,2,3]).to.be.an.arrayOf("number");
+     * expect([new Vector3()]).to.be.an.arrayOf("Vector3");
+     * ```
+     *
+     * @public
+     */
     arrayOf<I extends keyof CheckableTypes>(typeName: I): Assertion<I[]>;
+
+    /**
+     * Asserts that the expected value is an array of type `I`, according to
+     * a custom callback {@link TypeChecker}.
+     *
+     * @remarks
+     * _Type alias for the `array` version of this._
+     *
+     * @example
+     * ```ts
+     * const isNumber: TypeChecker = (value) => {
+     *   return typeOf(value) === "number";
+     * }
+     *
+     * expect([1,2,3]).to.be.an.arrayOf(isNumber);
+     * ```
+     *
+     * @public
+     */
     arrayOf<I>(checker: TypeChecker<I>): Assertion<I[]>;
+
+    /**
+     * Asserts that the expected value is an array of type `I`, according to
+     * a a provided {@link https://github.com/osyrisrblx/t | t check}.
+     *
+     * @remarks
+     * _Type alias for the `array` version of this._
+     *
+     * @example
+     * ```ts
+     * expect([1,2,3]).to.be.an.arrayOf(t.number);
+     * ```
+     *
+     * @public
+     */
     arrayOf<I>(tChecker: t.check<I>): Assertion<I[]>;
   }
 }

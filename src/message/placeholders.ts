@@ -24,19 +24,19 @@ function placeholder(name: string) {
 export const Placeholder = {
   actual: {
     value: placeholder("actual_value"),
+    fullValue: placeholder("full_actual_value"),
     type: placeholder("actual_type"),
   },
   expected: {
     value: placeholder("expected_value"),
+    fullValue: placeholder("full_expected_value"),
     type: placeholder("expected_type"),
   },
   not: placeholder("not"),
   reason: placeholder("reason"),
   path: placeholder("path"),
-  // the path, or else defaults to the actual value. can be overwritten by user
   name: placeholder("name"),
   undefined: placeholder("nil"),
-  // can be used when values might be undefined, and you wanna add them to data or something
   nil: placeholder("nil"),
   index: placeholder("index"),
 };

@@ -31,10 +31,23 @@ const SPECIAL_CHARS = [
 ];
 const SPECIAL_CHARS_PATTERN = `[${SPECIAL_CHARS.map((it) => `%${it}`).join("")}]`;
 
+/**
+ * @internal
+ */
 export function escape(str: string) {
   return str.gsub(SPECIAL_CHARS_PATTERN, "%%%0")[0];
 }
 
+/**
+ * @internal
+ */
 export function matches(str: string, pattern: string) {
   return !str.match(pattern).isEmpty();
+}
+
+/**
+ * @internal
+ */
+export function capitalize(str: string) {
+  return str.gsub("^%l", string.upper)[0];
 }

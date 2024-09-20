@@ -16,7 +16,7 @@
  */
 
 export {
-  AssertMethodResult,
+  ExpectMethodResult as AssertMethodResult,
   CustomMethodImpl,
   CustomMethodImpls,
   extendMethods,
@@ -24,9 +24,3 @@ export {
 } from "./methods";
 export { extendNegations, getNegationExtensions } from "./negations";
 export { extendNOPs, getNOPExtensions } from "./noops";
-export {
-  CustomPropertyImpl,
-  CustomPropertyImpls,
-  extendProperties,
-  getPropertyExtensions,
-} from "./properties";

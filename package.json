@@ -29,8 +29,9 @@
 		"release:version": "npx changeset version",
 		"release:tags": "git push --follow-tags",
 		"release": "npx run-s build change:publish",
-		"localPublish": "npm run build && npm pack --pack-destination ./temp",
-		"prepublishOnly": "npm run build"
+		"publish:local": "npm run build && npm pack --pack-destination ./temp",
+		"prepublishOnly": "npm run build",
+		"check:deps": "npx depcheck"
 	},
 	"tsup": {
 		"entry": [

@@ -21,11 +21,7 @@ import { reverseArray } from "@rbxts/reverse-array";
 import { includes } from "@rbxts/string-utils";
 import { mapObjectValues } from "@src/util/object";
 import { computeFullProxyPath, isProxy } from "@src/util/proxy";
-import {
-  getNegationExtensions,
-  getNOPExtensions,
-  getPropertyExtensions,
-} from "./extend";
+import { getNegationExtensions, getNOPExtensions } from "./extend";
 import { CustomMethodImpl, getMethodExtensions } from "./extend/methods";
 
 function getTraceBack() {
@@ -133,7 +129,6 @@ export function expect<T>(value: T): Assertion<T> {
   }
 
   const negations = getNegationExtensions();
-  const properties = getPropertyExtensions();
 
   return setmetatable(newAssert as unknown as Assertion<T>, {
     __index: (t, key) => {
@@ -142,10 +137,6 @@ export function expect<T>(value: T): Assertion<T> {
       if (negations.has(k)) {
         t._negated = !t._negated;
         return t;
-      }
-
-      if (k in properties) {
-        return properties[k](t);
       }
 
       return rawget(t, key);

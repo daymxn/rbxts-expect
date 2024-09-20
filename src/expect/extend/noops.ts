@@ -15,12 +15,52 @@
  * limitations under the License.
  */
 
+import type { expect, extendMethods, extendNegations } from "@src/expect";
+
 const nopMethods: Set<string> = new Set();
 
+/**
+ * Add additional NOOPs to {@link expect}.
+ *
+ * @remarks
+ * A NOOP is a property that does nothing. It's just there
+ * to make the test read easier.
+ *
+ * For example:
+ * ```ts
+ * expect("Daymon").to.have.the.substring("Day");
+ * ```
+ *
+ * In this case, `to`, `have`, and `the` are all NOOPs.
+ *
+ * @param methods - An array of property names to use as NOOPs
+ *
+ * @example
+ * ```ts
+ * // augment the expect module so typescript knows the properties exists
+ * declare module "@rbxts/expect" {
+ *   interface Assertion<T> {
+ *     readonly to: this;
+ *     readonly have: this;
+ *     readonly the: this;
+ *   }
+ * }
+ *
+ * // add the properties to expect for runtime usage
+ * extendNOPs(["to", "have", "the"]);
+ * ```
+ *
+ * @see {@link extendMethods}, {@link extendNegations}
+ *
+ * @public
+ */
 export function extendNOPs(methods: ReadonlyArray<string>) {
   methods.forEach((it) => nopMethods.add(it));
 }
 
+/**
+ * @internal
+ */
 export function getNOPExtensions(): ReadonlySet<string> {
   return nopMethods;
 }
