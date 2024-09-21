@@ -39,9 +39,43 @@ const equal: CustomMethodImpl<defined> = (
 
 declare module "@rbxts/expect" {
   interface Assertion<T> {
-    eq<R = T>(expectedValue: R): Assertion<R>;
+    /**
+     * Asserts that the value is _shallow_ equal to the `expectedValue`.
+     *
+     * @remarks
+     * A value is shallow equal if they pass according to `===`.
+     *
+     * If you need to deeply check if values are equal, use {@link Assertion.deepEqual | deepEqual}.
+     *
+     * @example
+     * ```ts
+     * expect(5).to.equal(5);
+     * expect("daymon").to.not.equal("bryan");
+     * ```
+     *
+     * @public
+     */
     equal<R = T>(expectedValue: R): Assertion<R>;
+
+    /**
+     * Asserts that the value is _shallow_ equal to the `expectedValue`.
+     *
+     * @remarks
+     * _Type alias for {@link Assertion.equal | equal}._
+     *
+     * @public
+     */
     equals<R = T>(expectedValue: R): Assertion<R>;
+
+    /**
+     * Asserts that the value is _shallow_ equal to the `expectedValue`.
+     *
+     * @remarks
+     * _Type alias for {@link Assertion.equal | equal}._
+     *
+     * @public
+     */
+    eq<R = T>(expectedValue: R): Assertion<R>;
   }
 }
 

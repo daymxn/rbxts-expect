@@ -39,7 +39,34 @@ const include: CustomMethodImpl<defined[]> = (
 
 declare module "@rbxts/expect" {
   interface Assertion<T> {
+    /**
+     * Asserts that the `expectedValue` is a value in the array.
+     *
+     * @remarks
+     * The value is looked for in a _shallow_ context.
+     *
+     * For strings, use the {@link Assertion.substring | substring} method.
+     *
+     * @param expectedValue - A value that should be included in the array.
+     *
+     * @example
+     * ```ts
+     * expect([1,2,3]).to.include(1);
+     * expect([1]).to.not.include(2);
+     * ```
+     *
+     * @public
+     */
     include(expectedValue: InferArrayElement<T>): this;
+
+    /**
+     * Asserts that the `expectedValue` is a value in the array.
+     *
+     * @remarks
+     * _Type alias for {@link Assertion.include | include}._
+     *
+     * @public
+     */
     includes(expectedValue: InferArrayElement<T>): this;
   }
 }

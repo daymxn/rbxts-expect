@@ -34,6 +34,18 @@ const substring: CustomMethodImpl<string> = (_, actual, str: string) => {
 
 declare module "@rbxts/expect" {
   interface Assertion<T> {
+    /**
+     * Asserts that the string value contains the string `str`.
+     *
+     * @param str - A string that should be within the value.
+     *
+     * @example
+     * ```ts
+     * expect("daymon").to.have.the.substring("day");
+     * ```
+     *
+     * @public
+     */
     substring(str: string): Assertion<T>;
   }
 }

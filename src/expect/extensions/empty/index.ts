@@ -15,7 +15,6 @@
  * limitations under the License.
  */
 
-import { Assertion } from "@rbxts/expect";
 import Object from "@rbxts/object-utils";
 import { CustomMethodImpl, extendMethods } from "@src/expect/extend";
 import { ExpectMessageBuilder } from "@src/message";
@@ -96,6 +95,27 @@ const empty: CustomMethodImpl<unknown> = (source, actual) => {
 
 declare module "@rbxts/expect" {
   interface Assertion<T> {
+    /**
+     * Asserts that the value is empty.
+     *
+     * @remarks
+     * Works with strings or iterable types.
+     *
+     * An object is empty when it has no keys.
+     *
+     * A string is empty when it has no characters.
+     *
+     * An iterable is empty when it has no elements.
+     *
+     * @example
+     * ```ts
+     * expect([]).to.be.empty();
+     * expect({}).to.be.empty();
+     * expect("").to.be.empty();
+     * ```
+     *
+     * @public
+     */
     empty(): Assertion<T>;
   }
 }

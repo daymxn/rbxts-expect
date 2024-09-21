@@ -59,7 +59,7 @@ const throws: CustomMethodImpl<Callback> = (
 };
 
 const throwsMatch: CustomMethodImpl<Callback> = (
-  source,
+  _,
   actual,
   pattern: string
 ) => {
@@ -81,16 +81,103 @@ const throwsMatch: CustomMethodImpl<Callback> = (
   }
 };
 
-// TODO(): use typescript to restrict the type to functions
 declare module "@rbxts/expect" {
   interface Assertion<T> {
-    throws(): Assertion<T>;
-    throws(substring: string): Assertion<T>;
-
+    /**
+     * Asserts that the function throws an exception.
+     *
+     * @example
+     * ```ts
+     * expect(buyPet).to.throw();
+     * ```
+     *
+     * @public
+     */
     throw(): Assertion<T>;
+
+    /**
+     * Asserts that the function throws an exception that
+     * contains the string `substring`.
+     *
+     * @remarks
+     * For pattern matching, use {@link Assertion.throwMatch | throwMatch} instead.
+     *
+     * @example
+     * ```ts
+     * expect(buyPet).to.throw("Failed to buy pet");
+     * ```
+     *
+     * @public
+     */
     throw(substring: string): Assertion<T>;
 
+    /**
+     * Asserts that the function throws an exception.
+     *
+     * @remarks
+     * _Type alias for the `throw` version of this._
+     *
+     * @example
+     * ```ts
+     * expect(buyPet).to.be.a.function().that.throws();
+     * ```
+     *
+     * @public
+     */
+    throws(): Assertion<T>;
+
+    /**
+     * Asserts that the function throws an exception that
+     * contains the string `substring`.
+     *
+     * @remarks
+     * For pattern matching, use {@link Assertion.throwMatchs | throwMatchs} instead.
+     *
+     * _Type alias for the `throw` version of this._
+     *
+     * @example
+     * ```ts
+     * expect(buyPet).to.be.a.function().that.throws("Not enough money");
+     * ```
+     *
+     * @public
+     */
+    throws(substring: string): Assertion<T>;
+
+    /**
+     * Asserts that the function throws an exception that
+     * matches the lua pattern `pattern`.
+     *
+     * @remarks
+     * For string literals or substring matching,
+     * use {@link Assertion.throws | throws} instead.
+     *
+     * _Type alias for the `throwMatch` version of this._
+     *
+     * @example
+     * ```ts
+     * expect(buyPet).to.be.a.function().that.throwsMatch("^Error:.+Money");
+     * ```
+     *
+     * @public
+     */
     throwsMatch(pattern: string): Assertion<T>;
+
+    /**
+     * Asserts that the function throws an exception that
+     * matches the lua pattern `pattern`.
+     *
+     * @remarks
+     * For string literals or substring matching,
+     * use {@link Assertion.throw | throw} instead.
+     *
+     * @example
+     * ```ts
+     * expect(buyPet).to.throwMatch("^Error:.+Money");
+     * ```
+     *
+     * @public
+     */
     throwMatch(pattern: string): Assertion<T>;
   }
 }

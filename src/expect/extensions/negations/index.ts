@@ -19,7 +19,28 @@ import { extendNegations } from "@src/expect/extend";
 
 declare module "@rbxts/expect" {
   interface Assertion<T> {
+    /**
+     * Negates the assertion.
+     *
+     * @example
+     * ```ts
+     * expect(5).to.not.equal(4);
+     * ```
+     *
+     * @public
+     */
     readonly not: this;
+
+    /**
+     * Negates the assertion.
+     *
+     * @example
+     * ```ts
+     * expect(5).to.never.equal(4);
+     * ```
+     *
+     * @public
+     */
     readonly never: this;
   }
 }

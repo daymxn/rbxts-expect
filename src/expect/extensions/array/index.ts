@@ -131,7 +131,8 @@ const array: CustomMethodImpl<unknown> = (source, actual, targetType) => {
 declare module "@rbxts/expect" {
   interface Assertion<T> {
     /**
-     * Helper property for checking if a value has already passed an array check.
+     * Helper property for checking if a value has already passed an
+     * {@link Assertion.array | array} check.
      *
      * @remarks
      * Is set by {@link Assertion.array | array} passing.
@@ -144,7 +145,7 @@ declare module "@rbxts/expect" {
     is_array?: boolean;
 
     /**
-     * Asserts that the expected value is an array.
+     * Asserts that the value is an array.
      *
      * @remarks
      * An array is classified as a table of incrementing number keys that start at `1`,
@@ -161,7 +162,7 @@ declare module "@rbxts/expect" {
     array(): Assertion<T extends unknown[] ? T : T[]>;
 
     /**
-     * Asserts that the expected value is an array of type `typeName`.
+     * Asserts that the value is an array of type `typeName`.
      *
      * @remarks
      * Each element in the array has its type checked via
@@ -178,7 +179,7 @@ declare module "@rbxts/expect" {
     array<I extends keyof CheckableTypes>(typeName: I): Assertion<I[]>;
 
     /**
-     * Asserts that the expected value is an array of type `I`, according to
+     * Asserts that the value is an array of type `I`, according to
      * a custom callback {@link TypeChecker}.
      *
      * @example
@@ -195,8 +196,8 @@ declare module "@rbxts/expect" {
     array<I>(checker: TypeChecker<I>): Assertion<I[]>;
 
     /**
-     * Asserts that the expected value is an array of type `I`, according to
-     * a a provided {@link https://github.com/osyrisrblx/t | t check}.
+     * Asserts that the value is an array of type `I`, according to
+     * a provided {@link https://github.com/osyrisrblx/t | t check}.
      *
      * @example
      * ```ts
@@ -208,7 +209,7 @@ declare module "@rbxts/expect" {
     array<I>(tChecker: t.check<I>): Assertion<I[]>;
 
     /**
-     * Asserts that the expected value is an array of type `typeName`.
+     * Asserts that the value is an array of type `typeName`.
      *
      * @remarks
      * Each element in the array has its type checked via
@@ -227,7 +228,7 @@ declare module "@rbxts/expect" {
     arrayOf<I extends keyof CheckableTypes>(typeName: I): Assertion<I[]>;
 
     /**
-     * Asserts that the expected value is an array of type `I`, according to
+     * Asserts that the value is an array of type `I`, according to
      * a custom callback {@link TypeChecker}.
      *
      * @remarks
@@ -247,8 +248,8 @@ declare module "@rbxts/expect" {
     arrayOf<I>(checker: TypeChecker<I>): Assertion<I[]>;
 
     /**
-     * Asserts that the expected value is an array of type `I`, according to
-     * a a provided {@link https://github.com/osyrisrblx/t | t check}.
+     * Asserts that the value is an array of type `I`, according to
+     * a provided {@link https://github.com/osyrisrblx/t | t check}.
      *
      * @remarks
      * _Type alias for the `array` version of this._

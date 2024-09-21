@@ -172,7 +172,7 @@ const eql: CustomMethodImpl<defined> = (
 declare module "@rbxts/expect" {
   interface Assertion<T> {
     /**
-     * Asserts that the expected value is _deep_ equal to the `expectedValue`.
+     * Asserts that the value is _deep_ equal to the `expectedValue`.
      *
      * @remarks
      * The deep equal comparison is done via the
@@ -210,7 +210,7 @@ declare module "@rbxts/expect" {
     deepEqual<R = T>(expectedValue: R): Assertion<R>;
 
     /**
-     * Asserts that the expected value is _deep_ equal to the `expectedValue`.
+     * Asserts that the value is _deep_ equal to the `expectedValue`.
      *
      * @remarks
      * _Type alias for {@link Assertion.deepEqual | deepEqual}_
@@ -220,7 +220,7 @@ declare module "@rbxts/expect" {
     deepEquals<R = T>(expectedValue: R): Assertion<R>;
 
     /**
-     * Asserts that the expected value is _deep_ equal to the `expectedValue`.
+     * Asserts that the value is _deep_ equal to the `expectedValue`.
      *
      * @remarks
      * _Type alias for {@link Assertion.deepEqual | deepEqual}_

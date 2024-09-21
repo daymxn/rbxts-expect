@@ -97,9 +97,78 @@ const lengthOf: CustomMethodImpl<unknown> = (source, actual, size: number) => {
 
 declare module "@rbxts/expect" {
   interface Assertion<T> {
+    /**
+     * Asserts that the value has a length of `size`.
+     *
+     * @remarks
+     * Works with strings or iterable types.
+     *
+     * An object's size is measured by its keys.
+     *
+     * A string's size is measured by its characters.
+     *
+     * An iterable's size is measured by its elements.
+     *
+     * @example
+     * ```ts
+     * expect([1,2,3]).to.have.a.length(3);
+     * expect({ name: "Daymon", age: 5 }).to.have.a.length(2);
+     * expect("Daymon").to.have.a.length(6);
+     * ```
+     *
+     * @public
+     */
     length(size: number): this;
+
+    /**
+     * Asserts that the value has a length of `size`.
+     *
+     * @remarks
+     * _Type alias for {@link Assertion.length | length}._
+     *
+     * @example
+     * ```ts
+     * expect([1,2,3]).to.have.a.lengthOf(3);
+     * expect({ name: "Daymon", age: 5 }).to.have.a.lengthOf(2);
+     * expect("Daymon").to.have.a.lengthOf(6);
+     * ```
+     *
+     * @public
+     */
     lengthOf(size: number): this;
+
+    /**
+     * Asserts that the value has a length of `size`.
+     *
+     * @remarks
+     * _Type alias for {@link Assertion.length | length}._
+     *
+     * @example
+     * ```ts
+     * expect([1,2,3]).to.have.the.size(3);
+     * expect({ name: "Daymon", age: 5 }).to.have.the.size(2);
+     * expect("Daymon").to.have.the.size(6);
+     * ```
+     *
+     * @public
+     */
     size(size: number): this;
+
+    /**
+     * Asserts that the value has a length of `size`.
+     *
+     * @remarks
+     * _Type alias for {@link Assertion.length | length}._
+     *
+     * @example
+     * ```ts
+     * expect([1,2,3]).to.have.a.sizeOf(3);
+     * expect({ name: "Daymon", age: 5 }).to.have.a.sizeOf(2);
+     * expect("Daymon").to.have.a.sizeOf(6);
+     * ```
+     *
+     * @public
+     */
     sizeOf(size: number): this;
   }
 }

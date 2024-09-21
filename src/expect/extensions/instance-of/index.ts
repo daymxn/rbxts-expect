@@ -75,18 +75,189 @@ const certainType =
 
 declare module "@rbxts/expect" {
   interface Assertion<T> {
-    instanceOf<I>(checker: TypeChecker<T>): Assertion<I>;
+    /**
+     * Asserts that the value is an instance of type `typeName`.
+     *
+     * @remarks
+     * The type is checked via
+     * {@link https://github.com/roblox-ts/compiler-types/blob/a13fdb1171895c7ed1a7f091d18031534e988886/types/callMacros.d.ts#L11 | typeOf}.
+     *
+     * @example
+     * ```ts
+     * expect(1).to.be.an.instanceOf("number");
+     * expect(new Vector3()).to.be.an.instanceOf("Vector3");
+     * ```
+     *
+     * @public
+     */
     instanceOf<I extends keyof CheckableTypes>(name: I): Assertion<I>;
+
+    /**
+     * Asserts that the value is an instance of `I`, according to
+     * a custom callback {@link TypeChecker}.
+     *
+     * @example
+     * ```ts
+     * const isNumber: TypeChecker = (value) => {
+     *   return typeOf(value) === "number";
+     * }
+     *
+     * expect(1).to.be.an.instanceOf(isNumber);
+     * ```
+     *
+     * @public
+     */
+    instanceOf<I>(checker: TypeChecker<T>): Assertion<I>;
+
+    /**
+     * Asserts that the value is an instance of `I`, according to
+     * a provided {@link https://github.com/osyrisrblx/t | t check}.
+     *
+     * @example
+     * ```ts
+     * expect(1).to.be.an.instanceOf(t.number);
+     * ```
+     *
+     * @public
+     */
     instanceOf<I>(tChecker: t.check<I>): Assertion<I>;
 
-    typeOf<I>(checker: TypeChecker<T>): Assertion<I>;
+    /**
+     * Asserts that the value is of type `typeName`.
+     *
+     * @remarks
+     * The type is checked via
+     * {@link https://github.com/roblox-ts/compiler-types/blob/a13fdb1171895c7ed1a7f091d18031534e988886/types/callMacros.d.ts#L11 | typeOf}.
+     *
+     * _Type alias for the `instanceOf` version of this._
+     *
+     * @example
+     * ```ts
+     * expect(1).to.be.an.instanceOf("number");
+     * expect(new Vector3()).to.be.an.instanceOf("Vector3");
+     * ```
+     *
+     * @public
+     */
     typeOf<I extends keyof CheckableTypes>(name: I): Assertion<I>;
+
+    /**
+     * Asserts that the value is of type `I`, according to
+     * a custom callback {@link TypeChecker}.
+     *
+     * @remarks
+     * _Type alias for the `instanceOf` version of this._
+     *
+     * @example
+     * ```ts
+     * const isNumber: TypeChecker = (value) => {
+     *   return typeOf(value) === "number";
+     * }
+     *
+     * expect(1).to.be.an.instanceOf(isNumber);
+     * ```
+     *
+     * @public
+     */
+    typeOf<I>(checker: TypeChecker<T>): Assertion<I>;
+
+    /**
+     * Asserts that the value is of type `I`, according to
+     * a provided {@link https://github.com/osyrisrblx/t | t check}.
+     *
+     * @remarks
+     * _Type alias for the `instanceOf` version of this._
+     *
+     * @example
+     * ```ts
+     * expect(1).to.be.an.instanceOf(t.number);
+     * ```
+     *
+     * @public
+     */
     typeOf<I>(tChecker: t.check<I>): Assertion<I>;
 
+    /**
+     * Asserts that the value is a {@link https://create.roblox.com/docs/luau/numbers | number}.
+     *
+     * @remarks
+     * Just a wrapper around {@link Assertion.instanceOf | instanceOf}, but with the `number` type
+     * provided automatically.
+     *
+     * @example
+     * ```ts
+     * expect(1).to.be.a.number();
+     * ```
+     *
+     * @public
+     */
     number(): Assertion<number>;
+
+    /**
+     * Asserts that the value is a {@link https://create.roblox.com/docs/luau/strings | string}.
+     *
+     * @remarks
+     * Just a wrapper around {@link Assertion.instanceOf | instanceOf}, but with the `string` type
+     * provided automatically.
+     *
+     * @example
+     * ```ts
+     * expect("daymon").to.be.a.string();
+     * ```
+     *
+     * @public
+     */
     string(): Assertion<string>;
+
+    /**
+     * Asserts that the value is a {@link https://create.roblox.com/docs/luau/booleans | boolean}.
+     *
+     * @remarks
+     * Just a wrapper around {@link Assertion.instanceOf | instanceOf}, but with the `boolean` type
+     * provided automatically.
+     *
+     * @example
+     * ```ts
+     * expect(true).to.be.a.boolean();
+     * expect(false).to.be.a.boolean();
+     * ```
+     *
+     * @public
+     */
     boolean(): Assertion<boolean>;
+
+    /**
+     * Asserts that the value is a {@link https://create.roblox.com/docs/luau/tables | table}.
+     *
+     * @remarks
+     * Just a wrapper around {@link Assertion.instanceOf | instanceOf}, but with the `table` type
+     * provided automatically.
+     *
+     * @example
+     * ```ts
+     * expect({ age: 5 }).to.be.a.table();
+     * ```
+     *
+     * @public
+     */
     table(): Assertion<object>;
+
+    /**
+     * Asserts that the value is a {@link https://create.roblox.com/docs/luau/tables | table}.
+     *
+     * @remarks
+     * Just a wrapper around {@link Assertion.instanceOf | instanceOf}, but with the `table` type
+     * provided automatically.
+     *
+     * _Type alias for {@link Assertion.table | table}._
+     *
+     * @example
+     * ```ts
+     * expect({ age: 5 }).to.be.an.object();
+     * ```
+     *
+     * @public
+     */
     object(): Assertion<object>;
   }
 }
@@ -100,4 +271,5 @@ extendMethods({
   boolean: certainType("boolean"),
   table: certainType("table"),
   object: certainType("table"),
+  function: certainType("function"),
 });

@@ -80,14 +80,109 @@ type EnumValue<E> = E[keyof E];
 
 declare module "@rbxts/expect" {
   interface Assertion<T> {
-    _enumType?: Record<number, string>;
+    /**
+     * Helper property for getting the mappings for a value that has passed
+     * an {@link Assertion.enum | enum} check.
+     *
+     * @remarks
+     * Is set by {@link Assertion.enum | enum} passing.
+     *
+     * Can be used in other expect methods to map the "actual"
+     * value to its enum representation; typically for more
+     * descriptive errors.
+     *
+     * @public
+     */
+    enum_type?: Record<number, string>;
 
+    /**
+     * Asserts that the value is an enum of type `R`.
+     *
+     * @remarks
+     * This is _not_ for ROBLOX specific enums, but for _user_ defined enums.
+     *
+     * @param enumType - A TS defined `enum` or an equivalent record in lua.
+     *
+     * @example
+     * ```ts
+     * enum Sport {
+     *   Basketball,
+     *   Football,
+     *   Soccer
+     * }
+     *
+     * expect(Sport.Basketball).to.be.the.enum(Sport);
+     * expect("Basketball").to.be.the.enum(Sport);
+     * expect(0).to.be.the.enum(Sport);
+     * ```
+     *
+     * @public
+     */
     enum<R>(enumType: R & Record<number, string>): Assertion<EnumValue<R>>;
-    enum<R>(enumType: R & Record<number, string>): Assertion<EnumValue<R>>;
+
+    /**
+     * Asserts that the value is an enum of type `R`, and equal to the `value`.
+     *
+     * @remarks
+     * This is _not_ for ROBLOX specific enums, but for _user_ defined enums.
+     *
+     * The reason you would use this over {@link Assertion.equal | equal}, is that
+     * `enum` not only throws more descriptive errors about enums, but it also attaches
+     * the {@link Assertion.enum_type | enum_type} property for chained methods
+     * to provide their own more descriptive errors about enums.
+     *
+     * @param enumType - A TS defined `enum` or an equivalent record in lua.
+     * @param value - The expected value of the defined enum type.
+     *
+     * @example
+     * ```ts
+     * enum Sport {
+     *   Basketball,
+     *   Football,
+     *   Soccer
+     * }
+     *
+     * expect(Sport.Basketball).to.be.the.enum(Sport, Sport.Basketball);
+     * expect("Basketball").to.be.the.enum(Sport, Sport.Basketball);
+     * expect(0).to.be.the.enum(Sport, Sport.Basketball);
+     * ```
+     *
+     * @public
+     */
     enum<R>(
       enumType: R & Record<number, string>,
       value: R[keyof R]
     ): Assertion<EnumValue<R>>;
+
+    /**
+     * Asserts that the value is an enum of type `R`, and equal to the `value`.
+     *
+     * @remarks
+     * This is _not_ for ROBLOX specific enums, but for _user_ defined enums.
+     *
+     * The reason you would use this over {@link Assertion.equal | equal}, is that
+     * `enum` not only throws more descriptive errors about enums, but it also attaches
+     * the {@link Assertion.enum_type | enum_type} property for chained methods
+     * to provide their own more descriptive errors about enums.
+     *
+     * @param enumType - A TS defined `enum` or an equivalent record in lua.
+     * @param value - The expected value of the defined enum type, as a key string.
+     *
+     * @example
+     * ```ts
+     * enum Sport {
+     *   Basketball,
+     *   Football,
+     *   Soccer
+     * }
+     *
+     * expect(Sport.Basketball).to.be.the.enum(Sport, "Basketball");
+     * expect("Basketball").to.be.the.enum(Sport, "Basketball");
+     * expect(0).to.be.the.enum(Sport, "Basketball");
+     * ```
+     *
+     * @public
+     */
     enum<R>(
       enumType: R & Record<number, string>,
       value: keyof R

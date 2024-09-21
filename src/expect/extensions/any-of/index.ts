@@ -32,9 +32,9 @@ const anyOf: CustomMethodImpl<defined> = (
 ) => {
   const message = baseMessage.use().expectedValue(values);
 
-  if (source._enumType) {
-    const value = source._enumType[actual as number];
-    const mappedValues = values.map((it) => source._enumType![it as number]);
+  if (source.enum_type) {
+    const value = source.enum_type[actual as number];
+    const mappedValues = values.map((it) => source.enum_type![it as number]);
 
     message
       .actualValue(value)
@@ -50,7 +50,7 @@ const anyOf: CustomMethodImpl<defined> = (
 declare module "@rbxts/expect" {
   interface Assertion<T> {
     /**
-     * Asserts that the expected value is _shallow_ equal to any of the provided `values`.
+     * Asserts that the value is _shallow_ equal to any of the provided `values`.
      *
      * @remarks
      * When used after an `enum` call, the output message will use
@@ -85,12 +85,14 @@ declare module "@rbxts/expect" {
     anyOf<R = T>(values: R[]): Assertion<R>;
 
     /**
-     * Asserts that the expected value is _shallow_ equal to any of the provided `values`.
+     * Asserts that the value is _shallow_ equal to one of the provided `values`.
      *
      * @remarks
      * _Type alias for {@link Assertion.anyOf | anyOf}._
      *
      * @param values - An array of values to check for
+     *
+     * @public
      */
     oneOf<R = T>(values: R[]): Assertion<R>;
   }
