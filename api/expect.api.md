@@ -29,7 +29,6 @@ export interface Assertion<T = unknown> {
     deepEquals<R = T>(expectedValue: R): Assertion<R>;
     readonly does: this;
     empty(): Assertion<T>;
-    // Warning: (ae-forgotten-export) The symbol "EnumValue" needs to be exported by the entry point index.d.ts
     enum<R>(enumType: R & Record<number, string>): Assertion<EnumValue<R>>;
     enum<R>(enumType: R & Record<number, string>, value: R[keyof R]): Assertion<EnumValue<R>>;
     enum<R>(enumType: R & Record<number, string>, value: keyof R): Assertion<EnumValue<R>>;
@@ -93,6 +92,9 @@ export type CustomMethodImpl<T = unknown> = (source: Assertion<T>, actual: T, ..
 export type CustomMethodImpls<T> = {
     [key: string]: CustomMethodImpl<T>;
 };
+
+// @public
+export type EnumValue<E> = E[keyof E];
 
 // @public
 export function err(callback: () => unknown, ...messages: string[]): void;

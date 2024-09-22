@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-import type { LuaEnum } from "@rbxts/expect";
+import type { EnumValue, LuaEnum } from "@rbxts/expect";
 import Object from "@rbxts/object-utils";
 import { CustomMethodImpl, extendMethods } from "@src/expect/extend";
 import { ExpectMessageBuilder } from "@src/message";
@@ -74,8 +74,6 @@ const beEnum: CustomMethodImpl<keyof LuaEnum> = (
     return validateIsEnumType(actual, enumType);
   }
 };
-
-type EnumValue<E> = E[keyof E];
 
 declare module "@rbxts/expect" {
   interface Assertion<T> {

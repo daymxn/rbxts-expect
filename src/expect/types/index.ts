@@ -165,3 +165,28 @@ export type TypeCheckCallback<T = defined> = (
  * @public
  */
 export type LuaEnum = Record<string | number, string>;
+
+/**
+ * The value of an enum in a {@link LuaEnum}.
+ *
+ * @remarks
+ * Used for type safe identification of enum values.
+ *
+ * @example
+ * ```ts
+ * enum Sport {
+ *   Basketball,
+ *   Football,
+ *   Soccer
+ * };
+ *
+ * function PrintEnumValue<R>(enum: R & LuaEnum, value: EnumValue<R>) {
+ *   print(enum[value]);
+ * }
+ *
+ * PrintEnumValue(Sport, "Soccer");
+ * ```
+ *
+ * @public
+ */
+export type EnumValue<E> = E[keyof E];

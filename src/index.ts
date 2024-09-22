@@ -21,6 +21,7 @@ export {
   Assertion,
   CustomMethodImpl,
   CustomMethodImpls,
+  EnumValue,
   ExpectConfig,
   ExpectMethodResult,
   InferArrayElement,
