@@ -17,7 +17,7 @@
 
 /* eslint-disable roblox-ts/no-array-pairs */
 
-import { TypeChecker } from "@rbxts/expect";
+import { TypeCheckCallback } from "@rbxts/expect";
 import Object from "@rbxts/object-utils";
 import { t } from "@rbxts/t";
 import { CustomMethodImpl, extendMethods } from "@src/expect/extend";
@@ -30,7 +30,7 @@ const baseMessage = new ExpectMessageBuilder(
 
 function validateArrayTypeByCallback(
   actual: defined[],
-  targetType: TypeChecker<defined>
+  targetType: TypeCheckCallback<defined>
 ) {
   const message = baseMessage
     .use(" of a certain (user-defined) type")
@@ -76,7 +76,7 @@ function validateArrayTypeByCheckableType(
 
 function validateArrayType(
   actual: defined[],
-  targetType: TypeChecker<defined> | keyof CheckableTypes
+  targetType: TypeCheckCallback<defined> | keyof CheckableTypes
 ) {
   if (typeIs(targetType, "function")) {
     return validateArrayTypeByCallback(actual, targetType);
@@ -180,11 +180,11 @@ declare module "@rbxts/expect" {
 
     /**
      * Asserts that the value is an array of type `I`, according to
-     * a custom callback {@link TypeChecker}.
+     * a custom callback {@link TypeCheckCallback}.
      *
      * @example
      * ```ts
-     * const isNumber: TypeChecker = (value) => {
+     * const isNumber: TypeCheckCallback = (value) => {
      *   return typeOf(value) === "number";
      * }
      *
@@ -193,7 +193,7 @@ declare module "@rbxts/expect" {
      *
      * @public
      */
-    array<I>(checker: TypeChecker<I>): Assertion<I[]>;
+    array<I>(checker: TypeCheckCallback<I>): Assertion<I[]>;
 
     /**
      * Asserts that the value is an array of type `I`, according to
@@ -229,14 +229,14 @@ declare module "@rbxts/expect" {
 
     /**
      * Asserts that the value is an array of type `I`, according to
-     * a custom callback {@link TypeChecker}.
+     * a custom callback {@link TypeCheckCallback}.
      *
      * @remarks
      * _Type alias for the `array` version of this._
      *
      * @example
      * ```ts
-     * const isNumber: TypeChecker = (value) => {
+     * const isNumber: TypeCheckCallback = (value) => {
      *   return typeOf(value) === "number";
      * }
      *
@@ -245,7 +245,7 @@ declare module "@rbxts/expect" {
      *
      * @public
      */
-    arrayOf<I>(checker: TypeChecker<I>): Assertion<I[]>;
+    arrayOf<I>(checker: TypeCheckCallback<I>): Assertion<I[]>;
 
     /**
      * Asserts that the value is an array of type `I`, according to

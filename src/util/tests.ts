@@ -15,7 +15,9 @@
  * limitations under the License.
  */
 
+import type { Assertion } from "@rbxts/expect";
 import { includes } from "@rbxts/string-utils";
+import type { ExpectMessageBuilder } from "@src/message";
 
 /**
  * @internal
@@ -51,12 +53,75 @@ export const TEST_SON: Person = {
 };
 
 /**
- * TODO()
+ * Helper function for testing {@link ExpectMessageBuilder | expect error messages}.
  *
- * Helper function for testing error messages
+ * Throws an error if the `callback` doesn't throw.
  *
- * @param callback
- * @param messages
+ * @remarks
+ * Intended to be used in test (`.spec.ts`) files.
+ *
+ * Used internally for testing {@link Assertion.throw | throw} and other error messages,
+ * so that internal issues don't cause tests to accidentally pass.
+ *
+ * @param callback - The function to wrap around.
+ * @param messages - A variable amount of substrings to look for in the message.
+ *
+ * @example
+ * Testing for errors:
+ * ```ts
+ * err(() => {
+ *   expect([1]).to.be.empty();
+ * });
+ * ```
+ * Output:
+ * ```text
+ * The function did not throw a message.
+ * ```
+ *
+ * @example
+ * Testing for certain errors:
+ * ```ts
+ * err(() => {
+ *   expect([1]).to.be.empty();
+ * }, `Expected '[1]' to be empty, but it had an element`);
+ * ```
+ * Output if the string(s) weren't found in the error:
+ * ```text
+ * The function threw with the wrong message.
+ *
+ *   Expected Message:
+ *   Expected '[1]' to be empty, but it had an element
+ *
+ *   Actual Message:
+ *   Expected '[1]' to be empty, but it had the element '1'
+ * ```
+ * Output if the function didn't throw at all:
+ * ```text
+ * The function did not throw a message.
+ *
+ *   Expected Messages:
+ *   Expected '[1]' to be empty, but it had an element
+ * ```
+ *
+ * @example
+ * Testing for multiple substrings:
+ * ```ts
+ * err(() => {
+ *   expect([1]).to.be.empty();
+ * }, "to be empty", "but it had an element");
+ * ```
+ *
+ * If it doesn't find any of the provided substrings, it will
+ * throw with that specific substring:
+ * ```text
+ * The function threw with the wrong message.
+ *
+ *   Expected Message:
+ *   "but it had an element"
+ *
+ *   Actual Message:
+ *   Expected '[1]' to be empty, but it had the element '1'
+ * ```
  *
  * @public
  */

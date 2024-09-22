@@ -18,12 +18,14 @@
 // TODO move utils to their own files and then just export them all through this like normal index files, and update their usages
 
 export {
+  Proxy,
   ProxyInstance,
+  createProxy,
   getProxyParent,
   getProxyPath,
   getProxyValue,
   isProxy,
-  proxy,
   withProxy,
 } from "./proxy";
+
 export { err } from "./tests";

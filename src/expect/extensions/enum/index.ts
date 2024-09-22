@@ -15,12 +15,11 @@
  * limitations under the License.
  */
 
+import type { LuaEnum } from "@rbxts/expect";
 import Object from "@rbxts/object-utils";
 import { CustomMethodImpl, extendMethods } from "@src/expect/extend";
 import { ExpectMessageBuilder } from "@src/message";
 import { place } from "@src/message/placeholders";
-
-type LuaEnum = Record<string | number, string>;
 
 const baseMessage = new ExpectMessageBuilder(
   `Expected ${place.name} to ${place.not} be `

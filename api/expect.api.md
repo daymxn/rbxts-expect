@@ -9,203 +9,246 @@ import { t } from '@rbxts/t';
 
 // @public (undocumented)
 export interface Assertion<T> {
-    // (undocumented)
     readonly a: this;
-    // (undocumented)
     readonly also: this;
-    // (undocumented)
     readonly an: this;
-    // (undocumented)
     readonly and: this;
-    // (undocumented)
-    anyOf<R>(values: R[]): Assertion<R>;
+    anyOf<R = T>(values: R[]): Assertion<R>;
     array(): Assertion<T extends unknown[] ? T : T[]>;
-    // (undocumented)
     array<I extends keyof CheckableTypes>(typeName: I): Assertion<I[]>;
-    // (undocumented)
-    array<I>(checker: I): Assertion<I[]>;
-    // (undocumented)
+    array<I>(checker: TypeCheckCallback<I>): Assertion<I[]>;
     array<I>(tChecker: t.check<I>): Assertion<I[]>;
-    // (undocumented)
     arrayOf<I extends keyof CheckableTypes>(typeName: I): Assertion<I[]>;
-    // (undocumented)
-    arrayOf<I>(checker: I): Assertion<I[]>;
-    // (undocumented)
+    arrayOf<I>(checker: TypeCheckCallback<I>): Assertion<I[]>;
     arrayOf<I>(tChecker: t.check<I>): Assertion<I[]>;
-    // (undocumented)
     readonly be: this;
-    // (undocumented)
     readonly been: this;
-    // (undocumented)
     boolean(): Assertion<boolean>;
-    // (undocumented)
     readonly but: this;
-    // (undocumented)
+    deepEqual<R = T>(expectedValue: R): Assertion<R>;
+    deepEquals<R = T>(expectedValue: R): Assertion<R>;
     readonly does: this;
-    // (undocumented)
-    empty: T extends string | Iterable<unknown> ? () => this : never;
-    // Warning: (ae-forgotten-export) The symbol "EnumValue" needs to be exported by the entry point output.d.ts
-    //
-    // (undocumented)
+    empty(): Assertion<T>;
+    // Warning: (ae-forgotten-export) The symbol "EnumValue" needs to be exported by the entry point index.d.ts
     enum<R>(enumType: R & Record<number, string>): Assertion<EnumValue<R>>;
-    // (undocumented)
-    enum<R>(enumType: R & Record<number, string>): Assertion<EnumValue<R>>;
-    // (undocumented)
     enum<R>(enumType: R & Record<number, string>, value: R[keyof R]): Assertion<EnumValue<R>>;
-    // (undocumented)
     enum<R>(enumType: R & Record<number, string>, value: keyof R): Assertion<EnumValue<R>>;
-    // (undocumented)
-    _enumType?: Record<number, string>;
-    // (undocumented)
+    enum_type?: Record<number, string>;
     eq<R = T>(expectedValue: R): Assertion<R>;
-    // (undocumented)
+    eql<R = T>(expectedValue: R): Assertion<R>;
     equal<R = T>(expectedValue: R): Assertion<R>;
-    // (undocumented)
     equals<R = T>(expectedValue: R): Assertion<R>;
-    // (undocumented)
     readonly have: this;
-    // (undocumented)
-    include(expectedValue: T): this;
-    // (undocumented)
-    includes(expectedValue: T): this;
-    // (undocumented)
-    instanceOf<I>(checker: T): Assertion<I>;
-    // (undocumented)
+    include(expectedValue: InferArrayElement<T>): this;
+    includes(expectedValue: InferArrayElement<T>): this;
     instanceOf<I extends keyof CheckableTypes>(name: I): Assertion<I>;
-    // (undocumented)
+    instanceOf<I>(checker: TypeCheckCallback<T>): Assertion<I>;
     instanceOf<I>(tChecker: t.check<I>): Assertion<I>;
-    // (undocumented)
     readonly is: this;
-    // (undocumented)
+    is_array?: boolean;
+    length(size: number): this;
+    lengthOf(size: number): this;
+    // @internal (undocumented)
     _negated: boolean;
-    // (undocumented)
     readonly never: this;
-    // (undocumented)
     readonly not: this;
-    // (undocumented)
     number(): Assertion<number>;
-    // (undocumented)
     object(): Assertion<object>;
-    // (undocumented)
     readonly of: this;
-    // (undocumented)
+    oneOf<R = T>(values: R[]): Assertion<R>;
     readonly or: this;
-    // Warning: (ae-forgotten-export) The symbol "Proxy" needs to be exported by the entry point output.d.ts
-    //
-    // (undocumented)
+    // @internal (undocumented)
     _proxy?: Proxy<T>;
-    // (undocumented)
+    // @internal (undocumented)
     _self: this;
-    // (undocumented)
+    size(size: number): this;
+    sizeOf(size: number): this;
     readonly still: this;
-    // (undocumented)
     string(): Assertion<string>;
-    // (undocumented)
     substring(str: string): Assertion<T>;
-    // (undocumented)
     table(): Assertion<object>;
-    // (undocumented)
     readonly that: this;
-    // (undocumented)
     readonly the: this;
-    // (undocumented)
     throw(): Assertion<T>;
-    // (undocumented)
     throw(substring: string): Assertion<T>;
-    // (undocumented)
     throwMatch(pattern: string): Assertion<T>;
-    // (undocumented)
     throws(): Assertion<T>;
-    // (undocumented)
     throws(substring: string): Assertion<T>;
-    // (undocumented)
     throwsMatch(pattern: string): Assertion<T>;
-    // (undocumented)
     readonly to: this;
-    // (undocumented)
-    typeOf<I>(checker: T): Assertion<I>;
-    // (undocumented)
     typeOf<I extends keyof CheckableTypes>(name: I): Assertion<I>;
-    // (undocumented)
+    typeOf<I>(checker: TypeCheckCallback<T>): Assertion<I>;
     typeOf<I>(tChecker: t.check<I>): Assertion<I>;
-    // (undocumented)
     readonly value: T;
-    // (undocumented)
     readonly which: this;
 }
 
 // @public
+export type AssertMethodResult = Result<ExpectMessageBuilder, ExpectMessageBuilder>;
+
+// @public
+export function createProxy<T>(value: T, parent?: Proxy<unknown>, path?: string): Proxy<T>;
+
+// @public
+export type CustomMethodImpl<T = unknown> = (source: Assertion<T>, actual: T, ...args: never[]) => AssertMethodResult;
+
+// @public
+export type CustomMethodImpls<T> = {
+    [key: string]: CustomMethodImpl<T>;
+};
+
+// @public
+export function err(callback: () => unknown, ...messages: string[]): void;
+
+// @public
 export function expect<T>(value: T): Assertion<T>;
 
-// @public (undocumented)
+// @public
+export interface ExpectConfig {
+    collapseLength: number;
+}
+
+// @public
 export class ExpectMessageBuilder {
     constructor(prefix?: string, negationPrefix?: string, options?: Partial<ExpectMessageBuilderOptions>);
-    // (undocumented)
     actual(data: VariableData): this;
-    // (undocumented)
     actualType(typeStr?: string): this;
-    // (undocumented)
     actualValue(value?: unknown): this;
-    // (undocumented)
     appendPrefix(str: string): this;
-    // (undocumented)
     build(pass?: boolean, negated?: boolean): string;
-    // (undocumented)
     copy(): ExpectMessageBuilder;
-    // Warning: (ae-forgotten-export) The symbol "ExpectMessageData" needs to be exported by the entry point output.d.ts
-    //
-    // (undocumented)
-    protected data: ExpectMessageData;
-    // Warning: (ae-forgotten-export) The symbol "VariableData" needs to be exported by the entry point output.d.ts
-    //
-    // (undocumented)
+    encode(value: unknown, valueType?: string, overrideOptions?: Partial<ExpectMessageBuilderOptions>, array?: boolean, collapsable?: boolean, collapseLength?: number): string;
     expected(data: VariableData): this;
-    // (undocumented)
     expectedType(typeStr?: string): this;
-    // (undocumented)
     expectedValue(value?: unknown): this;
-    // (undocumented)
     fail(): Result<ExpectMessageBuilder, ExpectMessageBuilder>;
-    // (undocumented)
     failureMetadata(data: Record<string, unknown>): this;
-    // (undocumented)
     failureSuffix(str?: string): this;
-    // (undocumented)
     failWithReason(reason: string): Result<ExpectMessageBuilder, ExpectMessageBuilder>;
-    // (undocumented)
     index(index?: number | string): this;
-    // (undocumented)
     metadata(data: Record<string, unknown>): this;
-    // (undocumented)
     name(value?: unknown): this;
-    // (undocumented)
     negationSuffix(str?: string): this;
-    // (undocumented)
     nestedMetadata(data: Record<string, unknown>): this;
-    // Warning: (ae-forgotten-export) The symbol "ExpectMessageBuilderOptions" needs to be exported by the entry point output.d.ts
-    //
-    // (undocumented)
-    options: ExpectMessageBuilderOptions;
-    // (undocumented)
+    readonly options: ExpectMessageBuilderOptions;
     pass(): Result<ExpectMessageBuilder, ExpectMessageBuilder>;
-    // (undocumented)
     path(str?: string): this;
-    // (undocumented)
     reason(reason?: string): this;
-    // (undocumented)
     suffix(str?: string): this;
-    // (undocumented)
+    surfaceMetadata(data: Record<string, unknown>): this;
     toString(): string;
-    // (undocumented)
     trailingFailurePrefix(str?: string): this;
-    // (undocumented)
     use(trailingPrefix?: string, trailingFailurePrefix?: string): ExpectMessageBuilder;
 }
 
-// Warning: (ae-forgotten-export) The symbol "CustomMethodImpls" needs to be exported by the entry point output.d.ts
-//
-// @public (undocumented)
+// @public
+export interface ExpectMessageBuilderOptions {
+    attachFullOnCollapse: boolean;
+    trimSpaces: boolean;
+    trimWhiteSpace: boolean;
+    wrapValues: boolean;
+}
+
+// @public
 export function extendMethods(methods: CustomMethodImpls<never>): void;
+
+// @public
+export function extendNegations(methods: ReadonlyArray<string>): void;
+
+// @public
+export function extendNOPs(methods: ReadonlyArray<string>): void;
+
+// @public
+export function getDefaultExpectConfig(): ExpectConfig;
+
+// @public
+export function getProxyParent<T = unknown, R = unknown>(proxy: Proxy<T>): Proxy<R> | undefined;
+
+// @public
+export function getProxyPath<T = unknown>(proxy: Proxy<T>): string | undefined;
+
+// @public
+export function getProxyValue<T = unknown>(proxy: Proxy<T>): T;
+
+// @public
+export type InferArrayElement<T> = T extends (infer U)[] ? U : never;
+
+// @public
+export function isProxy<T>(value: T): value is Proxy<T>;
+
+// @public
+export type LuaEnum = Record<string | number, string>;
+
+// @public
+export const place: {
+    actual: {
+        value: string;
+        fullValue: string;
+        type: string;
+    };
+    expected: {
+        value: string;
+        fullValue: string;
+        type: string;
+    };
+    not: string;
+    reason: string;
+    path: string;
+    name: string;
+    nil: string;
+    undefined: string;
+    index: string;
+};
+
+// @public
+export const Placeholder: {
+    actual: {
+        value: string;
+        fullValue: string;
+        type: string;
+    };
+    expected: {
+        value: string;
+        fullValue: string;
+        type: string;
+    };
+    not: string;
+    reason: string;
+    path: string;
+    name: string;
+    nil: string;
+    undefined: string;
+    index: string;
+};
+
+// @public
+export type Proxy<T> = T & ProxyInstance<T>;
+
+// @public
+export interface ProxyInstance<T> {
+    _is_proxy: true;
+    _proxy_parent?: Proxy<unknown>;
+    _proxy_path?: string;
+    _proxy_value: T;
+}
+
+// @public
+export function resetDefaultExpectConfig(): void;
+
+// @public
+export function setDefaultExpectConfig(config: Partial<ExpectConfig>): void;
+
+// @public
+export type TypeCheckCallback<T = defined> = (value: T) => boolean | string | void;
+
+// @public
+export interface VariableData {
+    type?: string;
+    value: unknown;
+}
+
+// @public
+export function withProxy<T, R = unknown>(value: T, callback: (proxy: Proxy<T>) => R): R;
 
 // (No @packageDocumentation comment for this package)
 

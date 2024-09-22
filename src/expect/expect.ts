@@ -24,6 +24,11 @@ import { computeFullProxyPath, isProxy } from "@src/util/proxy";
 import { getNegationExtensions, getNOPExtensions } from "./extend";
 import { CustomMethodImpl, getMethodExtensions } from "./extend/methods";
 
+/**
+ * Gets the full stack trace of file names.
+ *
+ * @returns An array of file names, with the first being the top of the stack
+ */
 function getTraceBack() {
   let level = 1;
   let file;
@@ -38,13 +43,19 @@ function getTraceBack() {
   return reverseArray(traceback);
 }
 
-// how many levels out from the error function until the calling code
-// used to provide proper stack tracing
-// TODO(): allow users to override this, or disable it (we just throw instead, or use their static number)
-// then in my tests I can disable it instead of relying on isTesting
-// but maybe I keep it for extension libs
-// note that we dynamically get this per throw, in case of extension libs
-// but if you pass around your assertion it won't work properly (don't do that)
+/**
+ * How many levels out from the error function are we to the end-user's code.
+ *
+ * Used to provide proper stack tracing
+ *
+ * @remarks
+ * We dynamically get this per throw, instead of getting it on startup.
+ *
+ * This is to solve the issue of extension libs. If we cached the stack level on startup,
+ * then extension libs would have the wrong stack level.
+ *
+ * @returns The stack level as a number
+ */
 function discoverStackLevel() {
   const trace = getTraceBack();
 
@@ -58,10 +69,32 @@ function discoverStackLevel() {
   return targetLevel;
 }
 
-// set by test-ez, bit of an implementation detail but testez isn't maintained so we should be fine
-// used because the error message comes out different when running under test ez versus prod
+/**
+ * Variable for checking if we're running within a TestEZ test.
+ *
+ * Used because error messages come out different when running under TestEZ versus
+ * prod, so we use this to toggle certain behaviors to make test failures easier
+ * to read.
+ *
+ * @remarks
+ * A bit of an implementation detail on TestEZ's part, but since it isn't maintained
+ * we should be fine.
+ */
 const isTesting = (_G as Record<string, boolean>)["RUNNING_GLOBAL"];
 
+/**
+ * Maps predefined assertion callbacks to proper methods, and propogates
+ * the "actual" value accordingly.
+ *
+ * @remarks
+ * We do this at the start to not only centralize the logic, but
+ * help in performance.
+ *
+ * @param method - The assertion callback to map.
+ * @param value - The "actual" value of the assertion.
+ *
+ * @returns A method version of the callback.
+ */
 function MapAssertion<T>(method: CustomMethodImpl<unknown>, value: T) {
   return (source: Assertion<T>, ...args: never[]) => {
     const result = method(source, value, ...args);
@@ -106,6 +139,36 @@ function MapAssertion<T>(method: CustomMethodImpl<unknown>, value: T) {
   };
 }
 
+/**
+ * Perform assertions/checks on the state of a value.
+ *
+ * @remarks
+ * The `value` you provide is reffered to as the "actual" value.
+ *
+ * You can then use the instance returned by `expect` to make various
+ * "assertions" about the state of the value. `expect` will throw
+ * a descriptive error message if any of the checks fail.
+ *
+ * For a full list of available checks, take a look at the
+ * [API](https://rbxts-expect.daymxn.com/docs/api).
+ *
+ * @param value - The "actual" value to perform checks against.
+ *
+ * @returns An instance of {@link Assertion} that you should chain for checks.
+ *
+ * @example
+ * ```ts
+ * expect(5).to.equal(5);
+ *
+ * expect("Daymon").to.have.the.substring("Day");
+ *
+ * expect([1,2,3]).to.include(1).but.not.include(4);
+ *
+ * expect(Sport.Basketball).to.be.the.enum(Sport).and.to.be.oneOf(["Basketball", "Soccer"]);
+ * ```
+ *
+ * @public
+ */
 export function expect<T>(value: T): Assertion<T> {
   const newAssert: Record<string, unknown> = {
     _negated: false,
@@ -143,35 +206,3 @@ export function expect<T>(value: T): Assertion<T> {
     },
   });
 }
-
-/**
- * I also still need to implement proxy support here.
- *
- * But on another note, I'm realizing that probably most of the messages would change in the context of a proxy/table
- * ```
- * // without proxy
- * Expected 5 (number) to equal "5" (string).
- *
- * // intended with proxy
- * Expected parent.age to equal "5" (string), but it was 5 (number) instead.
- * ```
- *
- * We _could_ just adapt and do like
- * ```
- * // without proxy
- * Expected the value to equal "5" (string), but it was 5 (number) instead.
- * ```
- *
- * But do we want that?
- *
- * I'm doing this all to support nested property checking, but is that realistic?
- * Do we really care about nested property checking that much? Or would we rather just have
- * support for matching against objects?
- *
- * The drawback is we can't do non deterministic checks like
- * ```
- * expect(person).to.match({
- *   age: not.empty();
- * });
- * ```
- */

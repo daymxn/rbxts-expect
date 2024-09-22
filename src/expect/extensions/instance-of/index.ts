@@ -94,11 +94,11 @@ declare module "@rbxts/expect" {
 
     /**
      * Asserts that the value is an instance of `I`, according to
-     * a custom callback {@link TypeChecker}.
+     * a custom callback {@link TypeCheckCallback}.
      *
      * @example
      * ```ts
-     * const isNumber: TypeChecker = (value) => {
+     * const isNumber: TypeCheckCallback = (value) => {
      *   return typeOf(value) === "number";
      * }
      *
@@ -107,7 +107,7 @@ declare module "@rbxts/expect" {
      *
      * @public
      */
-    instanceOf<I>(checker: TypeChecker<T>): Assertion<I>;
+    instanceOf<I>(checker: TypeCheckCallback<T>): Assertion<I>;
 
     /**
      * Asserts that the value is an instance of `I`, according to
@@ -143,14 +143,14 @@ declare module "@rbxts/expect" {
 
     /**
      * Asserts that the value is of type `I`, according to
-     * a custom callback {@link TypeChecker}.
+     * a custom callback {@link TypeCheckCallback}.
      *
      * @remarks
      * _Type alias for the `instanceOf` version of this._
      *
      * @example
      * ```ts
-     * const isNumber: TypeChecker = (value) => {
+     * const isNumber: TypeCheckCallback = (value) => {
      *   return typeOf(value) === "number";
      * }
      *
@@ -159,7 +159,7 @@ declare module "@rbxts/expect" {
      *
      * @public
      */
-    typeOf<I>(checker: TypeChecker<T>): Assertion<I>;
+    typeOf<I>(checker: TypeCheckCallback<T>): Assertion<I>;
 
     /**
      * Asserts that the value is of type `I`, according to

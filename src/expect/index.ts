@@ -23,7 +23,9 @@ export {
   resetDefaultExpectConfig,
   setDefaultExpectConfig,
 } from "./config";
+
 export { expect } from "./expect";
+
 export {
   AssertMethodResult,
   CustomMethodImpl,
@@ -32,4 +34,10 @@ export {
   extendNOPs,
   extendNegations,
 } from "./extend";
-export { Assertion, InferArrayElement } from "./types";
+
+export {
+  Assertion,
+  InferArrayElement,
+  LuaEnum,
+  TypeCheckCallback,
+} from "./types";

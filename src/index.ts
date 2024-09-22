@@ -17,6 +17,40 @@
 
 import "./expect/extensions";
 
-export { Assertion, expect, extendMethods } from "./expect";
-export { ExpectMessageBuilder } from "./message";
-export { Placeholder, place } from "./message/placeholders";
+export {
+  AssertMethodResult,
+  Assertion,
+  CustomMethodImpl,
+  CustomMethodImpls,
+  ExpectConfig,
+  InferArrayElement,
+  LuaEnum,
+  TypeCheckCallback,
+  expect,
+  extendMethods,
+  extendNOPs,
+  extendNegations,
+  getDefaultExpectConfig,
+  resetDefaultExpectConfig,
+  setDefaultExpectConfig,
+} from "./expect";
+
+export {
+  ExpectMessageBuilder,
+  ExpectMessageBuilderOptions,
+  Placeholder,
+  VariableData,
+  place,
+} from "./message";
+
+export {
+  Proxy,
+  ProxyInstance,
+  createProxy,
+  err,
+  getProxyParent,
+  getProxyPath,
+  getProxyValue,
+  isProxy,
+  withProxy,
+} from "./util";
