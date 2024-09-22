@@ -27,9 +27,9 @@ export {
 export { expect } from "./expect";
 
 export {
-  AssertMethodResult,
   CustomMethodImpl,
   CustomMethodImpls,
+  ExpectMethodResult,
   extendMethods,
   extendNOPs,
   extendNegations,

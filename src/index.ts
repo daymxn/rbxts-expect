@@ -18,11 +18,11 @@
 import "./expect/extensions";
 
 export {
-  AssertMethodResult,
   Assertion,
   CustomMethodImpl,
   CustomMethodImpls,
   ExpectConfig,
+  ExpectMethodResult,
   InferArrayElement,
   LuaEnum,
   TypeCheckCallback,

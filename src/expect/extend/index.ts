@@ -16,9 +16,9 @@
  */
 
 export {
-  ExpectMethodResult as AssertMethodResult,
   CustomMethodImpl,
   CustomMethodImpls,
+  ExpectMethodResult,
   extendMethods,
   getMethodExtensions,
 } from "./methods";
