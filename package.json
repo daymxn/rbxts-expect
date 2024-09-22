@@ -11,6 +11,7 @@
 		"scripts:watch": "npm run scripts:build -- -w",
 		"api:rollup": "npx tsup",
 		"api:combine": "npx tsx ./scripts/src/combine-augmentations.ts ./temp/rollup/index.d.ts ./temp/merged",
+		"api:fix": "npx tsx ./scripts/src/fix-type-alias.ts ./temp/merged/index.d.ts ./temp/fixed",
 		"api:build": "npm run build",
 		"api:extract": "api-extractor run --local --verbose",
 		"api:update": "npx run-s api:build api:rollup api:combine api:extract",
