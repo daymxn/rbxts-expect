@@ -43,22 +43,36 @@ class Combiner {
         ts.isModuleBlock(node.body)
       ) {
         // Handle module augmentations
-        ts.forEachChild(node.body, (modNode) => {
-          if (ts.isInterfaceDeclaration(modNode)) {
-            const interfaceName = modNode.name.text;
+        const finalNodes = ts.visitNodes(
+          node.body.statements,
+          (modNode) => {
+            if (ts.isInterfaceDeclaration(modNode)) {
+              const interfaceName = modNode.name.text;
 
-            // Check if interface already exists, if yes, merge
-            if (this.interfaceMap[interfaceName]) {
-              this.interfaceMap[interfaceName] = this.mergeInterfaceMembers(
-                this.interfaceMap[interfaceName],
-                modNode
-              );
+              // Check if interface already exists, if yes, merge
+              if (this.interfaceMap[interfaceName]) {
+                this.interfaceMap[interfaceName] = this.mergeInterfaceMembers(
+                  this.interfaceMap[interfaceName],
+                  modNode
+                );
+              } else {
+                // If not, add it to the map
+                this.interfaceMap[interfaceName] = modNode;
+              }
+
+              return undefined;
             } else {
-              // If not, add it to the map
-              this.interfaceMap[interfaceName] = modNode;
+              return modNode;
             }
-          }
-        });
+          },
+          ts.isStatement
+        );
+
+        if (finalNodes.length !== 0) {
+          ts.factory.updateModuleBlock(node.body, finalNodes);
+
+          this.retainedNodes.push(node);
+        }
       } else if (ts.isInterfaceDeclaration(node)) {
         // Handle standalone interface declarations
         const interfaceName = node.name.text;
