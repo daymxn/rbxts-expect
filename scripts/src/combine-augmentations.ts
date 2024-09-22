@@ -114,12 +114,11 @@ class Combiner {
     const printer = ts.createPrinter();
     let output = "";
 
-    // Print all retained nodes (imports, other interfaces, merged interfaces, etc.)
-    for (const node of this.retainedNodes) {
-      output +=
-        printer.printNode(ts.EmitHint.Unspecified, node, this.sourceFile) +
-        "\n";
-    }
+    output += printer.printList(
+      ts.ListFormat.LinesMask,
+      ts.factory.createNodeArray(this.retainedNodes),
+      this.sourceFile
+    );
 
     await mkdirp(outputDir);
 
