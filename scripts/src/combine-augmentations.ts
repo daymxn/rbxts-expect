@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-import { mkdir, readFile, writeFile } from "fs-extra";
+import { mkdirp, readFile, writeFile } from "fs-extra";
 import ts from "typescript";
 
 class Combiner {
@@ -107,7 +107,7 @@ class Combiner {
         "\n";
     }
 
-    await mkdir(outputDir);
+    await mkdirp(outputDir);
 
     // Write the merged result back to a file
     return writeFile(`${outputDir}/index.d.ts`, output);
