@@ -19,113 +19,111 @@ import { mkdirp, readFile, writeFile } from "fs-extra";
 import ts from "typescript";
 
 class Renamer {
-  private renamedNodes: ts.Node[] = [];
   private renamedMap: Map<string, string> = new Map();
+  private root: ts.Node | undefined = undefined;
 
   protected constructor(public sourceFile: ts.SourceFile) {}
 
   public async build() {
-    this.renamedNodes = [];
     this.renamedMap = new Map();
     this.renameIdentifiers();
   }
 
-  private renameIdentifiers() {
-    const visitNode = (node: ts.Node): ts.Node | undefined => {
-      // Handle type and interface declarations with $number
-      if (
-        (ts.isTypeAliasDeclaration(node) || ts.isInterfaceDeclaration(node)) &&
-        node.name.text.includes("$")
-      ) {
-        const newName = node.name.text.replace(/\$\d+$/, ""); // Remove $number suffix
+  // rename name$number declarations to name
+  private renameDeclarations(node: ts.Node): ts.Node | undefined {
+    if (ts.isDeclarationStatement(node) && node.name?.text.includes("$")) {
+      const newName = node.name.text.replace(/\$\d+$/, "");
 
-        // Store old-to-new name mapping
-        this.renamedMap.set(node.name.text, newName);
+      this.renamedMap.set(node.name.text, newName);
 
-        // Update the node with the new name
-        if (ts.isTypeAliasDeclaration(node)) {
-          return ts.factory.updateTypeAliasDeclaration(
-            node,
-            node.modifiers,
-            ts.factory.createIdentifier(newName),
-            node.typeParameters,
-            node.type
-          );
-        } else if (ts.isInterfaceDeclaration(node)) {
-          return ts.factory.updateInterfaceDeclaration(
-            node,
-            node.modifiers,
-            ts.factory.createIdentifier(newName),
-            node.typeParameters,
-            node.heritageClauses,
-            node.members
-          );
-        }
-      }
-
-      // Handle export declarations and update references
-      if (
-        ts.isExportDeclaration(node) &&
-        node.exportClause &&
-        ts.isNamedExports(node.exportClause)
-      ) {
-        const updatedElements = node.exportClause.elements.map((element) => {
-          const oldName = element.propertyName?.text ?? element.name.text;
-          const renamedName = this.renamedMap.get(oldName);
-
-          // If old name was renamed, update export
-          if (renamedName) {
-            return ts.factory.updateExportSpecifier(
-              element,
-              element.isTypeOnly,
-              undefined,
-              ts.factory.createIdentifier(renamedName)
-            );
-          }
-          return element; // No change
-        });
-
-        return ts.factory.updateExportDeclaration(
+      if (ts.isTypeAliasDeclaration(node)) {
+        return ts.factory.updateTypeAliasDeclaration(
           node,
           node.modifiers,
-          node.isTypeOnly,
-          node.exportClause
-            ? ts.factory.updateNamedExports(node.exportClause, updatedElements)
-            : undefined,
-          node.moduleSpecifier,
-          node.attributes
+          ts.factory.createIdentifier(newName),
+          node.typeParameters,
+          node.type
+        );
+      } else if (ts.isInterfaceDeclaration(node)) {
+        return ts.factory.updateInterfaceDeclaration(
+          node,
+          node.modifiers,
+          ts.factory.createIdentifier(newName),
+          node.typeParameters,
+          node.heritageClauses,
+          node.members
+        );
+      } else {
+        console.warn(
+          "Unsupported declaration type found (%s): %s",
+          node.kind,
+          node.name
         );
       }
+    }
+  }
 
-      // Recursively visit children
-      return ts.visitEachChild(node, visitNode, undefined);
+  private updateExports(node: ts.Node): ts.Node | undefined {
+    if (
+      ts.isExportDeclaration(node) &&
+      node.exportClause &&
+      ts.isNamedExports(node.exportClause)
+    ) {
+      const updatedElements = node.exportClause.elements.map((element) => {
+        const oldName = element.propertyName?.text ?? element.name.text;
+        const renamedName = this.renamedMap.get(oldName);
+
+        if (renamedName) {
+          return ts.factory.updateExportSpecifier(
+            element,
+            element.isTypeOnly,
+            undefined,
+            ts.factory.createIdentifier(renamedName)
+          );
+        }
+
+        return element;
+      });
+
+      return ts.factory.updateExportDeclaration(
+        node,
+        node.modifiers,
+        node.isTypeOnly,
+        node.exportClause
+          ? ts.factory.updateNamedExports(node.exportClause, updatedElements)
+          : undefined,
+        node.moduleSpecifier,
+        node.attributes
+      );
+    }
+  }
+
+  private renameIdentifiers() {
+    const visitNode = (node: ts.Node): ts.Node | undefined => {
+      return (
+        this.renameDeclarations(node) ??
+        this.updateExports(node) ??
+        ts.visitEachChild(node, visitNode, undefined)
+      );
     };
 
-    // Traverse the AST and modify nodes
-    const updatedSourceFile = ts.visitNode(this.sourceFile, visitNode);
-
-    // Retain the updated nodes
-    if (updatedSourceFile) {
-      ts.forEachChild(updatedSourceFile, (node) => {
-        this.renamedNodes.push(node);
-      });
-    }
+    this.root = ts.visitNode(this.sourceFile, visitNode);
   }
 
   public async output(outputDir: string) {
     const printer = ts.createPrinter();
     let output = "";
 
-    // Print all renamed nodes
-    for (const node of this.renamedNodes) {
-      output +=
-        printer.printNode(ts.EmitHint.Unspecified, node, this.sourceFile) +
-        "\n";
+    if (this.root) {
+      output += printer.printNode(
+        ts.EmitHint.SourceFile,
+        this.root,
+        this.sourceFile
+      );
     }
 
     await mkdirp(outputDir);
 
-    // Write the renamed result back to a file
     return writeFile(`${outputDir}/renamed_index.d.ts`, output);
   }
 
