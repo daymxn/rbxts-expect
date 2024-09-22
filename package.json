@@ -14,7 +14,7 @@
 		"api:fix": "npx tsx ./scripts/src/fix-type-alias.ts ./temp/merged/index.d.ts ./temp/fixed",
 		"api:build": "npm run build",
 		"api:extract": "api-extractor run --local --verbose",
-		"api:update": "npx run-s api:build api:rollup api:combine api:extract",
+		"api:update": "npx run-s api:build api:rollup api:combine api:fix api:extract",
 		"api:docs:generate": "api-documenter markdown -i ./temp  -o ./temp/api",
 		"api:docs:fix": "npx tsx ./scripts/src/fix-api-reference.ts ./temp/api ./temp/fixed",
 		"api:docs:export": "npx tsx ./scripts/src/export-api-reference.ts ./temp/fixed ./wiki/docs/api",

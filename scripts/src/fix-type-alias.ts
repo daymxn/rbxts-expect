@@ -124,7 +124,7 @@ class Renamer {
 
     await mkdirp(outputDir);
 
-    return writeFile(`${outputDir}/renamed_index.d.ts`, output);
+    return writeFile(`${outputDir}/index.d.ts`, output);
   }
 
   public static async from(sourcePath: string) {

@@ -7,8 +7,8 @@
 import { Result } from '@rbxts/rust-classes';
 import { t } from '@rbxts/t';
 
-// @public (undocumented)
-export interface Assertion<T> {
+// @public
+export interface Assertion<T = unknown> {
     readonly a: this;
     readonly also: this;
     readonly an: this;
@@ -84,13 +84,10 @@ export interface Assertion<T> {
 }
 
 // @public
-export type AssertMethodResult = Result<ExpectMessageBuilder, ExpectMessageBuilder>;
-
-// @public
 export function createProxy<T>(value: T, parent?: Proxy<unknown>, path?: string): Proxy<T>;
 
 // @public
-export type CustomMethodImpl<T = unknown> = (source: Assertion<T>, actual: T, ...args: never[]) => AssertMethodResult;
+export type CustomMethodImpl<T = unknown> = (source: Assertion<T>, actual: T, ...args: never[]) => ExpectMethodResult;
 
 // @public
 export type CustomMethodImpls<T> = {
@@ -148,6 +145,9 @@ export interface ExpectMessageBuilderOptions {
     trimWhiteSpace: boolean;
     wrapValues: boolean;
 }
+
+// @public
+export type ExpectMethodResult = Result<ExpectMessageBuilder, ExpectMessageBuilder>;
 
 // @public
 export function extendMethods(methods: CustomMethodImpls<never>): void;
