@@ -80,8 +80,8 @@ class Combiner {
         // Check if this interface is already being augmented and merge it
         if (this.interfaceMap[interfaceName]) {
           this.interfaceMap[interfaceName] = this.mergeInterfaceMembers(
-            this.interfaceMap[interfaceName],
-            node
+            node,
+            this.interfaceMap[interfaceName]
           );
         } else {
           // If not, add the original interface to the map
