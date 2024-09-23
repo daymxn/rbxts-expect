@@ -252,6 +252,4 @@ export interface VariableData {
 // @public
 export function withProxy<T, R = unknown>(value: T, callback: (proxy: Proxy<T>) => R): R;
 
-// (No @packageDocumentation comment for this package)
-
 ```

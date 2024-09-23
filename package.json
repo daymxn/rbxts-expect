@@ -9,9 +9,9 @@
 		"watch": "rbxtsc -w",
 		"scripts:build": "npx tsc --project ./scripts/tsconfig.scripts.json",
 		"scripts:watch": "npm run scripts:build -- -w",
-		"api:rollup": "npx tsup",
-		"api:combine": "npx tsx ./scripts/src/combine-augmentations.ts ./temp/rollup/index.d.ts ./temp/merged",
-		"api:fix": "npx tsx ./scripts/src/fix-type-alias.ts ./temp/merged/index.d.ts ./temp/fixed",
+		"api:rollup:generate": "npx tsup",
+		"api:rollup:fix": "npx tsx ./scripts/src/fix-rollup.ts ./src/index.ts ./temp/rollup/index.d.ts",
+		"api:rollup": "npx run-s api:rollup:*",
 		"api:build": "npm run build",
 		"api:extract": "api-extractor run --local --verbose",
 		"api:update": "npx run-s api:build api:rollup api:combine api:fix api:extract",
@@ -42,8 +42,9 @@
 		"sourcemap": false,
 		"clean": true,
 		"outDir": "temp/rollup",
+		"target": "esnext",
 		"dts": {
-			"resolve": true
+			"only": true
 		}
 	},
 	"keywords": [],
