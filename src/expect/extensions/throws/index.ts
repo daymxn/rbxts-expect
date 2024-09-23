@@ -131,7 +131,7 @@ declare module "@rbxts/expect" {
      * contains the string `substring`.
      *
      * @remarks
-     * For pattern matching, use {@link Assertion.throwMatchs | throwMatchs} instead.
+     * For pattern matching, use {@link Assertion.throwsMatch | throwsMatch} instead.
      *
      * _Type alias for the `throw` version of this._
      *

@@ -50,7 +50,7 @@ import { place, Placeholder } from "./placeholders";
  * }
  * ```
  *
- * @see {@link ExpectMessageBuilder.expectVariable | expectVariable}, {@link ExpectMessageBuilder.actualVariable | actualVariable}
+ * @see {@link ExpectMessageBuilder.expected | expected}, {@link ExpectMessageBuilder.actual | actual}
  *
  * @public
  */
@@ -549,7 +549,7 @@ export class ExpectMessageBuilder {
    * Only applies if the message is {@link Assertion.not | negated}.
    *
    * @remarks
-   * Will be used instead of the existing {@link Assertion.suffix | suffix} (if any).
+   * Will be used instead of the existing {@link ExpectMessageBuilder.suffix | suffix} (if any).
    *
    * _Note that there can only be one, calling this method again will replace
    * the previous value- not append to it_
@@ -587,10 +587,10 @@ export class ExpectMessageBuilder {
   /**
    * Adds a string to show at the end of the message, before the metadata.
    *
-   * Only applies if the message is a {@link Assertion.fail | failure}.
+   * Only applies if the message is a {@link ExpectMessageBuilder.fail | failure}.
    *
    * @remarks
-   * Comes _after_ the {@link Assertion.suffix | suffix} (if any).
+   * Comes _after_ the {@link ExpectMessageBuilder.suffix | suffix} (if any).
    *
    * _Note that there can only be one, calling this method again will replace
    * the previous value- not append to it_
@@ -1507,7 +1507,8 @@ export class ExpectMessageBuilder {
    * Returns a {@link ExpectMessageBuilder.fail | failure} with the
    * {@link ExpectMessageBuilder.reason | reason} attached.
    *
-   * @param reason
+   * @param reason - The {@link ExpectMessageBuilder.reason | reason} to populate the message
+   * with.
    *
    * @example
    * ```ts
@@ -1593,7 +1594,7 @@ export class ExpectMessageBuilder {
    * extra values, and want to ensure their format is the same as the
    * {@link VariableData} attached to this message.
    *
-   * Internally, this uses a local {@link https://www.lua.org/pil/17.html weak table} for
+   * Internally, this uses a local {@link https://www.lua.org/pil/17.html | weak table} for
    * encoding. This means that you can safely re-call this method with the same value, but
    * different settings, and you won't take a performance hit for large objects.
    *
@@ -1616,7 +1617,7 @@ export class ExpectMessageBuilder {
    * "5"
    * ```
    *
-   * @see {@link ExpectConfig.collapsable}, {@link ExpectConfig.build | build}
+   * @see {@link ExpectConfig.collapseLength}, {@link ExpectMessageBuilder.build | build}
    */
   public encode(
     value: unknown,

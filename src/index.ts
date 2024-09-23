@@ -57,6 +57,7 @@ export {
 export {
   Proxy,
   ProxyInstance,
+  computeFullProxyPath,
   createProxy,
   err,
   getProxyParent,

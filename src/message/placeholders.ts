@@ -447,7 +447,7 @@ export const Placeholder = {
    *
    * Using a `name`, you can specify to use the
    * {@link Placeholder.path | path} whenever it's available,
-   * but fallback to the {@link Placeholder.actualValue | actualValue}.
+   * but fallback to the {@link Placeholder.actual.value | actual.value}.
    *
    * You can also provide your own name to fallback for instead of the
    * actual value. You can do this via {@link ExpectMessageBuilder.name}.

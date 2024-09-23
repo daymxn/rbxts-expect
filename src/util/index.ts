@@ -20,6 +20,7 @@
 export {
   Proxy,
   ProxyInstance,
+  computeFullProxyPath,
   createProxy,
   getProxyParent,
   getProxyPath,

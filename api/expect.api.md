@@ -83,6 +83,9 @@ export interface Assertion<T = unknown> {
 }
 
 // @public
+export function computeFullProxyPath<T>(proxy: Proxy<T>): string | undefined;
+
+// @public
 export function createProxy<T>(value: T, parent?: Proxy<unknown>, path?: string): Proxy<T>;
 
 // @public

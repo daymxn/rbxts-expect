@@ -82,19 +82,16 @@ export interface Assertion<T = unknown> {
 
   /**
    * @internal
-   * @private
    */
   _self: this;
 
   /**
    * @internal
-   * @private
    */
   _negated: boolean;
 
   /**
    * @internal
-   * @private
    */
   _proxy?: Proxy<T>;
 }

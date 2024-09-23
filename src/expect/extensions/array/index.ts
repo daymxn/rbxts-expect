@@ -151,6 +151,8 @@ declare module "@rbxts/expect" {
      * An array is classified as a table of incrementing number keys that start at `1`,
      * and without any holes.
      *
+     * {@label BASE}
+     *
      * @example
      * ```ts
      * expect([1,2,3]).to.be.an.array();
