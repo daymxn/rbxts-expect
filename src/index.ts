@@ -1,3 +1,13 @@
+/* eslint-disable headers/header-format */
+/**
+ * Test framework agnostic assertion library for ROBLOX.
+ *
+ * @remarks
+ * Exports the {@link expect} method as the primary entry point.
+ *
+ * @packageDocumentation
+ */
+
 /**
  * @license
  * Copyright 2024 Daymon Littrell-Reyes
