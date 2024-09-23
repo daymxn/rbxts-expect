@@ -174,7 +174,7 @@ export interface ExpectMessageBuilderOptions {
   wrapValues: boolean;
 
   /**
-   * Whether to automatically attach {@link place.actual.fullValue | full}
+   * Whether to automatically attach {@link ActualPlaceholder.fullValue | full}
    * versions of variables whenever they're {@link ExpectConfig.collapseLength | collapsed}.
    *
    * @remarks
@@ -366,10 +366,10 @@ export class ExpectMessageBuilder {
    * Intended to be used in custom {@link CustomMethodImpl | methods} for
    * {@link expect}.
    *
-   * If you don't provide a `prefix`, you can instead use a {@link place.reason | reason} to
+   * If you don't provide a `prefix`, you can instead use a {@link Placeholder.reason | reason} to
    * create your message at runtime.
    *
-   * @param prefix - Contents of the message, generally the static portion (defaults to {@link place.reason}).
+   * @param prefix - Contents of the message, generally the static portion (defaults to {@link Placeholder.reason}).
    * @param negationPrefix - A prefix to use when the message is {@link Assertion.not | negated} (replaces the standard prefix).
    * If you don't provide a negation prefix, the `prefix` will be used instead (in the case of negations).
    * @param options - Configuration settings for message output.
@@ -667,7 +667,7 @@ export class ExpectMessageBuilder {
   }
 
   /**
-   * Sets a {@link place.name | name} to use for the "actual" variable,
+   * Sets a {@link Placeholder.name | name} to use for the "actual" variable,
    * when dealing with messages without {@link ExpectMessageBuilder.path | paths}.
    *
    * @remarks
@@ -677,8 +677,8 @@ export class ExpectMessageBuilder {
    * This can be useful in try-catch blocks, as the error
    * attached to `catch` is `undefined` due to typescript.
    *
-   * @param value - A displayable value to use as a {@link place.name | name}, or undefined
-   * to reset it (which defaults to the {@link place.actual.value | actual value}).
+   * @param value - A displayable value to use as a {@link Placeholder.name | name}, or undefined
+   * to reset it (which defaults to the {@link ActualPlaceholder.value | actual value}).
    *
    * @returns This instance, for chaining.
    *
@@ -712,13 +712,13 @@ export class ExpectMessageBuilder {
   }
 
   /**
-   * Sets a {@link place.path | path} to use for the "actual" variable,
+   * Sets a {@link Placeholder.path | path} to use for the "actual" variable,
    * when dealing with nested tests.
    *
    * @remarks
    * If you're using a {@link Proxy | proxy}, this will be automatically populated.
    *
-   * @param str - A displayable value to use as the {@link place.path | path}, or undefined
+   * @param str - A displayable value to use as the {@link Placeholder.path | path}, or undefined
    * to reset it to empty.
    *
    * @returns This instance, for chaining.
@@ -997,7 +997,7 @@ export class ExpectMessageBuilder {
   }
 
   /**
-   * Sets a value to use for the {@link place.reason | reason}.
+   * Sets a value to use for the {@link Placeholder.reason | reason}.
    *
    * @remarks
    * If the message does _not_ have a `${place.reason}` in it,
@@ -1005,7 +1005,7 @@ export class ExpectMessageBuilder {
    * then the reason will be displayed before the {@link ExpectMessageBuilder.metadata | metadata},
    * in the same format of `Reason: message`.
    *
-   * @param reason - A displayable value to use as a replacement for {@link place.reason | reason},
+   * @param reason - A displayable value to use as a replacement for {@link Placeholder.reason | reason},
    * or undefined to reset it to nothing.
    *
    * @returns This instance, for chaining.
@@ -1065,7 +1065,7 @@ export class ExpectMessageBuilder {
   }
 
   /**
-   * Sets a value to use for the {@link place.expected.value | expected value}.
+   * Sets a value to use for the {@link ExpectedPlaceholder.value | expected value}.
    *
    * @remarks
    * This is usually the first thing your do when creating a message in your method.
@@ -1077,7 +1077,7 @@ export class ExpectMessageBuilder {
    * The {@link Assertion.enum | enum} method is a perfect example of this; where the first
    * argument is the enum type, and the second argument is the value to check for.
    *
-   * @param value - The value of the {@link place.expected | expected} variable.
+   * @param value - The value of the {@link Placeholder.expected | expected} variable.
    *
    * @returns This instance, for chaining.
    *
@@ -1102,7 +1102,7 @@ export class ExpectMessageBuilder {
    * Expected "4" to equal '4'
    * ```
    *
-   * @see {@link Placeholder.expected.value},
+   * @see {@link ExpectedPlaceholder.value},
    * {@link ExpectMessageBuilder.expectedType | expectedType},
    * {@link ExpectMessageBuilder.expected | expected},
    * {@link ExpectMessageBuilder.actualValue | actualValue}
@@ -1114,7 +1114,7 @@ export class ExpectMessageBuilder {
   }
 
   /**
-   * Sets a value to use for the {@link place.expected.type | expected type}.
+   * Sets a value to use for the {@link ExpectedPlaceholder.type | expected type}.
    *
    * @remarks
    * You usually don't need to set this yourself.
@@ -1125,7 +1125,7 @@ export class ExpectMessageBuilder {
    * The {@link Assertion.enum | enum} method is a perfect example of this;
    * where the type for enum values becomes `enum/number` instead of `number`.
    *
-   * @param typeStr - The type of the {@link place.expected | expected} variable as a string,
+   * @param typeStr - The type of the {@link Placeholder.expected | expected} variable as a string,
    * or undefined to reset it (defaults to the `typeOf` of the {@link ExpectMessageBuilder.expectedValue | expectedValue}).
    *
    * @returns This instance, for chaining.
@@ -1157,7 +1157,7 @@ export class ExpectMessageBuilder {
    * Expected '{"name":"Daymon"}' to equal '{"name":"Bryan"}' (MyCustomType)
    * ```
    *
-   * @see {@link Placeholder.expected.type},
+   * @see {@link ExpectedPlaceholder.type},
    * {@link ExpectMessageBuilder.expectedValue | expectedValue},
    * {@link ExpectMessageBuilder.expected | expected},
    * {@link ExpectMessageBuilder.actualType | actualType}
@@ -1169,7 +1169,7 @@ export class ExpectMessageBuilder {
   }
 
   /**
-   * Overwrites all the values for the {@link place.expected | expected} variable.
+   * Overwrites all the values for the {@link Placeholder.expected | expected} variable.
    *
    * @remarks
    * Instead of calling {@link ExpectMessageBuilder.expectedValue | expectedValue} and
@@ -1177,7 +1177,7 @@ export class ExpectMessageBuilder {
    * this method to set them both at once.
    *
    * @param data - A {@link VariableData} containing the {@link VariableData.type | type}
-   * and {@link VariableData.value | value} of the {@link place.expected | expected} variable.
+   * and {@link VariableData.value | value} of the {@link Placeholder.expected | expected} variable.
    *
    * @returns This instance, for chaining.
    *
@@ -1209,7 +1209,7 @@ export class ExpectMessageBuilder {
   }
 
   /**
-   * Sets a value to use for the {@link place.actual.value | actual value}.
+   * Sets a value to use for the {@link ActualPlaceholder.value | actual value}.
    *
    * @remarks
    * This is automatically set by {@link expect} whenever a message is built,
@@ -1218,7 +1218,7 @@ export class ExpectMessageBuilder {
    * This can come in handy when you have additional context, or a better way
    * to represent the "actual" value.
    *
-   * @param value - The value of the {@link place.actual | actual} variable.
+   * @param value - The value of the {@link Placeholder.actual | actual} variable.
    *
    * @returns This instance, for chaining.
    *
@@ -1251,7 +1251,7 @@ export class ExpectMessageBuilder {
    * Expected "Soccer" to equal "Basketball"
    * ```
    *
-   * @see {@link Placeholder.actual.value},
+   * @see {@link ActualPlaceholder.value},
    * {@link ExpectMessageBuilder.actualType | actualType},
    * {@link ExpectMessageBuilder.actual | actual},
    * {@link ExpectMessageBuilder.expectedValue | expectedValue}
@@ -1263,7 +1263,7 @@ export class ExpectMessageBuilder {
   }
 
   /**
-   * Sets a value to use for the {@link place.actual.type | actual type}.
+   * Sets a value to use for the {@link ActualPlaceholder.type | actual type}.
    *
    * @remarks
    * You usually don't need to set this yourself.
@@ -1274,7 +1274,7 @@ export class ExpectMessageBuilder {
    * The {@link Assertion.enum | enum} method is a perfect example of this;
    * where the type for enum values becomes `enum/number` instead of `number`.
    *
-   * @param typeStr - The type of the {@link place.actual | actual} variable as a string,
+   * @param typeStr - The type of the {@link Placeholder.actual | actual} variable as a string,
    * or undefined to reset it (defaults to the `typeOf` of the {@link ExpectMessageBuilder.actualValue | actualValue}).
    *
    * @returns This instance, for chaining.
@@ -1306,7 +1306,7 @@ export class ExpectMessageBuilder {
    * Expected '{"name":"Daymon"}' (MyCustomType) to equal '{"name":"Bryan"}'
    * ```
    *
-   * @see {@link Placeholder.actual.type},
+   * @see {@link ActualPlaceholder.type},
    * {@link ExpectMessageBuilder.actualValue | actualValue},
    * {@link ExpectMessageBuilder.actual | actual},
    * {@link ExpectMessageBuilder.expectedType | expectedType}
@@ -1318,7 +1318,7 @@ export class ExpectMessageBuilder {
   }
 
   /**
-   * Overwrites all the values for the {@link place.actual | actual} variable.
+   * Overwrites all the values for the {@link Placeholder.actual | actual} variable.
    *
    * @remarks
    * Instead of calling {@link ExpectMessageBuilder.actualValue | actualValue} and
@@ -1326,7 +1326,7 @@ export class ExpectMessageBuilder {
    * this method to set them both at once.
    *
    * @param data - A {@link VariableData} containing the {@link VariableData.type | type}
-   * and {@link VariableData.value | value} of the {@link place.actual | actual} variable.
+   * and {@link VariableData.value | value} of the {@link Placeholder.actual | actual} variable.
    *
    * @returns This instance, for chaining.
    *
@@ -1358,15 +1358,15 @@ export class ExpectMessageBuilder {
   }
 
   /**
-   * Sets a value for the {@link place.index | index} placeholder.
+   * Sets a value for the {@link Placeholder.index | index} placeholder.
    *
    * @remarks
    * Usually, indexies are attached as {@link ExpectMessageBuilder.metadata | metadata},
    * but sometimes you might also want to show the index in your message.
    *
-   * That's where the {@link place.index | index} placeholder comes into play.
+   * That's where the {@link Placeholder.index | index} placeholder comes into play.
    *
-   * @param str - A number or string as the {@link place.index | index}, or undefined
+   * @param str - A number or string as the {@link Placeholder.index | index}, or undefined
    * to reset it to empty.
    *
    * @returns This instance, for chaining.

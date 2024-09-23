@@ -21,4 +21,9 @@ export {
   VariableData,
 } from "./expect-message-builder";
 
-export { Placeholder, place } from "./placeholders";
+export {
+  ActualPlaceholder,
+  ExpectedPlaceholder,
+  Placeholder,
+  place,
+} from "./placeholders";

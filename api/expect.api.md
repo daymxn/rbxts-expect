@@ -8,6 +8,13 @@ import { Result } from '@rbxts/rust-classes';
 import { t } from '@rbxts/t';
 
 // @public
+export interface ActualPlaceholder {
+    fullValue: string;
+    type: string;
+    value: string;
+}
+
+// @public
 export interface Assertion<T = unknown> {
     readonly a: this;
     readonly also: this;
@@ -111,6 +118,13 @@ export interface ExpectConfig {
 }
 
 // @public
+export interface ExpectedPlaceholder {
+    fullValue: string;
+    type: string;
+    value: string;
+}
+
+// @public
 export class ExpectMessageBuilder {
     constructor(prefix?: string, negationPrefix?: string, options?: Partial<ExpectMessageBuilderOptions>);
     actual(data: VariableData): this;
@@ -185,46 +199,20 @@ export function isProxy<T>(value: T): value is Proxy<T>;
 export type LuaEnum = Record<string | number, string>;
 
 // @public
-export const place: {
-    actual: {
-        value: string;
-        fullValue: string;
-        type: string;
-    };
-    expected: {
-        value: string;
-        fullValue: string;
-        type: string;
-    };
-    not: string;
-    reason: string;
-    path: string;
-    name: string;
-    nil: string;
-    undefined: string;
-    index: string;
-};
+export const place: Placeholder;
 
 // @public
-export const Placeholder: {
-    actual: {
-        value: string;
-        fullValue: string;
-        type: string;
-    };
-    expected: {
-        value: string;
-        fullValue: string;
-        type: string;
-    };
-    not: string;
-    reason: string;
-    path: string;
+export interface Placeholder {
+    actual: ActualPlaceholder;
+    expected: ExpectedPlaceholder;
+    index: string;
     name: string;
     nil: string;
+    not: string;
+    path: string;
+    reason: string;
     undefined: string;
-    index: string;
-};
+}
 
 // @public
 export type Proxy<T> = T & ProxyInstance<T>;

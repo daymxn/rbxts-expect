@@ -16,7 +16,6 @@
  */
 
 import type { expect } from "@src/expect";
-import type { Placeholder } from "@src/message";
 
 /**
  * Configuration setting for {@link expect}.
@@ -42,7 +41,7 @@ export interface ExpectConfig {
    * Strings are collapsed to `"..."`
    * And everything else is collapsed to `'...'`
    *
-   * @see {@link Placeholder.actual.fullValue | fullValue}
+   * @see {@link ActualPlaceholder.fullValue | fullValue}
    */
   collapseLength: number;
 }

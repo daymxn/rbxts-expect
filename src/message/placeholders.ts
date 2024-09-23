@@ -23,293 +23,302 @@ import type {
 import type { Proxy } from "@src/util";
 import { escape } from "@src/util/string";
 
-function placeholder(name: string) {
-  return escape(`{__rbxtsexpect_${name}}`);
+/**
+ * The "actual" variable in an {@link expect} statement.
+ *
+ * @remarks
+ * This is the first variable passed into {@link expect} when starting
+ * an assertion chain.
+ *
+ * We refer to it as the "actual" variable, as it's a contrast to
+ * the {@link Placeholder.expected | expected} variable.
+ *
+ * _Note that you shouldn't use `actual` directly in your messages,
+ * instead you should use one of the properties of this type._
+ *
+ * @example
+ * Given the following assertion chain:
+ * ```ts
+ * expect(5).to.equal(6);
+ * ```
+ * The value `5` is the "actual" value/variable.
+ *
+ * It's whatever you pass to `expect` when calling it initially.
+ *
+ * @see {@link Placeholder.name | name},
+ * {@link Placeholder.expected | expected},
+ * {@link ExpectMessageBuilder.actual}
+ *
+ * @public
+ */
+export interface ActualPlaceholder {
+  /**
+   * The "actual" value in an {@link expect} statement, which
+   * can optionally be {@link ExpectConfig.collapseLength | collapsed}.
+   *
+   * @remarks
+   * This is the value of the {@link Placeholder.actual | actual}
+   * variable.
+   *
+   * Keep in mind that this value respects the defined
+   * {@link ExpectConfig.collapseLength | collapseLength}.
+   *
+   * If you _don't_ want it to respect the collapse length,
+   * then use {@link ActualPlaceholder.fullValue | fullValue} instead.
+   *
+   * @example
+   * Given the following assertion chain:
+   * ```ts
+   * expect(5).to.equal(6);
+   * ```
+   * The value `5` is the "actual" value.
+   *
+   * @see {@link Placeholder.name | name},
+   * {@link ExpectedPlaceholder.value | expected.value},
+   * {@link ExpectMessageBuilder.actualValue}
+   */
+  value: string;
+
+  /**
+   * The "actual" value in an {@link expect} statement, which
+   * is _not_ {@link ExpectConfig.collapseLength | collapsed}.
+   *
+   * @remarks
+   * This is the "full" value of the {@link Placeholder.actual | actual}
+   * variable.
+   *
+   * It being full means that it does NOT respect the defined
+   * {@link ExpectConfig.collapseLength | collapseLength}.
+   *
+   * If you _do_ want it to respect the collapse length,
+   * then use {@link ActualPlaceholder.value | value} instead.
+   *
+   * By default, most messages already have the
+   * {@link ExpectMessageBuilderOptions.attachFullOnCollapse | attachFullOnCollapse} setting
+   * enabled, so you don't usually have to attach this yourself.
+   *
+   * @example
+   * For example, lets say we were checking if an object had any keys:
+   * ```ts
+   * new ExpectMessageBuilder(
+   *  `Expected ${place.actual.value} to NOT have any keys`
+   * ).metadata({FullValue: place.actual.fullValue});
+   * ```
+   *
+   * And the object was larger than our configured `collapseLength`, and ended up
+   * collapsed:
+   * ```text
+   * Expected '{...}' to NOT have any keys
+   * FullValue: '{"name":"Daymon","age":24}'
+   * ```
+   *
+   * This allows us to keep the main message short and easy to read, while still
+   * retaining the full value for debugging.
+   *
+   * @see {@link Placeholder.name | name},
+   * {@link ExpectedPlaceholder.fullValue | expected.fullValue}
+   */
+  fullValue: string;
+
+  /**
+   * A string representing the type of the {@link ActualPlaceholder.value | actual value}
+   * in an {@link expect} statement.
+   *
+   * @remarks
+   * By default, this value gets set automatically via the macro
+   * {@link https://github.com/roblox-ts/compiler-types/blob/a13fdb1171895c7ed1a7f091d18031534e988886/types/callMacros.d.ts#L11 | typeOf}.
+   *
+   * But you can optionally override this for custom types via
+   * {@link ExpectMessageBuilder.actualType}.
+   *
+   * @example
+   * Let's say we were checking if a value was an array:
+   * ```ts
+   * new ExpectMessageBuilder(
+   *  `Expected ${place.actual.value} (${place.actual.type}) to be an array`
+   * );
+   * ```
+   *
+   * We'd get output like:
+   * ```text
+   * Expected '5' (number) to be an array
+   * ```
+   *
+   * @see {@link Placeholder.actual | actual},
+   * {@link ExpectedPlaceholder.type | expected.type},
+   * {@link ExpectMessageBuilder.actualType}
+   */
+  type: string;
 }
 
 /**
- * Utility constant for specifying dynamic variables in {@link ExpectMessageBuilder | expect error messages}.
+ * The "expected" variable in an {@link expect} statement.
  *
  * @remarks
- * At {@link ExpectMessageBuilder.build | build time}, the variables places via this constant will be populated
+ * This is _usually_ the value passed into an assertion method,
+ * but not all methods end up having an expected value.
+ *
+ * For example, the {@link Assertion.empty | empty} method
+ * doesn't have anything it's comparing the
+ * {@link Placeholder.actual | actual} value to, so it doesn't
+ * have an "expected" value.
+ *
+ * We refer to it as the "expected" variable, as it's _usually_
+ * what you're expecting the {@link Placeholder.actual | actual} variable
+ * to be.
+ *
+ * _Note that you shouldn't use `expected` directly in your messages,
+ * instead you should use one of the properties of this type._
+ *
+ * @example
+ * Given the following assertion chain:
+ * ```ts
+ * expect(5).to.equal(6);
+ * ```
+ * The value `5` is the "actual" value/variable.
+ *
+ * It's whatever you pass to `expect` when calling it initially.
+ *
+ * @see  {@link Placeholder.actual | actual},
+ * {@link ExpectMessageBuilder.expected}
+ *
+ * @public
+ */
+export interface ExpectedPlaceholder {
+  /**
+   * The "expected" value in an {@link expect} statement, which
+   * can optionally be {@link ExpectConfig.collapseLength | collapsed}.
+   *
+   * @remarks
+   * This is the value of the {@link Placeholder.expected | expected}
+   * variable.
+   *
+   * Keep in mind that this value respects the defined
+   * {@link ExpectConfig.collapseLength | collapseLength}.
+   *
+   * If you _don't_ want it to respect the collapse length,
+   * then use {@link ExpectedPlaceholder.fullValue | fullValue} instead.
+   *
+   * @example
+   * Given the following assertion chain:
+   * ```ts
+   * expect(5).to.equal(6);
+   * ```
+   * The value `6` is the "expected" value.
+   *
+   * @see {@link ActualPlaceholder.value | actual.value},
+   * {@link ExpectMessageBuilder.expectedValue}
+   */
+  value: string;
+
+  /**
+   * The "expected" value in an {@link expect} statement, which
+   * is _not_ {@link ExpectConfig.collapseLength | collapsed}.
+   *
+   * @remarks
+   * This is the "full" value of the {@link Placeholder.expected | expected}
+   * variable.
+   *
+   * It being full means that it does NOT respect the defined
+   * {@link ExpectConfig.collapseLength | collapseLength}.
+   *
+   * If you _do_ want it to respect the collapse length,
+   * then use {@link ExpectedPlaceholder.value | value} instead.
+   *
+   * By default, most messages already have the
+   * {@link ExpectMessageBuilderOptions.attachFullOnCollapse | attachFullOnCollapse} setting
+   * enabled, so you don't usually have to attach this yourself.
+   *
+   * @example
+   * For example, lets say we were checking if an object matched
+   * another object:
+   * ```ts
+   * new ExpectMessageBuilder(
+   *  `Expected ${place.actual.value} to be equal to
+   * ${place.expected.value}
+   * `
+   * ).metadata({
+   *   ["Expected (full)"]: place.expected.fullValue,
+   *   ["Actual (full)"]: place.actual.fullValue
+   * });
+   * ```
+   *
+   * And the object was larger than our configured `collapseLength`, and ended up
+   * collapsed:
+   * ```text
+   * Expected '{...}' to be equal to '{...}'
+   * Expected (full): '{"name":"Bryan","age":20}'
+   * Actual (full): '{"name":"Daymon","age":24}'
+   * ```
+   *
+   * This allows us to keep the main message short and easy to read, while still
+   * retaining the full value for debugging.
+   *
+   * @see {@link ActualPlaceholder.fullValue | actual.fullValue}
+   */
+  fullValue: string;
+
+  /**
+   * A string representing the type of the {@link ExpectedPlaceholder.value | expected value}
+   * in an {@link expect} statement.
+   *
+   * @remarks
+   * By default, this value gets set automatically via the macro
+   * {@link https://github.com/roblox-ts/compiler-types/blob/a13fdb1171895c7ed1a7f091d18031534e988886/types/callMacros.d.ts#L11 | typeOf}.
+   *
+   * But you can optionally override this for custom types via
+   * {@link ExpectMessageBuilder.expectedType}.
+   *
+   * @example
+   * Let's say we were checking if two values were equal:
+   * ```ts
+   * new ExpectMessageBuilder(
+   *  `Expected ${place.actual.value} (${place.actual.type}) to be
+   * equal to ${place.expected.value} (${place.expected.type})`
+   * );
+   * ```
+   *
+   * We'd get output like:
+   * ```text
+   * Expected '5' (number) to be equal to "5" (string)
+   * ```
+   *
+   * @see {@link Placeholder.actual | actual},
+   * {@link ExpectedPlaceholder.type | expected.type},
+   * {@link ExpectMessageBuilder.actualType}
+   */
+  type: string;
+}
+
+/**
+ * Utility interface for specifying dynamic variables in {@link ExpectMessageBuilder | expect error messages}.
+ *
+ * @remarks
+ * At {@link ExpectMessageBuilder.build | build time}, the variables placed via this interface will be populated
  * with their respective values.
  *
- * This allows you to define a static string, while still specifying the location of certain variables- without
+ * This allows you to define a static string, while still specifying the location of certain variables—without
  * needing to know their values.
- *
- * You can also use the {@link place} type alias for readability purposes.
  *
  * @example
  * ```ts
  * new ExpectMessageBuilder(
- *   `Expected ${Placeholder.name} to ${Placeholder.not} equal ${Placeholder.expected.value}`
+ *   `Expected ${place.name} to ${place.not} equal ${place.expected.value}`
  * );
  * ```
  *
  * @public
  */
-export const Placeholder = {
+export interface Placeholder {
   /**
-   * The "actual" variable in an {@link expect} statement.
-   *
-   * @remarks
-   * This is the first variable passed into {@link expect} when starting
-   * an assertion chain.
-   *
-   * We refer to it as the "actual" variable, as it's a contrast to
-   * the {@link Placeholder.expected | expected} variable.
-   *
-   * _Note that you shouldn't use `actual` directly in your messages,
-   * instead you should use one of the properties of this type._
-   *
-   * @example
-   * Given the following assertion chain:
-   * ```ts
-   * expect(5).to.equal(6);
-   * ```
-   * The value `5` is the "actual" value/variable.
-   *
-   * It's whatever you pass to `expect` when calling it initially.
-   *
-   * @see {@link Placeholder.name | name},
-   * {@link Placeholder.expected | expected},
-   * {@link ExpectMessageBuilder.actual}
+   * {@inheritDoc ActualPlaceholder}
    */
-  actual: {
-    /**
-     * The "actual" value in an {@link expect} statement, which
-     * can optionally be {@link ExpectConfig.collapseLength | collapsed}.
-     *
-     * @remarks
-     * This is the value of the {@link Placeholder.actual | actual}
-     * variable.
-     *
-     * Keep in mind that this value respects the defined
-     * {@link ExpectConfig.collapseLength | collapseLength}.
-     *
-     * If you _don't_ want it to respect the collapse length,
-     * then use {@link Placeholder.actual.fullValue | fullValue} instead.
-     *
-     * @example
-     * Given the following assertion chain:
-     * ```ts
-     * expect(5).to.equal(6);
-     * ```
-     * The value `5` is the "actual" value.
-     *
-     * @see {@link Placeholder.name | name},
-     * {@link Placeholder.expected.value | expected.value},
-     * {@link ExpectMessageBuilder.actualValue}
-     */
-    value: placeholder("actual_value"),
+  actual: ActualPlaceholder;
 
-    /**
-     * The "actual" value in an {@link expect} statement, which
-     * is _not_ {@link ExpectConfig.collapseLength | collapsed}.
-     *
-     * @remarks
-     * This is the "full" value of the {@link Placeholder.actual | actual}
-     * variable.
-     *
-     * It being full means that it does NOT respect the defined
-     * {@link ExpectConfig.collapseLength | collapseLength}.
-     *
-     * If you _do_ want it to respect the collapse length,
-     * then use {@link Placeholder.actual.value | value} instead.
-     *
-     * By default, most messages already have the
-     * {@link ExpectMessageBuilderOptions.attachFullOnCollapse | attachFullOnCollapse} setting
-     * enabled, so you don't usually have to attach this yourself.
-     *
-     * @example
-     * For example, lets say we were checking if an object had any keys:
-     * ```ts
-     * new ExpectMessageBuilder(
-     *  `Expected ${place.actual.value} to NOT have any keys`
-     * ).metadata({FullValue: place.actual.fullValue});
-     * ```
-     *
-     * And the object was larger than our configured `collapseLength`, and ended up
-     * collapsed:
-     * ```text
-     * Expected '{...}' to NOT have any keys
-     * FullValue: '{"name":"Daymon","age":24}'
-     * ```
-     *
-     * This allows us to keep the main message short and easy to read, while still
-     * retaining the full value for debugging.
-     *
-     * @see {@link Placeholder.name | name},
-     * {@link Placeholder.expected.fullValue | expected.fullValue}
-     */
-    fullValue: placeholder("full_actual_value"),
-
-    /**
-     * A string representing the type of the {@link Placeholder.actual.value | actual value}
-     * in an {@link expect} statement.
-     *
-     * @remarks
-     * By default, this value gets set automatically via the macro
-     * {@link https://github.com/roblox-ts/compiler-types/blob/a13fdb1171895c7ed1a7f091d18031534e988886/types/callMacros.d.ts#L11 | typeOf}.
-     *
-     * But you can optionally override this for custom types via
-     * {@link ExpectMessageBuilder.actualType}.
-     *
-     * @example
-     * Let's say we were checking if a value was an array:
-     * ```ts
-     * new ExpectMessageBuilder(
-     *  `Expected ${place.actual.value} (${place.actual.type}) to be an array`
-     * );
-     * ```
-     *
-     * We'd get output like:
-     * ```text
-     * Expected '5' (number) to be an array
-     * ```
-     *
-     * @see {@link Placeholder.actual | actual},
-     * {@link Placeholder.expected.type | expected.type},
-     * {@link ExpectMessageBuilder.actualType}
-     */
-    type: placeholder("actual_type"),
-  },
   /**
-   * The "expected" variable in an {@link expect} statement.
-   *
-   * @remarks
-   * This is _usually_ the value passed into an assertion method,
-   * but not all methods end up having an expected value.
-   *
-   * For example, the {@link Assertion.empty | empty} method
-   * doesn't have anything it's comparing the
-   * {@link Placeholder.actual | actual} value to, so it doesn't
-   * have an "expected" value.
-   *
-   * We refer to it as the "expected" variable, as it's _usually_
-   * what you're expecting the {@link Placeholder.actual | actual} variable
-   * to be.
-   *
-   * _Note that you shouldn't use `expected` directly in your messages,
-   * instead you should use one of the properties of this type._
-   *
-   * @example
-   * Given the following assertion chain:
-   * ```ts
-   * expect(5).to.equal(6);
-   * ```
-   * The value `5` is the "actual" value/variable.
-   *
-   * It's whatever you pass to `expect` when calling it initially.
-   *
-   * @see  {@link Placeholder.actual | actual},
-   * {@link ExpectMessageBuilder.expected}
+   * {@inheritDoc ExpectedPlaceholder}
    */
-  expected: {
-    /**
-     * The "expected" value in an {@link expect} statement, which
-     * can optionally be {@link ExpectConfig.collapseLength | collapsed}.
-     *
-     * @remarks
-     * This is the value of the {@link Placeholder.expected | expected}
-     * variable.
-     *
-     * Keep in mind that this value respects the defined
-     * {@link ExpectConfig.collapseLength | collapseLength}.
-     *
-     * If you _don't_ want it to respect the collapse length,
-     * then use {@link Placeholder.expected.fullValue | fullValue} instead.
-     *
-     * @example
-     * Given the following assertion chain:
-     * ```ts
-     * expect(5).to.equal(6);
-     * ```
-     * The value `6` is the "expected" value.
-     *
-     * @see {@link Placeholder.actual.value | actual.value},
-     * {@link ExpectMessageBuilder.expectedValue}
-     */
-    value: placeholder("expected_value"),
-
-    /**
-     * The "expected" value in an {@link expect} statement, which
-     * is _not_ {@link ExpectConfig.collapseLength | collapsed}.
-     *
-     * @remarks
-     * This is the "full" value of the {@link Placeholder.expected | expected}
-     * variable.
-     *
-     * It being full means that it does NOT respect the defined
-     * {@link ExpectConfig.collapseLength | collapseLength}.
-     *
-     * If you _do_ want it to respect the collapse length,
-     * then use {@link Placeholder.expected.value | value} instead.
-     *
-     * By default, most messages already have the
-     * {@link ExpectMessageBuilderOptions.attachFullOnCollapse | attachFullOnCollapse} setting
-     * enabled, so you don't usually have to attach this yourself.
-     *
-     * @example
-     * For example, lets say we were checking if an object matched
-     * another object:
-     * ```ts
-     * new ExpectMessageBuilder(
-     *  `Expected ${place.actual.value} to be equal to
-     * ${place.expected.value}
-     * `
-     * ).metadata({
-     *   ["Expected (full)"]: place.expected.fullValue,
-     *   ["Actual (full)"]: place.actual.fullValue
-     * });
-     * ```
-     *
-     * And the object was larger than our configured `collapseLength`, and ended up
-     * collapsed:
-     * ```text
-     * Expected '{...}' to be equal to '{...}'
-     * Expected (full): '{"name":"Bryan","age":20}'
-     * Actual (full): '{"name":"Daymon","age":24}'
-     * ```
-     *
-     * This allows us to keep the main message short and easy to read, while still
-     * retaining the full value for debugging.
-     *
-     * @see {@link Placeholder.actual.fullValue | actual.fullValue}
-     */
-    fullValue: placeholder("full_expected_value"),
-
-    /**
-     * A string representing the type of the {@link Placeholder.expected.value | expected value}
-     * in an {@link expect} statement.
-     *
-     * @remarks
-     * By default, this value gets set automatically via the macro
-     * {@link https://github.com/roblox-ts/compiler-types/blob/a13fdb1171895c7ed1a7f091d18031534e988886/types/callMacros.d.ts#L11 | typeOf}.
-     *
-     * But you can optionally override this for custom types via
-     * {@link ExpectMessageBuilder.expectedType}.
-     *
-     * @example
-     * Let's say we were checking if two values were equal:
-     * ```ts
-     * new ExpectMessageBuilder(
-     *  `Expected ${place.actual.value} (${place.actual.type}) to be
-     * equal to ${place.expected.value} (${place.expected.type})`
-     * );
-     * ```
-     *
-     * We'd get output like:
-     * ```text
-     * Expected '5' (number) to be equal to "5" (string)
-     * ```
-     *
-     * @see {@link Placeholder.actual | actual},
-     * {@link Placeholder.expected.type | expected.type},
-     * {@link ExpectMessageBuilder.actualType}
-     */
-    type: placeholder("expected_type"),
-  },
+  expected: ExpectedPlaceholder;
 
   /**
    * A placeholder for the word `"NOT"`, that will only be populated
@@ -343,7 +352,7 @@ export const Placeholder = {
    * Expected [] to NOT be empty
    * ```
    */
-  not: placeholder("not"),
+  not: string;
 
   /**
    * A utility placeholder for describing why the check failed.
@@ -398,7 +407,7 @@ export const Placeholder = {
    * @see {@link ExpectMessageBuilder.reason},
    * {@link ExpectMessageBuilder.failWithReason}
    */
-  reason: placeholder("reason"),
+  reason: string;
 
   /**
    * A utility placeholder the path on nested variables.
@@ -432,10 +441,10 @@ export const Placeholder = {
    * {@link ExpectMessageBuilder.path},
    * {@link Proxy}
    */
-  path: placeholder("path"),
+  path: string;
 
   /**
-   * A utility placeholder the {@link Placeholder.path | path},
+   * A utility placeholder for either the {@link Placeholder.path | path},
    * or the {@link Placeholder.actual | actual value}.
    *
    * Messages can configure their own names as well.
@@ -447,7 +456,7 @@ export const Placeholder = {
    *
    * Using a `name`, you can specify to use the
    * {@link Placeholder.path | path} whenever it's available,
-   * but fallback to the {@link Placeholder.actual.value | actual.value}.
+   * but fallback to the {@link ActualPlaceholder.value | actual.value}.
    *
    * You can also provide your own name to fallback for instead of the
    * actual value. You can do this via {@link ExpectMessageBuilder.name}.
@@ -492,7 +501,7 @@ export const Placeholder = {
    * {@link ExpectMessageBuilder.name},
    * {@link ExpectMessageBuilder.nestedMetadata}
    */
-  name: placeholder("name"),
+  name: string;
 
   /**
    * A placeholder for the word `"nil"`.
@@ -527,7 +536,7 @@ export const Placeholder = {
    *
    * @see {@link Placeholder.undefined}
    */
-  nil: placeholder("nil"),
+  nil: string;
 
   /**
    * A placeholder for the word `"nil"`.
@@ -540,13 +549,13 @@ export const Placeholder = {
    *
    * @see {@link Placeholder.nil}
    */
-  undefined: placeholder("nil"),
+  undefined: string;
 
   /**
-   * A placeholder for array {@link place.index | indexies}.
+   * A placeholder for array {@link Placeholder.index | indices}.
    *
    * @remarks
-   * Usually, indexies are attached as {@link ExpectMessageBuilder.metadata | metadata},
+   * Usually, indices are attached as {@link ExpectMessageBuilder.metadata | metadata},
    * but sometimes you might also want to show the index in your message.
    *
    * That's where the `index` placeholder comes into play.
@@ -566,14 +575,14 @@ export const Placeholder = {
    *
    * @see {@link ExpectMessageBuilder.index}
    */
-  index: placeholder("index"),
-};
+  index: string;
+}
 
 /**
  * Utility constant for specifying dynamic variables in {@link ExpectMessageBuilder | expect error messages}.
  *
  * @remarks
- * Type alias for {@link Placeholder}.
+ * Implements the {@link Placeholder} interface.
  *
  * Can be used for cleaner messages.
  *
@@ -586,4 +595,26 @@ export const Placeholder = {
  *
  * @public
  */
-export const place = Placeholder;
+export const place: Placeholder = {
+  actual: {
+    value: placeholder("actual_value"),
+    fullValue: placeholder("full_actual_value"),
+    type: placeholder("actual_type"),
+  },
+  expected: {
+    value: placeholder("expected_value"),
+    fullValue: placeholder("full_expected_value"),
+    type: placeholder("expected_type"),
+  },
+  not: placeholder("not"),
+  reason: placeholder("reason"),
+  path: placeholder("path"),
+  name: placeholder("name"),
+  nil: placeholder("nil"),
+  undefined: placeholder("nil"),
+  index: placeholder("index"),
+};
+
+function placeholder(name: string): string {
+  return escape(`{__rbxtsexpect_${name}}`);
+}

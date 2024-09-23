@@ -47,8 +47,10 @@ export {
 } from "./expect";
 
 export {
+  ActualPlaceholder,
   ExpectMessageBuilder,
   ExpectMessageBuilderOptions,
+  ExpectedPlaceholder,
   Placeholder,
   VariableData,
   place,
