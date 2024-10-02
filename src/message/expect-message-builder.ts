@@ -1681,7 +1681,7 @@ export class ExpectMessageBuilder {
 
   private buildPrefix(builder: StringBuilder, pass: boolean, negated: boolean) {
     const prefix = negated ? this.data.negationPrefix : this.data.prefix;
-    const suffix = negated ? this.data.negationPrefix : this.data.suffix;
+    const suffix = negated ? this.data.negationSuffix : this.data.suffix;
 
     builder.append(prefix ?? this.data.prefix);
     if (!pass) builder.append(this.data.trailingFailurePrefix ?? "");
