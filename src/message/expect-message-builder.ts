@@ -272,7 +272,7 @@ const defaultOptions: ExpectMessageBuilderOptions = {
  * Generally, this is static- but it doesn't have to be.
  *
  * For example, given the message:
- * ```text
+ * ```logs
  * Expected '[1,2,3]' to be empty
  * ```
  *
@@ -288,7 +288,7 @@ const defaultOptions: ExpectMessageBuilderOptions = {
  * ```
  *
  * The "suffix" comes into play usually at runtime; where you have additional context.
- * ```text
+ * ```logs
  * Expected '[1,2,3]' to be empty, but it had 3 elements
  * ```
  *
@@ -331,14 +331,14 @@ const defaultOptions: ExpectMessageBuilderOptions = {
  * after the message in the format of `key: value` with a newline
  * for each.
  *
- * ```text
+ * ```logs
  * Expected '[1,"2",3]' to be an array of type 'number', but there was an element of type 'number'.
  * Index: 1
  * Value: "2"
  * ```
  *
  * In this case, the metadata is the
- * ```
+ * ```logs
  * Index: 1
  * Value: "2"
  * ```
@@ -647,13 +647,11 @@ export class ExpectMessageBuilder {
    * ```ts
    * new ExpectMessageBuilder(
    *   `Expected ${place.name} to ${place.not} equal ${place.expected.value}`
-   * ).trailingFailurePrefix(", but it was not.");
+   * ).trailingFailurePrefix(", but it was not");
    *
    * // Would be the same as
    * new ExpectMessageBuilder(
-   *   `Expected ${place.name} to equal ${place.expected.value},
-   * but it was not.`
-   *
+   *   `Expected ${place.name} to equal ${place.expected.value}, but it was not`,
    *   `Expected ${place.name} to NOT equal ${place.expected.value}`
    * );
    * ```
@@ -691,11 +689,11 @@ export class ExpectMessageBuilder {
    * ).name("the object");
    * ```
    * For messages with paths:
-   * ```text
+   * ```logs
    * Expected parent.cars to have a length of '3'
    * ```
    * For messages without paths:
-   * ```text
+   * ```logs
    * Expected the object to have a length of '3'
    * ```
    *
@@ -732,11 +730,11 @@ export class ExpectMessageBuilder {
    * );
    * ```
    * For messages with paths:
-   * ```text
+   * ```logs
    * parent.cars - Expected '["Tesla","Civic"]' to have a length of '3'
    * ```
    * For messages without paths:
-   * ```text
+   * ```logs
    * - Expected '["Tesla","Civic"]' to have a length of '3'
    * ```
    *
@@ -782,7 +780,7 @@ export class ExpectMessageBuilder {
    * }
    * ```
    * Our output will look like so:
-   * ```text
+   * ```logs
    * Expected '[1,1,2]' to all be equal to '1', but there was a value that was not.
    * Index: 3
    * Value: 2
@@ -835,7 +833,7 @@ export class ExpectMessageBuilder {
    * }
    * ```
    * Our output will look like so:
-   * ```text
+   * ```logs
    * Expected '[1,1,2]' to all be equal to '1', but there was a value that was not.
    * Index: 3
    * Value: 2
@@ -846,7 +844,7 @@ export class ExpectMessageBuilder {
    *
    * If we used normal `metadata`, and our check was passed- but it was negated,
    * our output would look like so:
-   * ```text
+   * ```logs
    * Expected '[1,1,1]' to NOT all be equal to '1'.
    * Index: 3
    * Value: 1
@@ -854,7 +852,7 @@ export class ExpectMessageBuilder {
    *
    * But if we use `failureMetadata` instead, it won't be attached in the
    * case of a pass:
-   * ```text
+   * ```logs
    * Expected '[1,1,1]' to NOT all be equal to '1'.
    * ```
    *
@@ -905,12 +903,12 @@ export class ExpectMessageBuilder {
    * });
    * ```
    * Example output for messages without a path:
-   * ```text
+   * ```logs
    * Expected '5' (number) to equal "5" (string)
    * ```
    *
    * Example output for messages with a path:
-   * ```text
+   * ```logs
    * Expected parent.age to equal "5" (string)
    *
    *   parent.age: '5' (number)
@@ -967,17 +965,18 @@ export class ExpectMessageBuilder {
    *   .suffix(`, but it had ${amount} keys`)
    *   .surfaceMetadata({ Value: place.actual.value })
    *   .fail();
+   * }
    * ```
    *
    * Example output for messages without a path:
-   * ```text
+   * ```logs
    * Expected the object to be empty, but it had 2 keys
    *
    * Value: '{"name":"Daymon","age":24}'
    * ```
    *
    * Example output for messages with a path:
-   * ```text
+   * ```logs
    * Expected parent.parent to be empty, but it had 2 keys
    *
    * parent.parent: '{"name":"Daymon","age":24}'
@@ -1037,7 +1036,7 @@ export class ExpectMessageBuilder {
    * };
    * ```
    * Example output:
-   * ```text
+   * ```logs
    * Expected "4" to equal '4', but it was a different type
    * ```
    *
@@ -1051,7 +1050,7 @@ export class ExpectMessageBuilder {
    *
    * But we still called `reason` in our logic, then it would get attached
    * as metadata, but before any existing metadata:
-   * ```text
+   * ```logs
    * Expected "4" to equal '4'
    * Reason: it was a different type
    * ```
@@ -1098,7 +1097,7 @@ export class ExpectMessageBuilder {
    * };
    * ```
    * Example output:
-   * ```text
+   * ```logs
    * Expected "4" to equal '4'
    * ```
    *
@@ -1152,7 +1151,7 @@ export class ExpectMessageBuilder {
    * };
    * ```
    * Example output:
-   * ```text
+   * ```logs
    * Expected "4" to equal '4' (number)
    * Expected '{"name":"Daymon"}' to equal '{"name":"Bryan"}' (MyCustomType)
    * ```
@@ -1243,11 +1242,11 @@ export class ExpectMessageBuilder {
    * };
    * ```
    * So instead of this output:
-   * ```text
+   * ```logs
    * Expected '0' to equal "Basketball"
    * ```
    * We can get this output:
-   * ```text
+   * ```logs
    * Expected "Soccer" to equal "Basketball"
    * ```
    *
@@ -1301,7 +1300,7 @@ export class ExpectMessageBuilder {
    * };
    * ```
    * Example output:
-   * ```text
+   * ```logs
    * Expected "4" (number) to equal '4'
    * Expected '{"name":"Daymon"}' (MyCustomType) to equal '{"name":"Bryan"}'
    * ```
@@ -1388,7 +1387,7 @@ export class ExpectMessageBuilder {
    * ```
    *
    * Which would result in the following output:
-   * ```text
+   * ```logs
    * Expected the array [1,2,3] to equal [1,2,4], but the 3nth element had a different value
    * ```
    *
@@ -1441,7 +1440,7 @@ export class ExpectMessageBuilder {
    *
    * In this case, `expect` is looking to see if the `equal` check passes.
    * If it does, then we throw an error.
-   * ```text
+   * ```logs
    * Expected '5' to NOT equal '5'.
    * ```
    *
@@ -1485,7 +1484,7 @@ export class ExpectMessageBuilder {
    *
    * If the values are NOT equal, we return a `fail`. This means an error
    * message is thrown.
-   * ```text
+   * ```logs
    * Expect '5' to equal '4'
    * ```
    *
@@ -1613,7 +1612,7 @@ export class ExpectMessageBuilder {
    * print(message.encode(5, "string"))
    * ```
    * Output:
-   * ```text
+   * ```logs
    * "5"
    * ```
    *

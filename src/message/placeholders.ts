@@ -23,6 +23,10 @@ import type {
 import type { Proxy } from "@src/util";
 import { escape } from "@src/util/string";
 
+function placeholder(name: string): string {
+  return escape(`{__rbxtsexpect_${name}}`);
+}
+
 /**
  * The "actual" variable in an {@link expect} statement.
  *
@@ -107,7 +111,7 @@ export interface ActualPlaceholder {
    *
    * And the object was larger than our configured `collapseLength`, and ended up
    * collapsed:
-   * ```text
+   * ```logs
    * Expected '{...}' to NOT have any keys
    * FullValue: '{"name":"Daymon","age":24}'
    * ```
@@ -140,7 +144,7 @@ export interface ActualPlaceholder {
    * ```
    *
    * We'd get output like:
-   * ```text
+   * ```logs
    * Expected '5' (number) to be an array
    * ```
    *
@@ -245,7 +249,7 @@ export interface ExpectedPlaceholder {
    *
    * And the object was larger than our configured `collapseLength`, and ended up
    * collapsed:
-   * ```text
+   * ```logs
    * Expected '{...}' to be equal to '{...}'
    * Expected (full): '{"name":"Bryan","age":20}'
    * Actual (full): '{"name":"Daymon","age":24}'
@@ -279,7 +283,7 @@ export interface ExpectedPlaceholder {
    * ```
    *
    * We'd get output like:
-   * ```text
+   * ```logs
    * Expected '5' (number) to be equal to "5" (string)
    * ```
    *
@@ -347,7 +351,7 @@ export interface Placeholder {
    * ```
    *
    * And as such, the word "NOT" will be added, but only if the check is negated.
-   * ```text
+   * ```logs
    * Expected [1,2,3] to be empty
    * Expected [] to NOT be empty
    * ```
@@ -380,7 +384,7 @@ export interface Placeholder {
    *
    * By using a `reason`, we can provide a bunch of different
    * reasonings for why the value isn't an array:
-   * ```text
+   * ```logs
    * Expected '5' to be an array, but it was a number
    * Expected '{...}' to be an array, but it had a non number key
    * Expected 'nil' to be an array, but it was undefined
@@ -433,7 +437,7 @@ export interface Placeholder {
    * ```
    *
    * We could then output messages like so:
-   * ```text
+   * ```logs
    * parent.cars - Expected '2' to be an array
    * ```
    *
@@ -470,11 +474,11 @@ export interface Placeholder {
    * ```
    *
    * When working with tables, we'd get the following output:
-   * ```text
+   * ```logs
    * Expected parent.cars to be an array
    * ```
    * But when working with non tables, we'd get:
-   * ```text
+   * ```logs
    * Expected '5' to be an array
    * ```
    *
@@ -488,12 +492,12 @@ export interface Placeholder {
    * ```
    *
    * When working with tables, we'd get the following output:
-   * ```text
+   * ```logs
    * Expected parent.cars to be an array
    * parent.cars: '5'
    * ```
    * But when working with non tables, that additional data wouldn't be there:
-   * ```text
+   * ```logs
    * Expected '5' to be an array
    * ```
    *
@@ -530,7 +534,7 @@ export interface Placeholder {
    * ```
    *
    * Then, our output would come out like so:
-   * ```text
+   * ```logs
    * Expected 'nil' to be an array
    * ```
    *
@@ -569,7 +573,7 @@ export interface Placeholder {
    * ```
    *
    * Which would result in the following output:
-   * ```text
+   * ```logs
    * Expected the array [1,2,3] to equal [1,2,4], but the 3nth element had a different value
    * ```
    *
@@ -614,7 +618,3 @@ export const place: Placeholder = {
   undefined: placeholder("nil"),
   index: placeholder("index"),
 };
-
-function placeholder(name: string): string {
-  return escape(`{__rbxtsexpect_${name}}`);
-}
