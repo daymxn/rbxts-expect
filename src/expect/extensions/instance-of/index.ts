@@ -259,6 +259,22 @@ declare module "@rbxts/expect" {
      * @public
      */
     object(): Assertion<object>;
+
+    /**
+     * Asserts that the value is a {@link https://create.roblox.com/docs/luau/functions | function}.
+     *
+     * @remarks
+     * Just a wrapper around {@link Assertion.instanceOf | instanceOf}, but with the `function` type
+     * provided automatically.
+     *
+     * @example
+     * ```ts
+     * expect(() => {}).to.be.a.function();
+     * ```
+     *
+     * @public
+     */
+    function(): Assertion<object>;
   }
 }
 
