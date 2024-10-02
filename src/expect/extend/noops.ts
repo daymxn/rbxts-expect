@@ -24,7 +24,7 @@ const nopMethods: Set<string> = new Set();
  *
  * @remarks
  * A NOOP is a property that does nothing. It's just there
- * to make the test read easier.
+ * to make the test easier to read.
  *
  * For example:
  * ```ts

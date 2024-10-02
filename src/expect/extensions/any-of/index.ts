@@ -58,15 +58,13 @@ declare module "@rbxts/expect" {
      *
      * @param values - An array of values to check for
      *
-     * @example
-     * Basic Usage:
+     * @example Basic Usage:
      * ```ts
      * expect(1).to.be.anyOf([1,2,3]);
      * expect(0).to.not.be.anyOf([1,2,3]);
      * ```
      *
-     * @example
-     * Enum Usage:
+     * @example Enum Usage:
      * ```ts
      * enum Sport {
      *   Basketball,

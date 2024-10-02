@@ -37,7 +37,7 @@ import type { Proxy } from "@src/util/proxy";
  * of sorts.
  *
  * Although, {@link expect} is designed with the idea of call-when-you-need in mind.
- * That is, it's not expected that you'd save the result of am {@link expect} call,
+ * That is, it's not expected that you'd save the result of an {@link expect} call,
  * and then re-call it at some point down the line.
  *
  * For example:

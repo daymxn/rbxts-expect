@@ -20,7 +20,7 @@ import type { expect } from "@src/expect";
 /**
  * Configuration setting for {@link expect}.
  *
- * Configuration is generally used inline as needed, as the concept of `except` instances doesn't really exist.
+ * Configuration is generally used inline as needed, as the concept of `expect` instances doesn't really exist.
  *
  * @see {@link setDefaultExpectConfig}, {@link getDefaultExpectConfig}, {@link resetDefaultExpectConfig}
  *

@@ -66,27 +66,25 @@ export const TEST_SON: Person = {
  * @param callback - The function to wrap around.
  * @param messages - A variable amount of substrings to look for in the message.
  *
- * @example
- * Testing for errors:
+ * @example Testing for errors:
  * ```ts
  * err(() => {
  *   expect([1]).to.be.empty();
  * });
  * ```
  * Output:
- * ```text
+ * ```logs
  * The function did not throw a message.
  * ```
  *
- * @example
- * Testing for certain errors:
+ * @example Testing for certain errors:
  * ```ts
  * err(() => {
  *   expect([1]).to.be.empty();
  * }, `Expected '[1]' to be empty, but it had an element`);
  * ```
  * Output if the string(s) weren't found in the error:
- * ```text
+ * ```logs
  * The function threw with the wrong message.
  *
  *   Expected Message:
@@ -96,15 +94,14 @@ export const TEST_SON: Person = {
  *   Expected '[1]' to be empty, but it had the element '1'
  * ```
  * Output if the function didn't throw at all:
- * ```text
+ * ```logs
  * The function did not throw a message.
  *
  *   Expected Messages:
  *   Expected '[1]' to be empty, but it had an element
  * ```
  *
- * @example
- * Testing for multiple substrings:
+ * @example Testing for multiple substrings:
  * ```ts
  * err(() => {
  *   expect([1]).to.be.empty();
@@ -113,7 +110,7 @@ export const TEST_SON: Person = {
  *
  * If it doesn't find any of the provided substrings, it will
  * throw with that specific substring:
- * ```text
+ * ```logs
  * The function threw with the wrong message.
  *
  *   Expected Message:

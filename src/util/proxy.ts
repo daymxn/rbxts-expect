@@ -38,7 +38,7 @@ export type MethodCalled = [string, unknown[]];
  * ```
  *
  * Output:
- * ```text
+ * ```logs
  * parent.parent.cars
  * ```
  *
@@ -79,7 +79,7 @@ export function computeFullProxyPath<T>(proxy: Proxy<T>) {
  * ```
  *
  * Output:
- * ```text
+ * ```logs
  * 5
  * { name: "Daymon" }
  * ```
@@ -144,7 +144,7 @@ export interface ProxyInstance<T> {
    * ```
    *
    * Output:
-   * ```text
+   * ```logs
    * { name: "Daymon" }
    * ```
    *
@@ -207,7 +207,7 @@ export interface ProxyInstance<T> {
    * ```
    *
    * Output:
-   * ```text
+   * ```logs
    * name
    * nil
    * ```
@@ -251,7 +251,7 @@ const proxyProperties = [
  * ```
  *
  * Error message:
- * ```text
+ * ```logs
  * Expected parent.cars to be empty, but it had 2 elements.
  * ```
  *
@@ -328,11 +328,11 @@ export function getProxyParent<T = unknown, R = unknown>(proxy: Proxy<T>) {
  *
  * @example
  * ```ts
- * expect(createProxy(myObject)).parent.cars.to.be.empty();
+ * expect(createProxy(myObject).parent.cars).to.be.empty();
  * ```
  *
  * Error message:
- * ```text
+ * ```logs
  * Expected parent.cars to be empty, but it had 2 elements.
  * ```
  *
@@ -376,7 +376,7 @@ export function createProxy<T>(
  * ```
  *
  * Error message:
- * ```text
+ * ```logs
  * Expected parent.cars to be empty, but it had 2 elements.
  * ```
  *

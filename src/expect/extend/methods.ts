@@ -57,7 +57,7 @@ export type ExpectMethodResult = Result<
  * @see {@link extendMethods}, {@link CustomMethodImpls}
  *
  * @example
- * ```
+ * ```ts
  * const baseMessage = new ExpectMessageBuilder(
  *   `Expected ${place.name} to ${place.not} equal ${place.expected.value}`
  * )

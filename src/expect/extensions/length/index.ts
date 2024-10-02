@@ -109,6 +109,10 @@ declare module "@rbxts/expect" {
      *
      * An iterable's size is measured by its elements.
      *
+     * @param size - The length that the "actual" value should have.
+     *
+     * @returns This instance for chaining.
+     *
      * @example
      * ```ts
      * expect([1,2,3]).to.have.a.length(3);
