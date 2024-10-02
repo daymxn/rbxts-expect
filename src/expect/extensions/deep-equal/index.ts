@@ -130,7 +130,6 @@ const eql: CustomMethodImpl<defined> = (
         if (!result.leftMissing.isEmpty()) {
           return message
             .suffix(`, but '${result.path}' was missing some elements`)
-
             .metadata({
               Actual: message.encode(result.leftValue),
               Expected: message.encode(result.rightValue),
