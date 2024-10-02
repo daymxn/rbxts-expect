@@ -44,6 +44,7 @@ export interface Assertion<T = unknown> {
     eql<R = T>(expectedValue: R): Assertion<R>;
     equal<R = T>(expectedValue: R): Assertion<R>;
     equals<R = T>(expectedValue: R): Assertion<R>;
+    function(): Assertion<object>;
     readonly have: this;
     include(expectedValue: InferArrayElement<T>): this;
     includes(expectedValue: InferArrayElement<T>): this;
@@ -139,7 +140,6 @@ export class ExpectMessageBuilder {
     expectedValue(value?: unknown): this;
     fail(): Result<ExpectMessageBuilder, ExpectMessageBuilder>;
     failureMetadata(data: Record<string, unknown>): this;
-    failureSuffix(str?: string): this;
     failWithReason(reason: string): Result<ExpectMessageBuilder, ExpectMessageBuilder>;
     index(index?: number | string): this;
     metadata(data: Record<string, unknown>): this;
@@ -154,6 +154,7 @@ export class ExpectMessageBuilder {
     surfaceMetadata(data: Record<string, unknown>): this;
     toString(): string;
     trailingFailurePrefix(str?: string): this;
+    trailingFailureSuffix(str?: string): this;
     use(trailingPrefix?: string, trailingFailurePrefix?: string): ExpectMessageBuilder;
 }
 
