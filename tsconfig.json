@@ -31,13 +31,12 @@
 		"declarationMap": true,
 	},
 	"include": [
-		"src/**/*"
+		"src/**/*.ts"
 	],
 	"exclude": [
 		"example/**/*",
 		"out/**/*",
 		"wiki/**/*",
 		"scripts/**/*",
-		//"**/*.spec.ts"
 	]
 }
