@@ -66,12 +66,14 @@ const beEnum: CustomMethodImpl<keyof LuaEnum> = (
   enumType: LuaEnum,
   value?: keyof LuaEnum
 ) => {
-  rawset(source, "_enumType", enumType);
-
   if (value !== undefined) {
-    return validateIsEnumValue(actual, enumType, value);
+    return validateIsEnumValue(actual, enumType, value).inspect(() => {
+      source.enum_type = enumType;
+    });
   } else {
-    return validateIsEnumType(actual, enumType);
+    return validateIsEnumType(actual, enumType).inspect(() => {
+      source.enum_type = enumType;
+    });
   }
 };
 
