@@ -138,34 +138,13 @@ export = () => {
       );
     });
 
-    /**
-     * Where I left off last:
-     *
-     * Everything works.
-     *
-     * Now I wanna support collapsed expected/actual values.
-     *
-     * Basically, if a value is excessively long, it will become a collapsed version of itself.
-     * For strings this would be like "..."
-     * For arrays [...]
-     * For objects [...]
-     * And anything else just '...'
-     *
-     * How long is too long should probably be user configurable, and I'll just decide on a decent default.
-     *
-     * We'll support this probably by also adding uncollapsed version of placeholders, with the default being collapsable versions.
-     * Then they'll probably do like metadata({ Expected (Full): place.expected.fullValue })
-     *
-     * Also a good point to setup default expect config.
-     * setDefaultExpectConfig() and reset
-     */
     it("throws if there are elements missing from the array", () => {
       err(
         () => {
           expect([1, 2, 3]).to.deepEqual([1, 2, 3, 4]);
         },
         `Expected '[1,2,3]' to deep equal '[1,2,3,4]', but there were elements missing`,
-        "Expected: '[1,2,3,4]'", // TODO(): only include these if the values weren't fully present above (ie; left is path or collapsed blocks)
+        "Expected: '[1,2,3,4]'",
         "Actual: '[1,2,3]'",
         "Missing: '[4]'"
       );
