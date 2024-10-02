@@ -15,8 +15,6 @@
  * limitations under the License.
  */
 
-/// <reference types="@rbxts/testez/globals" />
-
 import { expect } from "@src/index";
 import { withProxy } from "@src/util/proxy";
 import { err, TEST_SON } from "@src/util/tests";

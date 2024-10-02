@@ -15,8 +15,6 @@
  * limitations under the License.
  */
 
-/// <reference types="@rbxts/testez/globals" />
-
 import { deepCopy } from "@rbxts/object-utils";
 import { expect } from "@src/index";
 import { withProxy } from "@src/util/proxy";

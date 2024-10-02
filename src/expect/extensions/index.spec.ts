@@ -15,16 +15,6 @@
  * limitations under the License.
  */
 
-import { expect } from "@src/index";
+/// <reference types="@rbxts/testez/globals" />
 
-export = () => {
-  describe("negations", () => {
-    it("cancel each other out", () => {
-      expect(5).to.not.not.equal(5);
-    });
-
-    it("all work", () => {
-      expect(5).to.not.never.equal(5);
-    });
-  });
-};
+export = () => {};

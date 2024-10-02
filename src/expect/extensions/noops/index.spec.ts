@@ -15,8 +15,6 @@
  * limitations under the License.
  */
 
-/// <reference types="@rbxts/testez/globals" />
-
 import { expect } from "@src/index";
 
 export = () => {
