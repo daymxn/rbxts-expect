@@ -1710,7 +1710,6 @@ export class ExpectMessageBuilder {
       const keyA = a[0].lower();
       const keyB = b[0].lower();
 
-      // TODO(): does math.huge === math.huge?
       const orderA = METADATA_SORT_ORDER[keyA] ?? math.huge;
       const orderB = METADATA_SORT_ORDER[keyB] ?? math.huge;
 

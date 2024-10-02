@@ -44,13 +44,13 @@ const Table: React.FC = () => {
           old={`expect(newproxy(true)).to.be.a("userdata")`}
           new={`expect(newproxy(true)).to.be.an.instanceOf("userdata")`}
         >
-          Can also use <a href="#TODO">typeOf</a>
+          Can also use <a href="/docs/api/expect.assertion.typeof">typeOf</a>
         </Entry>
         <Entry
           old={`expect(new Instance()).to.be.an("Instance")`}
           new={`expect(new Instance()).to.be.a.typeOf("Instance")`}
         >
-          Can also use <a href="#TODO">instanceOf</a>
+          Can also use <a href="/docs/api/expect.assertion.instanceof">instanceOf</a>
         </Entry>
       </tbody>
     </table>

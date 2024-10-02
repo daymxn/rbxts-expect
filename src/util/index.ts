@@ -15,8 +15,6 @@
  * limitations under the License.
  */
 
-// TODO move utils to their own files and then just export them all through this like normal index files, and update their usages
-
 export {
   Proxy,
   ProxyInstance,

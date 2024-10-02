@@ -30,7 +30,7 @@ const eql: CustomMethodImpl = (_, actual, expected: defined) => {
 
   if (isProxy(expected)) {
     warn(
-      "Using proxies on the right side of assertions is undefined behavior. See [TODO/link] for further context."
+      "Using proxies on the right side of assertions is undefined behavior. For further context, see http://rbxts-expect.daymxn.com/docs/usage-guide#proxies"
     );
   }
 

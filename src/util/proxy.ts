@@ -15,9 +15,6 @@
  * limitations under the License.
  */
 
-// TODO(): move to an external lib at rbxts/proxy
-// also could make a mock lib with similiar functionality
-
 import type { Assertion, expect } from "@src/expect";
 import type { Placeholder } from "@src/message";
 
