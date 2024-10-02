@@ -34,7 +34,7 @@ function validateArrayTypeByCallback(
 ) {
   const message = baseMessage
     .use(" of a certain (user-defined) type")
-    .failureSuffix(", but there was an element that was not");
+    .trailingFailureSuffix(", but there was an element that was not");
 
   for (const [index, value] of ipairs(actual)) {
     message.failureMetadata({ Index: index, Value: value });

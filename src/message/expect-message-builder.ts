@@ -91,7 +91,7 @@ interface ExpectMessageData {
   negationPrefix?: string;
   suffix?: string;
   negationSuffix?: string;
-  failureSuffix?: string;
+  trailingFailureSuffix?: string;
   trailingFailurePrefix?: string;
   reason?: string;
   index?: number | string;
@@ -535,7 +535,7 @@ export class ExpectMessageBuilder {
    * );
    * ```
    *
-   * @see {@link ExpectMessageBuilder.negationSuffix | negationSuffix}, {@link ExpectMessageBuilder.failureSuffix | failureSuffix}
+   * @see {@link ExpectMessageBuilder.negationSuffix | negationSuffix}, {@link ExpectMessageBuilder.trailingFailureSuffix | failureSuffix}
    */
   public suffix(str?: string): this {
     this.data.suffix = str;
@@ -576,7 +576,7 @@ export class ExpectMessageBuilder {
    * );
    * ```
    *
-   * @see {@link ExpectMessageBuilder.suffix | suffix}, {@link ExpectMessageBuilder.failureSuffix | failureSuffix}
+   * @see {@link ExpectMessageBuilder.suffix | suffix}, {@link ExpectMessageBuilder.trailingFailureSuffix | failureSuffix}
    */
   public negationSuffix(str?: string): this {
     this.data.negationSuffix = str;
@@ -606,7 +606,7 @@ export class ExpectMessageBuilder {
    * )
    * .suffix(", but it was not.")
    * .negationSuffix(", but it did")
-   * .failureSuffx(` because ${place.reason}`);
+   * .trailingFailureSuffix(` because ${place.reason}`);
    *
    * // Would be the same as
    * new ExpectMessageBuilder(
@@ -620,8 +620,8 @@ export class ExpectMessageBuilder {
    *
    * @see {@link ExpectMessageBuilder.suffix | suffix}, {@link ExpectMessageBuilder.negationSuffix | negationSuffix}
    */
-  public failureSuffix(str?: string): this {
-    this.data.failureSuffix = str;
+  public trailingFailureSuffix(str?: string): this {
+    this.data.trailingFailureSuffix = str;
 
     return this;
   }
@@ -1687,9 +1687,7 @@ export class ExpectMessageBuilder {
     if (!pass) builder.append(this.data.trailingFailurePrefix ?? "");
 
     builder.append(suffix ?? this.data.suffix ?? "");
-    if (!pass) builder.append(this.data.failureSuffix ?? "");
-
-    if (negated) builder.append(this.data.negationSuffix ?? "");
+    if (!pass) builder.append(this.data.trailingFailureSuffix ?? "");
   }
 
   private buildReason(builder: StringBuilder) {

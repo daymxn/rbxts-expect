@@ -22,7 +22,7 @@ import { place } from "@src/message/placeholders";
 const baseMessage = new ExpectMessageBuilder(
   `Expected ${place.name} to ${place.not} include ${place.expected.value}`
 )
-  .failureSuffix(", but it was missing")
+  .trailingFailureSuffix(", but it was missing")
   .nestedMetadata({
     [place.path]: place.actual.value,
   });

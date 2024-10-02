@@ -30,7 +30,7 @@ const baseMessage = new ExpectMessageBuilder(
 function validateTypeByCallback(actual: unknown, callback: Callback) {
   const message = baseMessage
     .use("a certain (user-defined) type")
-    .failureSuffix(`, but it was not`);
+    .trailingFailureSuffix(`, but it was not`);
 
   try {
     const result: unknown = callback(actual);
@@ -51,7 +51,7 @@ function validateTypeByCheckableType(
 ) {
   const message = baseMessage
     .use(`type '${typeName}'`)
-    .failureSuffix(`, but it was a '${place.actual.type}'`);
+    .trailingFailureSuffix(`, but it was a '${place.actual.type}'`);
 
   return typeName !== typeOf(actual) ? message.fail() : message.pass();
 }
