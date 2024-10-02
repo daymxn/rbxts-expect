@@ -26,8 +26,22 @@ const baseMessage = new ExpectMessageBuilder(
   [place.path]: place.actual.value,
 });
 
-const substring: CustomMethodImpl<string> = (_, actual, str: string) => {
+const substring: CustomMethodImpl = (_, actual, str: string) => {
   const message = baseMessage.use().expectedValue(str);
+
+  if (actual === undefined) {
+    return message
+      .name("the value")
+      .trailingFailureSuffix(", but it was undefined")
+      .fail();
+  }
+
+  if (!typeIs(actual, "string")) {
+    return message
+      .name(`${place.actual.value} (${place.actual.type})`)
+      .trailingFailureSuffix(", but it wasn't a string")
+      .fail();
+  }
 
   return includes(actual, str) ? message.pass() : message.fail();
 };

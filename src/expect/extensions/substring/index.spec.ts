@@ -39,6 +39,18 @@ export = () => {
       }, 'Expected "Hello world" to have the substring "Goodbye"');
     });
 
+    it("throws when it's undefined", () => {
+      err(() => {
+        expect(undefined).to.have.the.substring("Goodbye");
+      }, 'Expected the value to have the substring "Goodbye", but it was undefined');
+    });
+
+    it("throws when it's not a string", () => {
+      err(() => {
+        expect(5).to.have.the.substring("Goodbye");
+      }, `Expected '5' (number) to have the substring "Goodbye", but it wasn't a string`);
+    });
+
     it("works with paths", () => {
       err(
         () => {

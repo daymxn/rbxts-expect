@@ -25,12 +25,14 @@ const baseMessage = new ExpectMessageBuilder(
   .name(`${place.actual.value} (${place.actual.type})`)
   .nestedMetadata({ Value: place.actual.value });
 
-const anyOf: CustomMethodImpl<defined> = (
-  source,
-  actual,
-  values: defined[]
-) => {
+const anyOf: CustomMethodImpl = (source, actual, values: defined[]) => {
   const message = baseMessage.use().expectedValue(values);
+  if (actual === undefined) {
+    return message
+      .name("the value")
+      .trailingFailureSuffix(", but it was undefined")
+      .fail();
+  }
 
   if (source.enum_type) {
     const value = source.enum_type[actual as number];
@@ -43,7 +45,7 @@ const anyOf: CustomMethodImpl<defined> = (
 
     return mappedValues.includes(value) ? message.pass() : message.fail();
   } else {
-    return values.includes(actual) ? message.pass() : message.fail();
+    return values.includes(actual!) ? message.pass() : message.fail();
   }
 };
 

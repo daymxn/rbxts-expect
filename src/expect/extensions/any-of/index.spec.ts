@@ -44,6 +44,12 @@ export = () => {
       }, "Expected '5' (number) to NOT be any of '[1,2,3,4,5]'");
     });
 
+    it("throws if it's undefined", () => {
+      err(() => {
+        expect(undefined).to.be.anyOf([1, 2]);
+      }, "Expected the value to be any of '[1,2]', but it was undefined");
+    });
+
     it("works with paths", () => {
       err(() => {
         withProxy(TEST_SON, (p) => {

@@ -121,5 +121,25 @@ export = () => {
         "Test Message"
       );
     });
+
+    it("throws if it's undefined", () => {
+      err(() => {
+        expect(undefined).to.throwMatch("^Message");
+      }, "Expected the value to throw with a message that matched /^Message/, but it was undefined");
+
+      err(() => {
+        expect(undefined).to.throw("Your Message");
+      }, `Expected the value to throw with the substring "Your Message", but it was undefined`);
+    });
+
+    it("throws if it's not a function", () => {
+      err(() => {
+        expect(5).to.throwMatch("^Message");
+      }, "Expected '5' (number) to throw with a message that matched /^Message/, but it wasn't a function");
+
+      err(() => {
+        expect(5).to.throw("Your Message");
+      }, `Expected '5' (number) to throw with the substring "Your Message", but it wasn't a function`);
+    });
   });
 };

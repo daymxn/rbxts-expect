@@ -25,19 +25,29 @@ const baseMessage = new ExpectMessageBuilder(
   `Expected ${place.name} to ${place.not} throw`
 );
 
-const throws: CustomMethodImpl<Callback> = (
-  source,
-  actual,
-  substring?: string
-) => {
+const throws: CustomMethodImpl = (_, actual, substring?: string) => {
   const message = baseMessage.use();
-
-  const functionName = debug.info(actual, "n")[0] ?? "";
-  message.name(functionName !== "" ? functionName : "the function");
 
   if (substring !== undefined) {
     message.appendPrefix(` with the substring "${substring}"`);
   }
+
+  if (actual === undefined) {
+    return message
+      .name("the value")
+      .trailingFailureSuffix(", but it was undefined")
+      .fail();
+  }
+
+  if (!typeIs(actual, "function")) {
+    return message
+      .name(`${place.actual.value} (${place.actual.type})`)
+      .trailingFailureSuffix(", but it wasn't a function")
+      .fail();
+  }
+
+  const functionName = debug.info(actual, "n")[0] ?? "";
+  message.name(functionName !== "" ? functionName : "the function");
 
   try {
     actual();
@@ -58,12 +68,22 @@ const throws: CustomMethodImpl<Callback> = (
   }
 };
 
-const throwsMatch: CustomMethodImpl<Callback> = (
-  _,
-  actual,
-  pattern: string
-) => {
+const throwsMatch: CustomMethodImpl = (_, actual, pattern: string) => {
   const message = baseMessage.use(` with a message that matched /${pattern}/`);
+
+  if (actual === undefined) {
+    return message
+      .name("the value")
+      .trailingFailureSuffix(", but it was undefined")
+      .fail();
+  }
+
+  if (!typeIs(actual, "function")) {
+    return message
+      .name(`${place.actual.value} (${place.actual.type})`)
+      .trailingFailureSuffix(", but it wasn't a function")
+      .fail();
+  }
 
   const functionName = debug.info(actual, "n")[0] ?? "";
   message.name(functionName !== "" ? functionName : "the function");

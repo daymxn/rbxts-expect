@@ -29,11 +29,20 @@ const baseMessage = new ExpectMessageBuilder(
     [place.path]: `${place.actual.value} (${place.actual.type})`,
   });
 
-function validateIsEnumType(actual: keyof LuaEnum, enumType: LuaEnum) {
+function validateIsEnumType(
+  actual: keyof LuaEnum | undefined,
+  enumType: LuaEnum
+) {
   const enumValues = Object.keys(enumType).sort().join(" | ");
-  const enumValue = enumType[actual];
+  const enumValue = actual !== undefined && enumType[actual];
 
   const message = baseMessage.use(`a valid enum of '(${enumValues})'`);
+
+  if (actual === undefined)
+    return message
+      .name("the value")
+      .trailingFailureSuffix(", but it was undefined")
+      .fail();
 
   if (enumValue === undefined) return message.fail();
 
@@ -44,16 +53,18 @@ function validateIsEnumType(actual: keyof LuaEnum, enumType: LuaEnum) {
 }
 
 function validateIsEnumValue(
-  actual: keyof LuaEnum,
+  actual: keyof LuaEnum | undefined,
   enumType: LuaEnum,
   value: keyof LuaEnum
 ) {
-  const enumValue = enumType[actual];
+  const enumValue = actual !== undefined && enumType[actual];
   const expectedValue = enumType[value];
 
   const message = baseMessage.use(`the enum '${expectedValue}'`);
 
-  if (enumValue !== undefined) {
+  if (actual === undefined) {
+    message.name("the value").trailingFailureSuffix(", but it was undefined");
+  } else if (enumValue !== undefined) {
     message.actualValue(enumValue).actualType(`enum/${typeOf(actual)}`);
   }
 

@@ -70,7 +70,7 @@ function validateStringIsEmpty(actual: string) {
   return message.suffix(", but it was not").fail();
 }
 
-const empty: CustomMethodImpl<unknown> = (source, actual) => {
+const empty: CustomMethodImpl = (source, actual) => {
   const message = baseMessage.use();
 
   if (typeIs(actual, "table")) {

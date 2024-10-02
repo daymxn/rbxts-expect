@@ -24,6 +24,7 @@ export = () => {
     it("compares the values strictly", () => {
       expect(5).to.equal(5).but.not.equal("5");
       expect("Daymon").to.equal("Daymon").but.not.equal("daymon");
+      expect(undefined).to.equal(undefined);
     });
   });
 
@@ -32,6 +33,12 @@ export = () => {
       err(() => {
         expect(5).to.equal("5");
       }, `Expected '5' (number) to strictly equal "5" (string)`);
+    });
+
+    it("throws if the actual value is undefined", () => {
+      err(() => {
+        expect(undefined).to.equal("5");
+      }, `Expected the value to strictly equal "5" (string), but it was undefined`);
     });
 
     it("works with paths", () => {

@@ -33,6 +33,18 @@ export = () => {
       }, `Expected '[1,2]' to include '3', but it was missing`);
     });
 
+    it("throws if the value is undefined", () => {
+      err(() => {
+        expect(undefined as unknown as unknown[]).to.include(3);
+      }, `Expected the value to include '3', but it was undefined`);
+    });
+
+    it("throws if the value is not an array", () => {
+      err(() => {
+        expect(5 as unknown as unknown[]).to.include(3);
+      }, `Expected '5' (number) to include '3', but it wasn't an array`);
+    });
+
     it("works with paths", () => {
       err(
         () => {

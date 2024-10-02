@@ -56,7 +56,7 @@ function validateTypeByCheckableType(
   return typeName !== typeOf(actual) ? message.fail() : message.pass();
 }
 
-const instanceOf: CustomMethodImpl<unknown> = (
+const instanceOf: CustomMethodImpl = (
   _,
   actual,
   targetType: keyof CheckableTypes | Callback

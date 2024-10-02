@@ -25,11 +25,7 @@ const baseMessage = new ExpectMessageBuilder(
   `Expected ${place.name} to ${place.not} deep equal ${place.expected.value}`
 );
 
-const eql: CustomMethodImpl<defined> = (
-  _,
-  actual: defined,
-  expected: defined
-) => {
+const eql: CustomMethodImpl = (_, actual, expected: defined) => {
   const message = baseMessage.use().expectedValue(expected);
 
   if (isProxy(expected)) {

@@ -70,7 +70,7 @@ function validateStringIsSize(actual: string, size: number) {
     .fail();
 }
 
-const lengthOf: CustomMethodImpl<unknown> = (source, actual, size: number) => {
+const lengthOf: CustomMethodImpl = (source, actual, size: number) => {
   const message = baseMessage
     .use(`a size of ${place.expected.value}`)
     .expectedValue(size);

@@ -85,7 +85,7 @@ function validateArrayType(
   }
 }
 
-const array: CustomMethodImpl<unknown> = (source, actual, targetType) => {
+const array: CustomMethodImpl = (source, actual, targetType) => {
   const message = baseMessage
     .use()
     .trailingFailurePrefix(`, but it ${place.reason}`);

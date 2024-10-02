@@ -27,14 +27,30 @@ const baseMessage = new ExpectMessageBuilder(
     [place.path]: place.actual.value,
   });
 
-const include: CustomMethodImpl<defined[]> = (
+const include: CustomMethodImpl<unknown[]> = (
   _,
-  actual: defined[],
+  actual,
   expectedValue: defined
 ) => {
   const message = baseMessage.use().expectedValue(expectedValue);
 
-  return actual.includes(expectedValue) ? message.pass() : message.fail();
+  if (actual === undefined) {
+    return message
+      .name("the value")
+      .trailingFailureSuffix(", but it was undefined")
+      .fail();
+  }
+
+  if (typeOf(actual) !== "table") {
+    return message
+      .name(`${place.actual.value} (${place.actual.type})`)
+      .trailingFailureSuffix(", but it wasn't an array")
+      .fail();
+  }
+
+  return (actual as defined[]).includes(expectedValue)
+    ? message.pass()
+    : message.fail();
 };
 
 declare module "@rbxts/expect" {
