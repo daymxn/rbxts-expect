@@ -1,9 +1,5 @@
 # @rbxts/expect
 
-## TODO()
-
-- Add git submodule for example project
-
 ## Features
 
 features to highlight
