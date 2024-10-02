@@ -1670,7 +1670,7 @@ export class ExpectMessageBuilder {
 
     try {
       const result = HttpService.JSONEncode(value);
-      if (result === "nil") return tostring(value);
+      if (result === "null") return tostring(value);
 
       return result;
     } catch (e) {
