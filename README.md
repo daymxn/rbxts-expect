@@ -1,7 +1,7 @@
 <h1 align="center">
  <br>
  <br>
-<img width="320" src="./static/logo.svg" alt="rlog"/>
+<img width="320" src="./static/logo.svg" alt="rbxts-expect"/>
  <br>
  <br>
  <br>
@@ -29,7 +29,7 @@
 ## Demo
 
 ```ts
-import { expect } from "@rbxts/rlog";
+import { expect } from "@rbxts/expect";
 import t from "@rbxts/t";
 
 enum Sport {
