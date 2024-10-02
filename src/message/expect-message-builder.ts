@@ -258,11 +258,12 @@ const defaultOptions: ExpectMessageBuilderOptions = {
  * of what this class offers.
  *
  * ## Details
+ *
  * There are three (primary) components to an expect message:
  *
- * - The core contents of the message
- * - The {@link VariableData} for "actual" and "expect"
- * - Various (optional) metadata
+ * 1. The core contents of the message
+ * 2. The {@link VariableData} for "actual" and "expect"
+ * 3. Various (optional) metadata
  *
  * ### Core Message
  *

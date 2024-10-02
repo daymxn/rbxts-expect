@@ -22,11 +22,16 @@ You can look at this class as a wrapper around the error messages a [method](./e
 
 Depending on your method, you may end up not using most of what this class offers.
 
-\#\# Details There are three (primary) components to an expect message:
+## Details
 
-- The core contents of the message - The [VariableData](./expect.variabledata.md) for "actual" and "expect" - Various (optional) metadata
+There are three (primary) components to an expect message:
 
-\#\#\# Core Message
+1. The core contents of the message
+ 2. The [VariableData](./expect.variabledata.md) for "actual" and "expect"
+ 3. Various (optional) metadata
+
+
+### Core Message
 
 The "core" of a message is the content that's not populated by [placeholders](./expect.placeholder.md)<!-- -->.
 
@@ -53,7 +58,7 @@ Expected '[1,2,3]' to be empty, but it had 3 elements
 ```
 In this case, `, but it had 3 elements` is the suffix.
 
-\#\#\# Variable Data
+### Variable Data
 
 The [VariableData](./expect.variabledata.md) in a message corresponds to the data associated with a variable in the expression.
 
@@ -75,7 +80,7 @@ expect([]).to.be.empty();
 ```
 In this case, `[]` is the "actual" variable, but there's nothing we're comparing it to so there's not really an "expected" variable.
 
-\#\#\# Metadata
+### Metadata
 
 The metadata in a message is additional data that follows after the message in the format of `key: value` with a newline for each.
 

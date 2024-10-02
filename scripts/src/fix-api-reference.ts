@@ -30,12 +30,15 @@ function fixLinks(line: string): string {
 }
 
 function fixMarkdownHeaders(line: string): string {
-  // TODO(): markdown headers in javadocs are escaped (##, ###, etc.,)
-  return line;
+  return line.replace(/(\\#+)/g, (match) => match.replace(/\\/g, ""));
 }
 
 function fixTables(line: string): string {
   return line.startsWith("|") ? line.replace(/\\\|/g, "&#124;") : line;
+}
+
+function fixMarkdownLists(line: string): string {
+  return line.replace(/(\d+\.\s+.+?)(?=\s*\d+\.|$)/g, "$1\n");
 }
 
 function extractTitle(line: string): string | undefined {
@@ -46,7 +49,9 @@ function extractTitle(line: string): string | undefined {
 function processLine(line: string, name: string): string | undefined {
   if (line.startsWith("<!--")) return undefined;
 
-  const fixedLine = fixTables(fixLinks(fixMarkdown(line)));
+  const fixedLine = fixTables(
+    fixMarkdownLists(fixMarkdownHeaders(fixLinks(fixMarkdown(line))))
+  );
 
   const homeLinkMatch = fixedLine.match(/\[Home\]\(.\/index\.md\) &gt; (.*)/);
   if (homeLinkMatch && homeLinkMatch[0]) {
