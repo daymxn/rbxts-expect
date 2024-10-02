@@ -118,7 +118,7 @@ export = () => {
     it("throws if they have different values by reference", () => {
       err(() => {
         expect(new Instance("Part")).to.deepEqual(new Instance("Part"));
-      }, `Expected 'null' to deep equal 'null', but they point to different values of reference type 'Instance'`);
+      }, `Expected 'Part' to deep equal 'Part', but they point to different values of reference type 'Instance'`);
     });
 
     it("throws if table paths have different values by reference", () => {
