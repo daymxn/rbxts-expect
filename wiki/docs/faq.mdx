@@ -1,0 +1,87 @@
+# FAQ
+
+### Why should I use this over `@rbxts/jest` or `@rbxts/testez`? {#why-should-i-use-this}
+
+`expect` doesn't replace either of these libraries; it only provides the assertions. If you're asking why you should use
+`expect` over the existing assertions provided in either, then I'll get more into that below.
+
+The matchers provided by `@rbxts/jest` can only be used within a jest test block; otherwise it'll throw an error.
+Furthermore, `@rbxts/jest` aligns more with the assertion matcher style of `toBe` versus the chai style of `to.be`.
+
+The matchers provided by `@rbxts/testez` _also_ can't be used outside of a test. It's also fairly difficult to add
+custom matchers; as they're declared on a global namespace. Not to mention, the lack of documentation on extensions
+anyhow.
+
+But most importantly, I wasn't satisified with the error messages provided by either library. I wanted more descriptive
+error messages, with more native support for nested table property testing.
+
+In conclusion, `@rbxts/expect` provides the following benefits over `@rbxts/jest` and `@rbxts/testez`:
+
+- Easier extensionality, with in-depth documentation
+- Can be used outside of tests
+- More descriptive error messages
+- Better support for testing tables
+
+### Where's the support for XYZ?
+
+If you're looking for a certain method, make sure to check the open
+[github issues](https://github.com/daymxn/rbxts-expect/issues). There may be a pending issue for adding your method.
+
+If not, feel free to [make one](https://github.com/daymxn/rbxts-expect/issues/new)! I'm always open to adding more
+matchers and features.
+
+### Why are `a` and `an` NOPs?
+
+If you're coming from `@rbxts/testez`, you may notice that `a` and `an` are no longer matchers that check the type of an
+actual value.
+
+This was an intentional design decision. I personally believe that `a` and `an` serve a much better purpose as NOP
+properties (for readability sake) than they do as type matchers.
+
+This allows us to write things like this:
+
+```ts
+expect([1, 2, 3]).to.be.an.array();
+expect("Daymon").to.have.a.lengthOf(6);
+```
+
+### Why not adapt `chai`?
+
+While `@rbxts/expect` takes a lot of inspiration from [chai](https://www.chaijs.com/), it doesn't include support for
+certain features like "chainable methods".
+
+For example, you can't do stuff like this in `@rbxts/expect`:
+
+```ts
+expect(5).to.be.a.negative.number();
+expect(person).to.have.age.above(18);
+```
+
+Instead, you need to do stuff like this:
+
+```ts
+expect(5).to.be.negative();
+expect(person).to.have.a.property("age").that.is.above(18);
+```
+
+This is something I _would_ be interested in doing, and I probably will in the future. The problem is that in-order to
+make this work for roblox (where we don't have object prototypes), we'd need to take advantage of metatables. That isn't
+a huge problem by itself, but when you take into account all the "black magic" that goes on behind the scenes to make
+"chainable methods" work (especially when used alongside "flags")- it becomes very error-prone. If the implementation
+isn't done _just_ right, you can end up with an assertion library that doesn't work properly.
+
+To avoid this, I decided to not adapt excessive property flags, or chainable methods. Currently, my main priority is
+getting an assertion library out that fits the requirements I established [in the first point](#why-should-i-use-this)-
+so that I can use it in other projects I'm currently working on.
+
+I may revisit this in the future, and provide an assertion library more akin to chai. But for now, I'm fine living
+without the above features.
+
+### Can I use this for client-side testing too?
+
+Of course! Check out the [client usage](usage-guide#client-usage) section of the usage guide.
+
+### There seems to be a bug/typo in a certain check?
+
+Oops! Please [create an issue](https://github.com/daymxn/rbxts-expect/issues/new) on the repo, and I'll make sure to fix
+that ❤️

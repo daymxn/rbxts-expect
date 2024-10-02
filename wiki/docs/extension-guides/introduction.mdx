@@ -1,0 +1,377 @@
+---
+description: Learn what extension libraries are, and how to make or use them.
+---
+
+# Introduction
+
+Support for extension libraries was one of the core driving factors behind me writing this library. They provide a way
+for you to extend `@rbxts/expect` with your own functionality.
+
+:::info what you'll learn
+
+- What extension libraries are
+- How to use extension libraries
+- How to learn to add your own properties and methods
+
+:::
+
+## Overview
+
+:::tip
+
+Check out our [Extension Library Example](https://github.com/daymxn/rbxts-expect-example) project to see an end-to-end
+example of creating an extension library, and using said extension library.
+
+:::
+
+TestEZ has its own [extend](https://github.com/Roblox/testez/pull/142) method, and jest-lua has its own
+[extend](https://jsdotlua.github.io/jest-lua/expect#expectextendmatchers) functionality as well; both of which attempt
+to mirror the [jest extenders](https://jestjs.io/docs/expect#expectextendmatchers).
+
+The `@rbxts/expect` extend is extremely similiar to both of these, but with a little more nuance- and adjustment to
+properly work with typescript module augmentation.
+
+```ts
+import { expect } from "@rbxts/expect";
+
+expect(5).to.passMyCustomMethod(6);
+```
+
+### Module augmentation
+
+There are two systems that you need to tell about your custom method: typescript, and `@rbxts/expect`.
+
+For typescript to be able to find your custom method, you need to use
+[module augmentation](https://www.typescriptlang.org/docs/handbook/declaration-merging.html#module-augmentation).
+
+You do this on the `Assertion` type in `@rbxts/expect`; which is basically just a wrapper around `expect` calls.
+
+```ts
+declare module "@rbxts/expect" {
+  interface Assertion<T> {
+    include(expectedValue: InferArrayElement<T>): this;
+  }
+}
+```
+
+This tells typescript "while it might not look like there's an `include` method, belive me there is- and this is what it
+looks like".
+
+So typescript will allow you to make calls to `include`, even though there's no actual implementation.
+
+Next, you need to tell `@rbxts/expect` about it, so that your _actual_ implementation can be linked at runtime.
+
+```ts
+import { extendMethods } from "@rbxts/expect";
+
+declare module "@rbxts/expect" {
+  interface Assertion<T> {
+    include(expectedValue: InferArrayElement<T>): this;
+  }
+}
+
+extendMethods({
+  include: include,
+});
+```
+
+We'll learn more about the types of extensions you can make in the next couple sections.
+
+### Methods
+
+The most common extension is method extensions; adding your own methods that enforce checks on the "actual" value.
+
+````ts
+import { CustomMethodImpl, extendMethods, ExpectMessageBuilder, place } from "@rbxts/expect";
+import { includes } from "@rbxts/string-utils";
+
+// define a message for when our check fails
+const baseMessage = new ExpectMessageBuilder(
+  `Expected ${place.name} to ${place.not} have the substring ${place.expected.value}`,
+);
+
+// implement our actual method
+const substring: CustomMethodImpl<string> = (_, actual, str: string) => {
+  const message = baseMessage.use().expectedValue(str);
+
+  return includes(actual, str) ? message.pass() : message.fail();
+};
+
+// tell typescript about our method
+declare module "@rbxts/expect" {
+  interface Assertion<T> {
+    /**
+     * Asserts that the string value contains the string `str`.
+     *
+     * @param str - A string that should be within the value.
+     *
+     * @example
+     * ```ts
+     * expect("daymon").to.have.the.substring("day");
+     * ```
+     *
+     * @public
+     */
+    substring(str: string): Assertion<T>;
+  }
+}
+
+// link our method at runtime
+extendMethods({
+  substring: substring,
+});
+````
+
+You can learn more about custom methods through the [custom methods guide](custom-methods).
+
+### Properties
+
+`@rbxts/expect` also allows you to add your own [NOP](custom-properties#nops) and
+[negation](custom-properties#negations) properties.
+
+````ts
+import { extendNOPs, extendNegations } from "@rbxts/expect";
+
+// tell typescript about our properties
+declare module "@rbxts/expect" {
+  interface Assertion<T> {
+    /**
+     * Negates the assertion.
+     *
+     * @example
+     * ```ts
+     * expect(5).to.not.equal(4);
+     * ```
+     *
+     * @public
+     */
+    readonly not: this;
+
+    /**
+     * Negates the assertion.
+     *
+     * @example
+     * ```ts
+     * expect(5).to.never.equal(4);
+     * ```
+     *
+     * @public
+     */
+    readonly never: this;
+
+    /**
+     * NOOP property for cleaner chaining; does nothing.
+     *
+     * @example
+     * ```ts
+     * expect([1,2]).to.include(1).and.include(2);
+     * ```
+     *
+     * @public
+     */
+    readonly and: this;
+
+    /**
+     * NOOP property for cleaner chaining; does nothing.
+     *
+     * @example
+     * ```ts
+     * expect(1).to.be.oneOf([1,2,3]);
+     * ```
+     *
+     * @public
+     */
+    readonly be: this;
+  }
+}
+
+// link our negations at runtime
+extendNegations(["not", "never"]);
+
+// link our NOPs at runtime
+extendNOPs(["and", "be"]);
+````
+
+You can learn more about custom properties through the [custom properties guide](custom-properties).
+
+## Using extensions
+
+:::tip
+
+Give the [module augmentation guide](module-augmentation) a read to better understand how this all fits together.
+
+:::
+
+To use a custom extension, you just need to import it somewhere in your build process.
+
+You can see some examples of that in the next couple sections.
+
+### Published extensions
+
+Extensions are _usually_ published with the format `@rbxts/expect-{EXTENSION_NAME}`, so you can find a list of published
+libraries by [searching npm](https://www.npmjs.com/search?q=%40rbxts%2Fexpect).
+
+Once you've installed an extension, to use it you just need to import the package somewhere in your build process.
+
+This could be in your test files
+
+```ts title="src/index.spec.ts"
+/// <reference types="@rbxts/testez/globals" />
+
+import { expect } from "@src/index";
+// highlight-next-line
+import "@rbxts/expect-strings";
+
+export = () => {
+  describe("substring", () => {
+    it("looks for a string in the string", () => {
+      expect("My Name").to.have.the.substring("My");
+    });
+  });
+};
+```
+
+In your setup files for your tests
+
+```ts title="src/setup-tests.ts"
+// highlight-next-line
+import "@rbxts/expect-strings";
+
+export const TEST_PARENT: Person = {
+  name: "Daymon",
+  age: 5,
+  cars: ["Tesla", "Civic"],
+  data: {
+    id: 1,
+  },
+};
+
+export const TEST_SON: Person = {
+  name: "Kyle",
+  age: 4,
+  cars: [],
+  parent: TEST_PARENT,
+};
+```
+
+Or even just at the root level of your project
+
+```ts title="src/index.ts"
+import "./custom-methods/substring";
+```
+
+As long as it gets imported _somewhere_ before (or when) you need it, it'll automatically be added to your `expect`
+calls.
+
+:::warning
+
+When installing the library, keep an eye out in your terminal for any warnings.
+
+To use an extension library, you _must_ be using the same major version of `@rbxts/expect` as the library. You should
+see a warning from npm if you're not.
+
+:::
+
+### Custom extensions
+
+To use a custom extension you've made in your own project, you need to import the file _somewhere_.
+
+For example, lets say we have the following file:
+
+```ts title="src/custom-methods/substring.ts"
+import { CustomMethodImpl, extendMethods, ExpectMessageBuilder, place } from "@rbxts/expect";
+import { includes } from "@rbxts/string-utils";
+
+const baseMessage = new ExpectMessageBuilder(
+  `Expected ${place.name} to ${place.not} have the substring ${place.expected.value}`,
+);
+
+const substring: CustomMethodImpl<string> = (_, actual, str: string) => {
+  const message = baseMessage.use().expectedValue(str);
+
+  return includes(actual, str) ? message.pass() : message.fail();
+};
+
+declare module "@rbxts/expect" {
+  interface Assertion<T> {
+    substring(str: string): Assertion<T>;
+  }
+}
+
+extendMethods({
+  substring: substring,
+});
+```
+
+To _use_ this, we need the `extendMethods` method to actually be called. We can do this by importing the file at some
+point during our build process.
+
+One way, is to do it in your tests directly:
+
+```ts title="src/index.spec.ts"
+/// <reference types="@rbxts/testez/globals" />
+
+import { expect } from "@src/index";
+// highlight-next-line
+import "./custom-methods/substring";
+
+export = () => {
+  describe("substring", () => {
+    it("looks for a string in the string", () => {
+      expect("My Name").to.have.the.substring("My");
+    });
+  });
+};
+```
+
+Another way is to do it in your root index file:
+
+```ts title="src/index.ts"
+import "./custom-methods/substring";
+```
+
+Or make it a part of your test setup process:
+
+```ts title="src/setup-tests.ts"
+// highlight-next-line
+import "./custom-methods/substring";
+
+export const TEST_PARENT: Person = {
+  name: "Daymon",
+  age: 5,
+  cars: ["Tesla", "Civic"],
+  data: {
+    id: 1,
+  },
+};
+
+export const TEST_SON: Person = {
+  name: "Kyle",
+  age: 4,
+  cars: [],
+  parent: TEST_PARENT,
+};
+```
+
+The point being, that it just needs to be imported _somewhere_ that will be ran before (or when) you need it.
+
+## Publishing extensions
+
+If you want to publish your own extension library for others to use, you should do so with the format
+`@rbxts/expect-{EXTENSION_NAME}`, so your library can be easily found by
+[searching npm](https://www.npmjs.com/search?q=%40rbxts%2Fexpect) for `@rbxts/expect` extension libraries.
+
+For guidance on setting up your project properly for publishing, see our [publishing guide](publishing).
+
+You can also check out our [Extension Library Example](https://github.com/daymxn/rbxts-expect-example) project to see an
+end-to-end example of what this looks like.
+
+## Summary
+
+Let's recap what we've learned about extension libraries:
+
+- They provide a way to **add** your own functionality to `@rbxts/expect`
+- They have to be added to the `Assertion` type through **module augmentation**
+- They have to be added to `expect` through one of the **extend** methods
+- They have to be **linked** at runtime by importing the file
+- They are usually **published** under the `@rbxts/expect-{EXTENSION_NAME}` format

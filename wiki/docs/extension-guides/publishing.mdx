@@ -1,0 +1,269 @@
+---
+description: Learn how to publish extension libraries.
+---
+
+# Publishing
+
+You can publish your extension libraries for either yourself to use in other projects, or for others to take advantage
+of your hard work.
+
+:::info what you'll learn
+
+- How to publish extension libraries
+- How to make your extension library properly usable
+- Best practices to make your library discoverable
+- Limitations with existing infrastructure
+
+:::
+
+## Overview
+
+So you're ready to publish your extension library.
+
+Before you do-so, there's a few things unique to extension libraries that you need to be aware of.
+
+### Peer dependency
+
+When you call [extendMethods](/docs/api/expect.extendmethods.md), you are adding your method to a global record of
+methods. This record gets used whenever someone calls [expect](/docs/api/expect.expect.md).
+
+The problem, is that `npm` will create a _different_ instance of `@rbxts/expect` for the consumer and the user. This is
+done to avoid dependency conflicts, but it also means you can't share state between your library and the consumer's
+`@rbxts/expect`.
+
+To avoid this, your library should _not_ have a direct dependency on `@rbxts/expect`. Instead, it should have use the
+`devDependency` scope, and expose `@rbxts/expect` under the `peerDependencies` scope.
+
+```json
+// don't do this!
+// error-next-line
+"dependencies": {
+  "@rbxts/expect": "^1.0.1"
+}
+```
+
+```json
+"devDependencies": {
+  "@rbxts/expect": "^1.0.1"
+},
+"peerDependencies": {
+  "@rbxts/expect": "^1.0.0"
+}
+```
+
+The `@rbxts/expect` under `devDependencies` specifies the version that your library actually _uses_.
+
+The `@rbxts/expect` under `peerDependencies` specifies the version that your library _expects_ consumers to have. You
+generally want this to be the same major version as what you built with, without regard for the minor or patch version;
+this way, you don't need to worry about updating your library everytime a new minor or patch version of `@rbxts/expect`
+comes out.
+
+### Flattening exports
+
+Depending on how you intend your library to be consumed, you may need to flatten your exports.
+
+For example, lets say we had the following folder stucture:
+
+```text
+src/
+  index.ts
+  extensions/
+    none/
+      index.ts
+    some/
+      index.ts
+```
+
+As it stands, for consumers to properly _use_ our extensions, they would need to have imports like so:
+
+```ts
+import "@rbxts/expect-myextensions/extensions/none";
+import "@rbxts/expect-myextensions/extensions/some";
+```
+
+This is generally undesirable, and considered overtly verbose. To avoid this, we can flatten our exports.
+
+```text title="file structure"
+src/
+  index.ts
+  extensions/
+    // highlight-next-line
+    index.ts
+    none/
+      index.ts
+    some/
+      index.ts
+```
+
+```ts title="src/extensions/index.ts"
+import "./none";
+import "./some";
+```
+
+```ts title="src/index.ts"
+import "./extensions";
+```
+
+Then, our consumer can import all our extensions at once.
+
+```ts
+import "@rbxts/expect-myextensions";
+```
+
+#### When you shouldn't flatten
+
+If your library uses multiple entry points for collision purposes, flattening your exports may be undesirable.
+
+For example, let's say we had an extension library that published different types for promises.
+
+```text title="file structure"
+src/
+  index.ts
+  extensions/
+    equal/
+      index.ts
+  promise-extensions/
+    equal/
+      index.ts
+```
+
+```ts title="src/extensions/equal/index.ts"
+import { ExpectMessageBuilder, place, CustomMethodImpl, extendMethods } from "@rbxts/expect";
+
+const baseMessage = new ExpectMessageBuilder(`Expected ${place.name} to ${place.not} equal ${place.expected.value}`);
+
+const equal: CustomMethodImpl<defined> = (_, actual, expected: defined) => {
+  const message = baseMessage.use().expectedValue(expected);
+
+  return actual === expected ? message.pass() : message.fail();
+};
+
+declare module "@rbxts/expect" {
+  interface Assertion<T> {
+    equal<R = T>(expectedValue: R): Assertion<R>;
+  }
+}
+
+extendMethods({
+  equal: equal,
+});
+```
+
+```ts title="src/promise-extensions/equal/index.ts"
+import { ExpectMessageBuilder, place, CustomMethodImpl, extendMethods } from "@rbxts/expect";
+
+const baseMessage = new ExpectMessageBuilder(`Expected ${place.name} to ${place.not} equal ${place.expected.value}`);
+
+const equal: CustomMethodImpl<Promise<defined>> = (_, actual, expected: defined) => {
+  const message = baseMessage.use().expectedValue(expected);
+
+  return actual.expect() === expected ? message.pass() : message.fail();
+};
+
+declare module "@rbxts/expect" {
+  interface Assertion<T> {
+    equal<R = T>(expectedValue: R): Assertion<R>;
+  }
+}
+
+extendMethods({
+  equal: equal,
+});
+```
+
+If we tried flattening these exports, either the bundler would create collision suffixes (eg; `equal` and `equal$1`), or
+we would get an error.
+
+To avoid this, we may want consumers to import these directories directly.
+
+```ts
+import "@rbxts/expect-myextensions/extensions";
+
+// or for promises
+import "@rbxts/expect-myextensions/promise-extensions";
+```
+
+In this case, just flatten your exports up to the directory level, but _not_ at the root `index.ts` level.
+
+### Namespace
+
+If you want to publish your own extension library for others to use, you should do so with the format
+`@rbxts/expect-{EXTENSION_NAME}`, so your library can be easily found by
+[searching npm](https://www.npmjs.com/search?q=%40rbxts%2Fexpect) for `@rbxts/expect` extension libraries.
+
+You don't _have_ to do this, but it helps make your extension library more discoverable.
+
+### API extractor
+
+If youre using [api-extractor](https://api-extractor.com/) to document your API, then your augmented modules will _not_
+be picked up during the rollup phase. This is due to an
+[open bug with api-extractor](https://github.com/microsoft/rushstack/issues/1709).
+
+#### Fixes
+
+There's a couple ways to fix this, but they come with their own issues.
+
+##### External rollup
+
+You can use [tsup](https://tsup.egoist.dev/) for the rollup, and then feed the generated `.d.ts` file into
+`api-extractor`. But this solution comes with its own problems, and you lose source linkage for api warnings.
+
+##### Exporting functions
+
+You can export your methods alongside the augmented ones- and provide documentation on those.
+
+```ts
+import { ExpectMessageBuilder, place, CustomMethodImpl, extendMethods } from "@rbxts/expect";
+
+const baseMessage = new ExpectMessageBuilder(`Expected ${place.name} to ${place.not} equal ${place.expected.value}`);
+
+/**
+ * Asserts that the value is _shallow_ equal to the `expectedValue`.
+ */
+export const equal: CustomMethodImpl<defined> = (_, actual, expected: defined) => {
+  const message = baseMessage.use().expectedValue(expected);
+
+  return actual === expected ? message.pass() : message.fail();
+};
+
+declare module "@rbxts/expect" {
+  interface Assertion<T> {
+    /**
+     * Asserts that the value is _shallow_ equal to the `expectedValue`.
+     */
+    equal<R = T>(expectedValue: R): Assertion<R>;
+  }
+}
+
+extendMethods({
+  equal: equal,
+});
+```
+
+But this is verbose, and doesn't necessarily come out as you may hope for method types.
+
+#### Future work
+
+It doesn't seem like the bug with `api-extractor` will be fixed any-time soon.
+
+Ideally, I'd like to personally contribute a fix for this to the `api-extractor` repo, but I don't currently have the
+time to do so.
+
+For now, `@rbxts/expect` is using a combination of the [external rollup](#external-rollup) and some
+[post processing](https://github.com/daymxn/rbxts-expect/tree/main/scripts/src/transformers) scripts to circumvent this
+issue. But long-term, this will need to be fixed at the root.
+
+## Example
+
+To see an end-to-end example of what publishing a library looks like, you can checkout the
+[Extension Library Example](https://github.com/daymxn/rbxts-expect-example) on GitHub.
+
+## Summary
+
+Let's recap what we've learned about publishing:
+
+- Your library needs to expose a **peer dependency** on `@rbxts/expect`
+- Your library should _NOT_ have a direct dependency on `@rbxts/expect`, but should have a **dev dependency** instead
+- Your exports make need to be **flattened** if you want consumers to only have to import a single file
+- To ensure your library is **discoverable**, it should be published under the namespace
+  `@rbxts/expect-{EXTENSION_NAME}`

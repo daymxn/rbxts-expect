@@ -1,0 +1,180 @@
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Quick Start
+
+`@rbxts/expect` is a test-agnostic assertion library for ROBLOX, enabling assertions in tests or server-side code
+without test dependencies, featuring descriptive error messages.
+
+This guide will walk you through the basics of getting started, in just a few steps.
+
+## Installation
+
+First, install **@rbxts/expect** with your preferred package manager:
+
+<Tabs>
+<TabItem value="npm" default>
+
+```bash title="Terminal"
+npm install @rbxts/expect
+```
+
+</TabItem>
+<TabItem value="pnpm">
+
+```bash title="Terminal"
+pnpm add @rbxts/expect
+```
+
+</TabItem>
+<TabItem value="yarn">
+
+```bash title="Terminal"
+yarn add @rbxts/expect
+```
+
+</TabItem>
+</Tabs>
+
+## Start using `@rbxts/expect`
+
+Once installed, you can immediately start by calling `expect`.
+
+### Arrays
+
+```ts
+import { expect } from "@rbxts/expect";
+
+expect([1, 2, 3]).to.be.an.array().that.includes(4).but.does.not.include(5);
+```
+
+```logs title="Console"
+Expected '[1,2,3]' to include '4', but it was missing
+```
+
+```ts
+import { expect } from "@rbxts/expect";
+
+expect({ name: "Daymon" }).to.be.an.array();
+```
+
+```logs title="Console"
+Expected '{"name": "Daymon"}' to be an array, but it had a non number key 'name' (string)
+```
+
+### Strings
+
+```ts
+import { expect } from "@rbxts/expect";
+
+expect("Daymon").to.be.a.string().with.the.substring("Night");
+```
+
+```logs title="Console"
+Expected "Daymon" to have the substring "Night"
+```
+
+```ts
+import { expect } from "@rbxts/expect";
+
+expect("Daymon").to.not.be.empty().and.to.have.a.sizeOf(5);
+```
+
+```logs title="Console"
+Expected "Daymon" to have a size of '5', but it actually had a sixe of '6'
+```
+
+### Enums
+
+```ts
+import { expect } from "@rbxts/expect";
+
+enum Sport {
+  Basketball,
+  Soccer,
+  Football,
+}
+
+expect("Bowling").to.be.the.enum(Sport);
+```
+
+```logs title="Console"
+Expected "Bowling" (string) to be a valid enum of '(Basketball | Soccer | Football)'
+```
+
+```ts
+import { expect } from "@rbxts/expect";
+
+expect(Sport.Basketball).to.be.the.enum(Sport, "Soccer");
+```
+
+```logs title="Console"
+Expected 'Basketball' (enum/number) to be the enum 'Soccer'
+```
+
+```ts
+import { expect } from "@rbxts/expect";
+
+expect(Sport.Basketball).to.be.the.enum(Sport).and.to.be.anyOf(["Soccer", "Football"]);
+```
+
+```logs title="Console"
+Expected 'Basketball' (enum/number) to be any of '["Soccer", "Football"]'
+```
+
+### Deep equals
+
+```ts
+import { expect } from "@rbxts/expect";
+
+expect(new Vector3(1, 2, 3)).to.deepEqual(new Vector3(1, 2, 3)); // pass!
+expect(new Vector3(1, 2, 3)).to.deepEqual(new Vector3());
+```
+
+```logs title="Console"
+Expected '1, 2, 3' to deep equal '0, 0, 0', but they have different values
+
+Expected: '0, 0, 0' (Vector3)
+Actual: '1, 2, 3' (Vector3)
+```
+
+```ts
+import { expect } from "@rbxts/expect";
+
+expect({
+  name: "daymon",
+  age: 24,
+  child: {
+    name: "nova",
+    age: 5,
+  },
+}).to.deepEqual({
+  name: "daymon",
+  age: 24,
+  child: {
+    name: "rigby",
+    age: 5,
+  },
+});
+```
+
+```logs title="Console"
+Expected '{...}' to deep equal '{...}', but 'child.name' has a different value
+
+Expected: "rigby" (string)
+Actual: "nova" (string)
+
+Expected (full): '{"child":{"name":"rigby","age":5},"name":"daymon","age":24}'
+Actual (full): '{"child":{"name":"nova","age":5},"name":"daymon","age":24}'
+```
+
+## Next steps
+
+If you're wanting to learn more, feel free to check out any of the following resources:
+
+- See a [collection of common matchers](category/matchers), organized by type
+- Learn how to [add your own assertion methods](./extension-guides/custom-methods)
+- Learn how to [add additional NOOPs and negation properties](./extension-guides/custom-properties)
+- Add table paths to your error messages with [Proxies](usage-guide#proxies)
+- Learn how to use `@rbxts/expect` with [TestEZ](using-with-testez)
+- See the full list of available methods via our [API](api)

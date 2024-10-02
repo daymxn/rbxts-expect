@@ -1,0 +1,251 @@
+---
+description: Learn what module augmentation is, and how it applies to expect.
+---
+
+# Module Augmentation
+
+Module augmentation is part of the process of adding your own functionality to `@rbxts/expect`, but it can be a bit
+confusing. This guide hopes to give you a better idea of why it's needed, and how it works.
+
+:::info what you'll learn
+
+- What module augmentation is
+- How module augmentation fits in `@rbxts/expect`
+- How to use module augmentation
+- How to define behavior for your augmented modules
+- How to use your augented modules in other files
+- How to organize your module augmentations to make it easier to maintain
+
+:::
+
+## Overview
+
+[Module augmentation](https://www.typescriptlang.org/docs/handbook/declaration-merging.html#module-augmentation) is a
+feature provided by typescript that lets us _extend_ (or augment) existing modules with additional context.
+
+This feature is primarily used to define the structure of existing libraries that were not written in typescript- and as
+such, don't have proper types.
+
+In a way, this is similiar to how we [interop with luau](https://roblox-ts.com/docs/guides/using-existing-luau) in
+roblox-ts.
+
+:::tip
+
+Another way to look at it is that module augmentation is a way to tell typescript "I know it doesn't _look_ like this
+type has this, but _trust me_, it does."
+
+And because we're so smooth, it believes us.
+
+:::
+
+### Defining augmented modules
+
+To define an augmented module, we use the `declare module` syntax, with an identifier that _matches_ our import.
+
+```ts
+import { Assertion } from "@rbxts/expect";
+
+// has the same identifer as our import: "@rbxts/expect"
+declare module "@rbxts/expect" {
+  // specify the interface we want to augment
+  // notice that we also include the generic; this is a requirement of module augmentation
+  interface Assertion<T> {
+    // provide an outline of the method we want to augment
+    equal(other: unknown): this;
+  }
+}
+```
+
+:::warning
+
+Module augmentation does NOT _provide_ the functionality, it only tells typescript that it exists.
+
+We'll learn how to _provide_ the functionality in [extending plugin behavior](#extending-plugin-behavior) below.
+
+:::
+
+### Using augmented modules
+
+Module augmentation is only linked to the file it's defined in. To properly _use_ it in another file, that file needs to
+know about the module augmentation.
+
+There are two ways to do this.
+
+## Side effects
+
+Importing a typescript file, without using anything from said file, is called a side-effect import.
+
+```ts title="src/extensions/index.d.ts"
+import "@rbxts/expect";
+
+declare module "@rbxts/expect" {
+  interface Assertion<T> {
+    customEqual(other: unknown): this;
+  }
+}
+```
+
+```ts tile="src/index.ts"
+import { expect } from "@rbxts/expect";
+// highlight-next-line
+import "./extensions";
+
+expect(5).to.customEqual(5); // works!
+```
+
+This tells typescript to _run_ the code in the imported file, but you don't need anything the file exports.
+
+Since this causes typescript to _run_ the module augmentation, this will allow it to be used in the file that imported
+it.
+
+## Definition files
+
+:::warning
+
+Using definition files **only** allows you to define the _type_, it doesn't allow you to
+[link the implementation](#extending-plugin-behavior).
+
+As such, it's almost always recommended that you use [side effects](#side-effects) instead.
+
+:::
+
+If you define your module augmentation in a definition file (`.d.ts`), and add this to your `typeRoots` array- you can
+make your augmented module globally available.
+
+```ts title="src/types/index.d.ts"
+import "@rbxts/expect";
+
+declare module "@rbxts/expect" {
+  interface Assertion<T> {
+    customEqual(other: unknown): this;
+  }
+}
+```
+
+```ts title="tsconfig.json"
+{
+    "typeRoots": ["node_modules/@rbxts", "src/types"]
+}
+```
+
+```ts tile="src/index.ts"
+import { expect } from "@rbxts/expect";
+
+expect(5).to.customEqual(5); // works!
+```
+
+## Extending plugin behavior
+
+Module augmentation only tells typescript how the function (or property) looks. It doesn't actually provide any behavior
+or implementation.
+
+To provide the behavior, the module needs to export some way to add it themselves.
+
+`@rbxts/expect` does this through the [extendMethods](/docs/api/expect.extendmethods.md),
+[extendNOPs](/docs/api/expect.extendnops.md), and [extendNegations](/docs/api/expect.extendnegations.md) functions.
+
+```ts
+import { CustomMethodImpl, extendMethods } from "@rbxts/expect";
+
+// implement our actual method
+const substringImpl: CustomMethodImpl<string> = (_, actual, str: string) => {
+  // ...
+};
+
+// tell typescript about our method
+declare module "@rbxts/expect" {
+  interface Assertion<T> {
+    substring(str: string): Assertion<T>;
+  }
+}
+
+// link our method at runtime
+// highlight-start
+extendMethods({
+  substring: substringImpl,
+});
+// highlight-end
+```
+
+Behind the scenes, `@rbxts/expect` keeps a _global_ object of all the calls to
+[extendMethods](/docs/api/expect.extendmethods.md)- with properties mapping to the provided methods (eg;
+`"substring" -> substringImpl`).
+
+Then, whenever someone calls [expect](/docs/api/expect.expect.md), all those methods get manually added to the returned
+object.
+
+## Organizing augmentations
+
+Importing your module augmentations in each file can be clumbersome, and is a bit too verbose for most people.
+
+Thankfully, module augmentation also applies _downstream_; meaning you can create a centrialized place to run your
+side-effects (higher in the import chain).
+
+### Root index
+
+The easiest way to do this is to import your extensions in your root `index.ts` file.
+
+```ts tile="src/index.ts"
+import "./extensions";
+```
+
+```ts title="src/extensions/index.ts"
+// import all the extensions
+import "./custom-equal";
+import "./extra-negations";
+import "./is-player-check";
+```
+
+This way, your modules are augmented at the root of your file- and all of the side effects run properly before any other
+code.
+
+### Test setup
+
+If you have a setup process in your tests, or a collection of test/mock objects, then you can augment your modules in
+the same place.
+
+```ts title="src/server/index.spec.ts"
+/// <reference types="@rbxts/testez/globals" />
+
+import { expect } from "@rbxts/expect";
+import { pet as TestPet } from "@server/util/tests";
+
+import { makePet } from "./actions";
+
+export = () => {
+  describe("makePet", () => {
+    it("works correctly", () => {
+      const pet = makePet(TestPet.id);
+
+      expect(pet).to.deepEqual(TestPet);
+    });
+  });
+};
+```
+
+```ts title="src/server/util/tests.ts"
+import "@server/extensions";
+
+export const pet = {
+  id: "1",
+  name: "Cat",
+  attack: 5,
+  health: 100,
+  speed: 30,
+};
+```
+
+```ts title="src/server/extensions/index.ts"
+// import all the extensions
+import "./custom-equal";
+import "./extra-negations";
+import "./is-player-check";
+```
+
+## Summary
+
+Let's recap what we've learned about module augmentation:
+
+- They provide a way to **define** functionality for _other_ modules
+- They have to be added to [expect](/docs/api/expect.expect.md) through one of the **extend** methods
+- They have to be **linked** at runtime by _importing_ the file

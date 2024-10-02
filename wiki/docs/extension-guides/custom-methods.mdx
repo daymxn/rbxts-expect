@@ -1,0 +1,338 @@
+---
+description: Learn what custom methods are, and how to create them.
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Custom Methods
+
+Custom methods (or _extension methods_) are methods added to `expect` that _you_ provide the implementation for. They
+allow you to _extend_ the existing functionality of `@rbxts/expect` for your own needs.
+
+:::info what you'll learn
+
+- What custom methods are
+- The different components of a custom method
+- How to implement your own custom method
+- Guidance on proper usage
+- How to use your implemented method
+
+:::
+
+## Overview
+
+A custom method is an implementor of the `CustomMethodImpl` type:
+
+```ts
+export type CustomMethodImpl<T = unknown> = (source: Assertion<T>, actual: T, ...args: never[]) => ExpectMethodResult;
+```
+
+### Source
+
+The `source` parameter of a custom method is just a mapping to the parent `Assertion` that created the call. The
+`Assertion` interface is the closest thing to an "instance" of the `expect` function; it carries all the methods that
+you call after `expect`, and optionally some [metadata](#Metadata) for custom methods to use.
+
+You'll rarely need to use it, but it comes in handy when dealing with [metadata](#Metadata).
+
+```ts
+import { CustomMethodImpl } from "@src/expect/extend";
+
+function validateArrayIsEmpty(actual: defined[]) {
+  // ...
+}
+
+function validateObjectIsEmpty(actual: object) {
+  // ...
+}
+
+const empty: CustomMethodImpl<unknown> = (source, actual) => {
+  if (typeIs(actual, "table")) {
+    if (source.is_array) return validateArrayIsEmpty(actual);
+    return validateObjectIsEmpty(actual);
+  }
+  // ...
+};
+```
+
+### Actual
+
+The `source` parameter of a custom method maps to what we call the "actual" value. This is the value that was passed
+into the initial `expect` call. This is in contrast to the "expected" value.
+
+For example:
+
+```ts
+expect(5).to.equal(6);
+```
+
+In this case, `5` is the "actual" value and `6` is the "expected" value. We _expected_ the value `6`, but we _actually_
+got the value `5`.
+
+You can see an example of its usage in the `equal` method:
+
+```ts
+import { CustomMethodImpl, ExpectMessageBuilder, place } from "@src/expect/extend";
+
+const baseMessage = new ExpectMessageBuilder(
+  `Expected ${place.name} to ${place.not} strictly equal ${place.expected.value} (${place.expected.type})`,
+);
+
+const equal: CustomMethodImpl<defined> = (_, actual: defined, expected: defined) => {
+  const message = baseMessage.use().expectedValue(expected);
+
+  return actual === expected ? message.pass() : message.fail();
+};
+```
+
+### Additional arguments
+
+The `...args` parameter in a custom method is just a variable amount of additional arguments you can pass. Usually, this
+only really includes one; the "expected" argument.
+
+For example:
+
+```ts
+expect(5).to.equal(6);
+```
+
+In this case, there's only one extra argument, and it's for the "expected" value.
+
+Sometimes, you need more than one extra argument though. The [enum](/docs/api/expect.assertion.enum) method is a perfect
+example of this:
+
+```ts
+import type { EnumValue, LuaEnum, CustomMethodImpl } from "@rbxts/expect";
+
+function validateIsEnumType(actual: keyof LuaEnum, enumType: LuaEnum) {
+  // ...
+}
+
+function validateIsEnumValue(actual: keyof LuaEnum, enumType: LuaEnum, value: keyof LuaEnum) {
+  // ...
+}
+
+const _enum: CustomMethodImpl<keyof LuaEnum> = (source, actual, enumType: LuaEnum, value?: keyof LuaEnum) => {
+  if (value !== undefined) {
+    return validateIsEnumValue(actual, enumType, value).inspect(() => {
+      source.enum_type = enumType;
+    });
+  } else {
+    return validateIsEnumType(actual, enumType).inspect(() => {
+      source.enum_type = enumType;
+    });
+  }
+};
+```
+
+Here, we have _two_ extra arguments; one that maps to the `LuaEnum` and another (optionally) for a value of that enum.
+
+This allows us to provide two different methods:
+
+```ts
+import { expect } from "@rbxts/expect";
+
+enum Sport {
+  Basketball,
+  Soccer,
+  Football,
+}
+
+// validate "actual" is of enum type 'Sport'
+expect("Basketball").to.be.enum(Sport);
+
+// validate "actual" of of enum type 'Sport' and of value `Sport.Basketball`
+expect("Basketball").to.be.enum(Sport, Sport.Basketball);
+```
+
+### ExpectMethodResult
+
+The return value of custom methods is of the type `ExpectMethodResult`.
+
+```ts
+export type ExpectMethodResult = Result<ExpectMessageBuilder, ExpectMessageBuilder>;
+```
+
+The `Result` type comes from the `@rbxts/rust-classes` package, but we provide wrappers around it (which we'll get into
+in a moment)- so there's no need to look much into that.
+
+The key thing to focus on here is the `ExpectMessageBuilder`.
+
+You'll learn more about `ExpectMessageBuilder` in the [expect messages](expect-messages) guide, but it's essentially
+just a wrapper around the error messages your check throws.
+
+```ts
+import { ExpectMessageBuilder, CustomMethodImpl, place } from "@rbxts/expect";
+
+const baseMessage = new ExpectMessageBuilder(
+  `Expected ${place.name} to ${place.not} strictly equal ${place.expected.value} (${place.expected.type})`,
+);
+
+const equal: CustomMethodImpl<defined> = (_, actual: defined, expected: defined) => {
+  const message = baseMessage.use().expectedValue(expected);
+
+  return actual === expected ? message.pass() : message.fail();
+};
+```
+
+You create instances of these builders through the `use` method, populate them with various utility methods provided on
+the [ExpectMessageBuilder](/docs/api/expect.expectmessagebuilder.md) class (such as
+[expectedValue](/docs/api/expect.expectmessagebuilder.expectedvalue.md)), and then return them through either the
+[pass](/docs/api/expect.expectmessagebuilder.pass.md) or [fail](/docs/api/expect.expectmessagebuilder.fail.md) methods.
+
+:::info
+
+The [pass](/docs/api/expect.expectmessagebuilder.pass.md) and [fail](/docs/api/expect.expectmessagebuilder.fail.md)
+methods are the "wrappers" around the `Result` type we talked about above.
+
+Returning these types allows `expect` to throw the right message (either a negated pass, or a failure), without the
+method needing to know what's going on state-wise. This helps keep your methods simple and deterministic.
+
+:::
+
+## Metadata
+
+Metadata is additional data attached to `expect` chains, that is derrived from the result of a previous method call.
+
+For example, the `array` method attaches the `is_array` property, whenever it passes.
+
+```ts
+import { ExpectMessageBuilder, CustomMethodImpl, place } from "@rbxts/expect";
+
+const baseMessage = new ExpectMessageBuilder(`Expected ${place.name} to ${place.not} be an array`);
+
+const array: CustomMethodImpl<unknown> = (source, actual) => {
+  const message = baseMessage.use();
+
+  // ...
+
+  // highlight-next-line
+  source.is_array = true;
+  return message.pass();
+};
+
+declare module "@rbxts/expect" {
+  interface Assertion<T> {
+    // highlight-next-line
+    is_array?: boolean;
+    array(): Assertion<T extends unknown[] ? T : T[]>;
+  }
+}
+```
+
+This allows other methods to take advantage of this property to skip certain checks, or change their output accordingly.
+
+For example, the `empty` method supports strings, arrays, and tables. But not only does it need different logic for
+tables and strings- but it has a different message for arrays and tables:
+
+<Tabs>
+<TabItem value="arrays" default>
+
+```ts
+expect([1]).to.be.empty();
+```
+
+```logstitle="Console"
+Expected '[1]' to be empty, but it had an element
+```
+
+</TabItem>
+
+<TabItem value="tables">
+
+```ts
+expect({ name: "Daymon" }).to.be.empty();
+```
+
+```logstitle="Console"
+Expected the object to be empty, but it had the key 'name'
+Value of [name]: "Daymon"
+```
+
+</TabItem>
+</Tabs>
+
+To help accomplish this, the `empty` method checks the `is_array` property:
+
+```ts
+if (typeIs(actual, "table")) {
+  if (source.is_array) {
+    return validateArrayIsEmpty(actual as defined[]);
+  } else {
+    return validateObjectIsEmpty(actual);
+  }
+}
+```
+
+Which would translate like so:
+
+```ts
+expect([1, 2, 3]).to.be.an.array().that.is.empty();
+```
+
+## Usage
+
+Once you've got a custom method implemented, you can add it to `@rbxts/expect` through the
+[extendMethods](/docs/api/expect.extendmethods.md).
+
+```ts
+import { CustomMethodImpl, extendMethods, ExpectMessageBuilder, place } from "@rbxts/expect";
+import { includes } from "@rbxts/string-utils";
+
+// define a message for when our check fails
+const baseMessage = new ExpectMessageBuilder(
+  `Expected ${place.name} to ${place.not} have the substring ${place.expected.value}`,
+);
+
+// implement our actual method
+const substring: CustomMethodImpl<string> = (_, actual, str: string) => {
+  const message = baseMessage.use().expectedValue(str);
+
+  return includes(actual, str) ? message.pass() : message.fail();
+};
+
+// tell typescript about our method
+declare module "@rbxts/expect" {
+  interface Assertion<T> {
+    substring(str: string): Assertion<T>;
+  }
+}
+
+// link our method at runtime
+extendMethods({
+  substring: substring,
+});
+```
+
+:::tip
+
+To learn more about how this works, check out the [module augmentation](module-augmentation) guide.
+
+:::
+
+## Best practices
+
+- **Validate casted types**: If your `CustomMethodImpl` specifies types other than `unknown`- you should have
+  validations at the start of your method to ensure they're the expected type.
+- **Split overloads into seperate functions**: If your extension method provides an overload, or optional argument,
+  don't be afraid to split your implementation into multiple functions to properly encompass this. You can look at the
+  implementation for the [enum](https://github.com/daymxn/rbxts-expect/blob/main/src/expect/extensions/enum/index.ts)
+  method to see an example of this.
+
+## Examples
+
+All of the matchers that are bundled with `@rbxts/expect` are also implemented in this same way.
+
+So if you want to see some example implementations, take a look at the
+[extensions](https://github.com/daymxn/rbxts-expect/tree/main/src/expect/extensions) directory on the main repo.
+
+## Summary
+
+Let's recap what we've learned about custom methods:
+
+- They provide a way to add your **own** checks to `@rbxts/expect`
+- They return instances of `ExpectMessageBuilder` through the **pass** and **fail** methods
+- They can add **metadata** to `Assertion` for `expect` chains
+- They get added to `@rbxts/expect` through the [extendMethods](/docs/api/expect.extendmethods.md) function
+- They get added to **typescript** through [module augmentation](module-augmentation)
