@@ -16,6 +16,13 @@
 	  "plugin:prettier/recommended"
 	],
 	"rules": {
+		"no-restricted-globals": [
+			"error",
+			{
+				"name": "expect",
+				"message": "Use @rbxts/expect instead."
+			}
+		],
 	  "headers/header-format": [
       	"error",
       	{
