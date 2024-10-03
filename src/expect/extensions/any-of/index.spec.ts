@@ -53,9 +53,9 @@ export = () => {
     it("works with paths", () => {
       err(() => {
         withProxy(TEST_SON, (p) => {
-          expect(p.age).to.be.anyOf([1, 2, 3, 4]);
+          expect(p.age).to.be.anyOf([1, 2, 3]);
         });
-      }, "Expected age to be any of '[1,2,3,4]'");
+      }, "Expected age to be any of '[1,2,3]'");
     });
 
     it("uses enum values", () => {
