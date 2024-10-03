@@ -16,6 +16,7 @@
  */
 
 import type { Assertion } from "@rbxts/expect";
+import { Result } from "@rbxts/rust-classes";
 import { includes } from "@rbxts/string-utils";
 import type { ExpectMessageBuilder } from "@src/message";
 
@@ -130,19 +131,19 @@ export const TEST_SON: Person = {
  * @public
  */
 export function err(callback: () => unknown, ...messages: string[]) {
-  try {
-    callback();
-
-    throw `The function did not throw a message.
+  Result.fromVoidCallback(callback).match(
+    () => {
+      throw `The function did not throw a message.
   
-  Expected Messages:
-  ${messages.join("\n")}
-`;
-  } catch (e) {
-    const m = e as string;
-    for (const message of messages) {
-      if (!includes(m, message)) {
-        throw `The function threw with the wrong message.
+    Expected Messages:
+    ${messages.join("\n")}
+  `;
+    },
+    (err) => {
+      const m = err.unwrap() as string;
+      for (const message of messages) {
+        if (!includes(m, message)) {
+          throw `The function threw with the wrong message.
 
   Expected Message:
   ${message}
@@ -150,7 +151,8 @@ export function err(callback: () => unknown, ...messages: string[]) {
   Actual Message:
   ${m}
       `;
+        }
       }
     }
-  }
+  );
 }
