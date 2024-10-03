@@ -411,6 +411,17 @@ The result of an [expect()](./expect.expect.md) method call.
 </td></tr>
 <tr><td>
 
+[Filter](./expect.filter.md)
+
+
+</td><td>
+
+Callback for deciding if a `value` satisfies a condition.
+
+
+</td></tr>
+<tr><td>
+
 [InferArrayElement](./expect.inferarrayelement.md)
 
 
