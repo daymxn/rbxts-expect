@@ -115,12 +115,12 @@ export type InferArrayElement<T> = T extends (infer U)[] ? U : never;
  *
  * @example
  * ```ts
- * const isEven: Filter<number[]> = (value) => value % 2 === 0;
+ * const isEven: Filter<number> = (value) => value % 2 === 0;
  * ```
  *
  * @public
  */
-export type Filter<T = unknown> = (value: InferArrayElement<T>) => boolean;
+export type Filter<T = unknown> = (value: T) => boolean;
 
 /**
  * Callback for deciding if a `value` matches a given type `T`.

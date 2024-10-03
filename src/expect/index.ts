@@ -38,6 +38,7 @@ export {
 export {
   Assertion,
   EnumValue,
+  Filter,
   InferArrayElement,
   LuaEnum,
   TypeCheckCallback,

@@ -17,7 +17,7 @@
 
 /* eslint-disable roblox-ts/no-array-pairs */
 
-import { Filter } from "@rbxts/expect";
+import type { Filter } from "@rbxts/expect";
 import { CustomMethodImpl, extendMethods } from "@src/expect/extend";
 import { ExpectMessageBuilder } from "@src/message";
 import { place } from "@src/message/placeholders";
@@ -86,7 +86,7 @@ declare module "@rbxts/expect" {
      *
      * @public
      */
-    some(condition: Filter<T>): this;
+    some(condition: Filter<InferArrayElement<T>>): this;
 
     /**
      * Asserts that at least one element in the array satisfies the specified {@link Filter}.
@@ -109,7 +109,7 @@ declare module "@rbxts/expect" {
      *
      * @public
      */
-    some(reason: string, condition: Filter<T>): this;
+    some(reason: string, condition: Filter<InferArrayElement<T>>): this;
   }
 }
 
