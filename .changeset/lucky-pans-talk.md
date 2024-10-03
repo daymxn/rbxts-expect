@@ -2,4 +2,4 @@
 "@rbxts/expect": patch
 ---
 
-Adds support for the `some` matcher
+Added support for the `some` matcher

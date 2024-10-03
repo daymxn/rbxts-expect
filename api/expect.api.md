@@ -32,6 +32,10 @@ export interface Assertion<T = unknown> {
     readonly been: this;
     boolean(): Assertion<boolean>;
     readonly but: this;
+    containExactly(expectedValues: InferArrayElement<T>[]): this;
+    containExactlyInOrder(expectedValues: InferArrayElement<T>[]): this;
+    containsExactly(expectedValues: InferArrayElement<T>[]): this;
+    containsExactlyInOrder(expectedValues: InferArrayElement<T>[]): this;
     deepEqual<R = T>(expectedValue: R): Assertion<R>;
     deepEquals<R = T>(expectedValue: R): Assertion<R>;
     readonly does: this;
