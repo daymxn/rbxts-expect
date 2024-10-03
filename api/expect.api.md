@@ -70,6 +70,8 @@ export interface Assertion<T = unknown> {
     _self: this;
     size(size: number): this;
     sizeOf(size: number): this;
+    some(condition: Filter<InferArrayElement<T>>): this;
+    some(reason: string, condition: Filter<InferArrayElement<T>>): this;
     readonly still: this;
     string(): Assertion<string>;
     substring(str: string): Assertion<T>;
@@ -177,6 +179,9 @@ export function extendNegations(methods: ReadonlyArray<string>): void;
 
 // @public
 export function extendNOPs(methods: ReadonlyArray<string>): void;
+
+// @public
+export type Filter<T = unknown> = (value: T) => boolean;
 
 // @public
 export function getDefaultExpectConfig(): ExpectConfig;
