@@ -24,5 +24,8 @@
       "url": "https://cdn.jsdelivr.net/npm/tsup/schema.json",
       "fileMatch": ["package.json", "tsup.config.json"]
     }
-  ]
+],
+"yaml.schemas": {
+	"https://json.schemastore.org/github-workflow.json": "file:///f%3A/Programming/Games/Roblox/expect/.github/workflows/deploy.yaml"
+}
 }
