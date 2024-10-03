@@ -16,6 +16,7 @@
  */
 
 import type { Assertion } from "@rbxts/expect";
+import { Result } from "@rbxts/rust-classes";
 import { includes } from "@rbxts/string-utils";
 import type { ExpectMessageBuilder } from "@src/message";
 
@@ -72,7 +73,9 @@ export const TEST_SON: Person = {
  *   expect([1]).to.be.empty();
  * });
  * ```
+ *
  * Output:
+ *
  * ```logs
  * The function did not throw a message.
  * ```
@@ -83,7 +86,9 @@ export const TEST_SON: Person = {
  *   expect([1]).to.be.empty();
  * }, `Expected '[1]' to be empty, but it had an element`);
  * ```
+ *
  * Output if the string(s) weren't found in the error:
+ *
  * ```logs
  * The function threw with the wrong message.
  *
@@ -93,7 +98,9 @@ export const TEST_SON: Person = {
  *   Actual Message:
  *   Expected '[1]' to be empty, but it had the element '1'
  * ```
+ *
  * Output if the function didn't throw at all:
+ *
  * ```logs
  * The function did not throw a message.
  *
@@ -110,6 +117,7 @@ export const TEST_SON: Person = {
  *
  * If it doesn't find any of the provided substrings, it will
  * throw with that specific substring:
+ *
  * ```logs
  * The function threw with the wrong message.
  *
@@ -123,19 +131,19 @@ export const TEST_SON: Person = {
  * @public
  */
 export function err(callback: () => unknown, ...messages: string[]) {
-  try {
-    callback();
-
-    throw `The function did not throw a message.
+  Result.fromVoidCallback(callback).match(
+    () => {
+      throw `The function did not throw a message.
   
-  Expected Messages:
-  ${messages.join("\n")}
-`;
-  } catch (e) {
-    const m = e as string;
-    for (const message of messages) {
-      if (!includes(m, message)) {
-        throw `The function threw with the wrong message.
+    Expected Messages:
+    ${messages.join("\n")}
+  `;
+    },
+    (err) => {
+      const m = err.unwrap() as string;
+      for (const message of messages) {
+        if (!includes(m, message)) {
+          throw `The function threw with the wrong message.
 
   Expected Message:
   ${message}
@@ -143,7 +151,8 @@ export function err(callback: () => unknown, ...messages: string[]) {
   Actual Message:
   ${m}
       `;
+        }
       }
     }
-  }
+  );
 }

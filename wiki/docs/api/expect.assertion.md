@@ -893,6 +893,28 @@ Asserts that the value has a length of `size`<!-- -->.
 </td></tr>
 <tr><td>
 
+[some(condition)](./expect.assertion.some.md)
+
+
+</td><td>
+
+Asserts that at least one element in the array satisfies the specified [Filter](./expect.filter.md)<!-- -->.
+
+
+</td></tr>
+<tr><td>
+
+[some(reason, condition)](./expect.assertion.some_1.md)
+
+
+</td><td>
+
+Asserts that at least one element in the array satisfies the specified [Filter](./expect.filter.md)<!-- -->.
+
+
+</td></tr>
+<tr><td>
+
 [string()](./expect.assertion.string.md)
 
 

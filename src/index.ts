@@ -34,6 +34,7 @@ export {
   EnumValue,
   ExpectConfig,
   ExpectMethodResult,
+  Filter,
   InferArrayElement,
   LuaEnum,
   TypeCheckCallback,

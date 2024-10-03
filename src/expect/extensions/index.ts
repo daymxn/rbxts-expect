@@ -26,5 +26,6 @@ import "./instance-of";
 import "./length";
 import "./negations";
 import "./noops";
+import "./some";
 import "./substring";
 import "./throws";
