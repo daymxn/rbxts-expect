@@ -171,11 +171,20 @@ Extra Elements: '[2]'
 
 ### Some
 
-:::info
+You can use the [some](/docs/api/expect.assertion.some.md) method to check if an array passes some condition.
 
-[GitHub Issue #1](https://github.com/daymxn/rbxts-expect/issues/1)
+```ts
+import { expect } from "@rbxts/expect";
 
-:::
+expect([1, 2, 3]).to.have.some((it) => it % 2 === 0);
+expect(["Daymon", "Bryan"]).to.have.some(`starts with "Bry"`, (it) => startsWith(it, "Bry"));
+```
+
+#### Example error
+
+```logs
+Expected '["Byron", "Bryan"]' to have atleast one element that starts with "Day"
+```
 
 ### Contain exactly
 
