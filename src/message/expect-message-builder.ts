@@ -1627,6 +1627,8 @@ export class ExpectMessageBuilder {
     collapsable: boolean = false,
     collapseLength: number = getDefaultExpectConfig().collapseLength
   ) {
+    if (value === undefined) return place.undefined;
+
     const result = this.tryToEncode(value);
     encodingCache.set(value as object, result);
 
