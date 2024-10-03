@@ -1,0 +1,185 @@
+---
+description: Learn what custom properties are, and how to create them.
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Custom Properties
+
+Custom properties (or _extension properties_) are properties added to `expect` that _you_ define. They allow you to
+_extend_ the existing functionality of `@rbxts/expect` for your own needs.
+
+:::info what you'll learn
+
+- What custom properties are
+- The different kinds of custom properies
+- How to implement your own custom properties
+- Guidance on proper usage
+
+:::
+
+## Overview
+
+Custom properties can fall under three different categories:
+
+- Negations
+- NOPs
+- Metadata
+
+### Negations
+
+Negation properties are properties that "negate" or "flip" the result of subsquent methods.
+
+For example:
+
+```ts
+expect(5).to.not.equal(4);
+```
+
+In this case, `not` is the negation.
+
+Instead of checking if `5 === 5`, we are now checking if `5 !== 5`.
+
+:::tip
+
+Negations flip one another!
+
+```ts
+expect(5).to.never.not.equal(4); // passes!
+```
+
+:::
+
+#### Adding your own
+
+To add your own negation property, you can use the `extendNegations` method.
+
+```ts
+import { extendNegations } from "@rbxts/expect";
+
+// tell typescript about our properties
+declare module "@rbxts/expect" {
+  interface Assertion<T> {
+    readonly not: this;
+    readonly never: this;
+  }
+}
+
+// link our negations at runtime
+extendNegations(["not", "never"]);
+```
+
+`expect` will automatically handle the linkage of these properties, and ensure they return the `this` instance
+automatically- while also internally flipping the "negation" switch.
+
+### NOPs
+
+NOP properties are properties that effectively do nothing. Their only purpose is to make the test easier to read.
+
+For example:
+
+```ts
+expect("Daymon").to.have.the.substring("Day");
+```
+
+In this case, `to`, `have`, and `the` are all NOPs; they have no effect on the outcome of the test.
+
+#### Adding your own
+
+To add your own negation property, you can use the `extendNOPs` method.
+
+```ts
+import { extendNOPs } from "@rbxts/expect";
+
+// tell typescript about our properties
+declare module "@rbxts/expect" {
+  interface Assertion<T> {
+    readonly and: this;
+    readonly be: this;
+  }
+}
+
+// link our NOPs at runtime
+extendNOPs(["and", "be"]);
+```
+
+`expect` will automatically handle the linkage of these properties, and ensure they return the `this` instance
+automatically.
+
+### Metadata
+
+Metadata properties are properties that are only present as the result of a previous check.
+
+For example, the `array` method attaches the `is_array` property whenever it passes:
+
+```ts
+import { ExpectMessageBuilder, CustomMethodImpl, place } from "@rbxts/expect";
+
+const baseMessage = new ExpectMessageBuilder(`Expected ${place.name} to ${place.not} be an array`);
+
+const array: CustomMethodImpl<unknown> = (source, actual) => {
+  const message = baseMessage.use();
+
+  // ...
+
+  // highlight-next-line
+  source.is_array = true;
+  return message.pass();
+};
+
+declare module "@rbxts/expect" {
+  interface Assertion<T> {
+    // highlight-next-line
+    is_array?: boolean;
+    array(): Assertion<T extends unknown[] ? T : T[]>;
+  }
+}
+```
+
+#### Adding your own
+
+Since these properties don't need any special handling by `expect`, you don't need to call any extension methods.
+
+So long as you augment the module with your property (and populate it in your method), you can use it without issue.
+
+:::tip
+
+To learn more about how metadata properties can be useful, checkout the [metadata](custom-methods#metadata) section of
+the custom methods guide.
+
+:::
+
+## Best practices
+
+- **Avoid overwriting methods and properties**: Whether it works or doesn't work, it's not intended for you to be able
+  to overwrite methods with different kinds of properties and vise versa. That is, you shouldn't overwrite the `a`
+  property with a custom `a` method.
+- **Ensure your metadata is nullable**: Since metadata isn't populated by default, ensure the type you define in your
+  module augmentation is nullable- to avoid accidentally assuming it's present in usages.
+- **Keep chain properties short**: NOPs and negations are intended to be quick ways to either chain the message, or flip
+  a check. They should be short to justify their usage.
+- **Flow like a sentence**: The ideal `expect` chain is one that reads like a sentence. I "expect 5 to be equal to 5" or
+  I "expect 'daymon' to be a string with a size of 6". Your NOPs and negations should follow this pattern, so that they
+  align with the other design decisions made by `@rbxts/expect`.
+
+## Examples
+
+To see some practical examples of extension properties, you can check out the
+[main repo](https://github.com/daymxn/rbxts-expect) for `@rbxts/expect`.
+
+More specifically, you can take a look at the
+[negations folder](https://github.com/daymxn/rbxts-expect/tree/main/src/expect/extensions/negations) and the
+[noops folder](https://github.com/daymxn/rbxts-expect/tree/main/src/expect/extensions/noops).
+
+## Summary
+
+Let's recap what we've learned about custom properties:
+
+- They provide a way to add your **own** properties to `@rbxts/expect`
+- **NOPS** are properties that _do nothing_
+- **Negations** are properties that _invert_ checks
+- **Metadata** are properties that define _state_ for _other_ checks to use
+- They get added to `@rbxts/expect` through the [extendNOPs](/docs/api/expect.extendnops.md) and
+  [extendNegations](/docs/api/expect.extendnegations.md) functions
+- They get added to **typescript** through [module augmentation](module-augmentation)

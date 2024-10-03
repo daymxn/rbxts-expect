@@ -1,0 +1,143 @@
+---
+description: Learn how to write tests for your extensions.
+---
+
+# Testing
+
+Tests are an important part of every technological stack, even plugin based ones. This guide will help you setup and
+organize your tests for your custom methods- to ensure they're working as expected.
+
+:::info what you'll learn
+
+- How to setup a testing environment for extensions
+- How to organize your extension tests
+- How to test error messages
+
+:::
+
+## Overview
+
+To setup an environment to test in, you need to ensure your extension is included as a part of your build process.
+
+For futher guidance on how to include your extension in your build process, see the
+[using extensions](introduction#using-extensions) section of the introduction page.
+
+### Organizing tests
+
+Tests for custom methods can be split into two categories:
+
+- Tests to ensure your method works as expected
+- Tests for the error messages your method outputs
+
+#### Functionality
+
+Functionality tests are those that test that your method passes or fails as you expect it to.
+
+You typically want to split these up into sub-sections (depending on how your framework functions), accordingly to
+logical paths in your method.
+
+For example, the [empty](/docs/api/expect.assertion.empty.md) method works for strings, arrays, and objects. So we split
+the tests up for each logical path.
+
+```ts
+import { expect } from "@rbxts/expect";
+import { TEST_SON } from "@src/util/setup-tests";
+
+export = () => {
+  describe("empty", () => {
+    it("checks if arrays have any elements", () => {
+      expect([]).to.be.empty();
+      expect([1]).to.not.be.empty();
+    });
+
+    it("checks if strings have any characters", () => {
+      expect("").to.be.empty();
+      expect("Daymon").to.not.be.empty();
+    });
+
+    it("checks if objects have any keys", () => {
+      expect({}).to.be.empty();
+      expect(TEST_SON).to.not.be.empty();
+    });
+  });
+};
+```
+
+If your method takes an `expected` value, you can also take advantage of method chaining.
+
+```ts
+export = () => {
+  describe("equal", () => {
+    it("compares the values strictly", () => {
+      expect(5).to.equal(5).but.not.equal("5");
+      expect("Daymon").to.equal("Daymon").but.not.equal("daymon");
+    });
+  });
+```
+
+#### Messages
+
+It's also important to test that your method throws the messages you expect it to, whenever things fail.
+
+We provide the `err` method to help make this process easier.
+
+```ts
+import { expect, err } from "@rbxts/expect";
+import "@src/util/setup-tests";
+
+export = () => {
+  describe("equal", () => {
+    // ...
+  });
+
+  describe("error message", () => {
+    it("throws if the values are not equal", () => {
+      err(() => {
+        expect(5).to.equal("5");
+      }, `Expected '5' (number) to strictly equal "5" (string)`);
+    });
+  });
+};
+```
+
+`err` will make sure that the function throws with a message that contains the substring you specify.
+
+You can specify multiple substrings, and `err` will make sure that they _all_ are present in the output.
+
+This comes in handy when testing for metadata, but you don't want to make strong assertions about newlines and indent
+formats.
+
+```ts
+it("works with paths", () => {
+  err(
+    () => {
+      withProxy(TEST_SON, (proxy) => {
+        expect(proxy.parent?.age).to.equal("5");
+      });
+    },
+    'Expected parent.age to strictly equal "5" (string)',
+    "parent.age: '5' (number)",
+  );
+});
+```
+
+:::tip
+
+It's **strongly** recommended that you have a test case for [proxies](/docs/usage-guide#proxies), as this can often be
+seen as a different environment for test messages to be in.
+
+:::
+
+## Examples
+
+To see real-world examples of what tests look like, take a look at the tests we use for the pre-packaged methods on the
+[main repo](https://github.com/search?q=repo%3Adaymxn%2Frbxts-expect+path%3A*.spec.ts&type=code).
+
+## Summary
+
+Let's recap what we've learned about testing:
+
+- They should test that your method **works** as it's intended to
+- They should test that the errors your method outputs **look** as they're intended to
+- You can use the [err](/docs/api/expect.err.md) method to test your **errors**
+- They should have cases for testing **proxies** to ensure your method works in all cases

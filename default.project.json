@@ -1,6 +1,6 @@
 {
 	"name": "expect",
 	"tree": {
-		"$path": "out/"
+		"$path": "out"
 	}
 }

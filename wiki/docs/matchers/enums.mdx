@@ -1,0 +1,82 @@
+---
+description: Matchers available for testing user-defined enums.
+---
+
+# Enums
+
+This page pertains to _user-defined_ enums, not roblox enums.
+
+## API
+
+### Type of enum
+
+You can use the [enum](/docs/api/expect.assertion.enum) method to check if a value is a valid enum.
+
+```ts
+import { expect } from "@rbxts/expect";
+
+enum Sport {
+  Basketball,
+  Football,
+  Soccer,
+}
+
+expect(Sport.Basketball).to.be.the.enum(Sport);
+expect("Basketball").to.be.the.enum(Sport);
+expect(0).to.be.the.enum(Sport);
+```
+
+#### Example Error
+
+```logs
+Expected '5' (number) to be a valid enum of '(First | Second | Third)'
+```
+
+### Enum value
+
+You can use an overload of the [enum](/docs/api/expect.assertion.enum) method to check if a value is a _specific_ enum
+value.
+
+```ts
+import { expect } from "@rbxts/expect";
+
+enum Sport {
+  Basketball,
+  Football,
+  Soccer,
+}
+
+expect(Sport.Basketball).to.be.the.enum(Sport, "Soccer");
+```
+
+#### Example Error
+
+```logs
+Expected 'Basketball' (enum/number) to be the enum 'Soccer'
+```
+
+## Chaining
+
+### AnyOf
+
+Calling [anyOf](/docs/api/expect.assertion.anyof.md) after an [enum](/docs/api/expect.assertion.enum) call will cause
+failure messages to use the enum's table keys instead of their actual value, with the type being represented as either
+`(enum/number)` or `(enum/string)`.
+
+```ts
+import { expect } from "@rbxts/expect";
+
+enum Sport {
+  Basketball,
+  Football,
+  Soccer,
+}
+
+expect("Basketball").to.be.the.enum(Sport).and.to.be.anyOf([2, 3]);
+```
+
+#### Example Error
+
+```logs
+Expected 'Basketball' (enum/number) to be any of '["Football", "Soccer"]'
+```

@@ -1,0 +1,113 @@
+---
+description: Matchers available for testing objects and non array tables.
+---
+
+# Objects
+
+## API
+
+### Is an Object
+
+You can use the [object](/docs/api/expect.assertion.object.md) method to check if a provided value is actually an
+object.
+
+```ts
+import { expect } from "@rbxts/expect";
+
+expect({ name: "Daymon" }).to.be.an.object();
+```
+
+#### Example error
+
+```logs
+Expected '5' to be of type 'table', but it was a 'number'
+```
+
+### Empty
+
+You can use the [empty](/docs/api/expect.assertion.empty.md) method to check if an object contains any keys.
+
+```ts
+import { expect } from "@rbxts/expect";
+
+expect({}).to.be.empty();
+```
+
+#### Example error
+
+```logs
+Expected the object to be empty, but it had had the key 'name'
+
+Value of [name]: "Daymon"
+```
+
+### Length
+
+You can use the [length](/docs/api/expect.assertion.length.md) method to check if an object has a certain amount of
+keys.
+
+```ts
+import { expect } from "@rbxts/expect";
+
+expect({
+  name: "Daymon",
+  age: 24,
+}).to.have.a.lengthOf(2);
+```
+
+#### Example error
+
+```logs
+Expected the object to have exactly '3' key(s), but it actually had '2'
+
+Value: '{"name":"Daymon","age":24}'
+```
+
+### Deep equal
+
+You can use the [deepEqual](/docs/api/expect.assertion.deepequal.md) method to check if two objects are _deeply_ equal
+to one another.
+
+```ts
+import { expect } from "@rbxts/expect";
+
+expect({
+  name: "Daymon",
+  age: 5,
+}).to.deepEqual({
+  name: "Daymon",
+  age: 5,
+});
+```
+
+#### Example error
+
+```logs
+Expected '{...}' to deep equal '{...}', but 'age' has a different value
+
+Expected: '4' (number)
+Actual: '5' (number)
+
+Expected (full): '{"name":"Daymon","age":4}'
+Actual (full): '{"name":"Daymon","age":5}'
+```
+
+### Match
+
+:::info
+
+[GitHub Issue #19](https://github.com/daymxn/rbxts-expect/issues/19)
+
+:::
+
+### Key/Property
+
+:::info
+
+[GitHub Issue #20](https://github.com/daymxn/rbxts-expect/issues/20)
+
+:::
+
+## Extra
+
+[Proxies](/docs/usage-guide#proxies) allow you to provide the path of nested variables in your test output.

@@ -1,0 +1,103 @@
+---
+description: Matchers available for testing functions and callbacks.
+---
+
+# Functions
+
+## API
+
+### Is a function
+
+You can use the [function](/docs/api/expect.assertion.function.md) method to check if a value is a function.
+
+```ts
+import { expect } from "@rbxts/expect";
+
+expect(() => {
+  throw "Error";
+}).to.be.a.function();
+```
+
+#### Example error
+
+```logs
+Expected '1' to be of type 'function', but it was a 'number'
+```
+
+### Throws
+
+You can use the [throws](/docs/api/expect.assertion.throws.md) method to check if a function throws an error.
+
+```ts
+import { expect } from "@rbxts/expect";
+
+expect(() => {
+  throw "Error";
+}).to.throw();
+```
+
+#### Example error
+
+```logs
+Expected the function to throw, but it didn't throw at all
+```
+
+### Throws with named functions
+
+Calling [throws](/docs/api/expect.assertion.throws.md) on a named function will use that function's name in its output.
+
+```ts
+import { expect } from "@rbxts/expect";
+
+function iThrow() {
+  throw "Error";
+}
+
+expect(iThrow).to.throw();
+```
+
+#### Example error
+
+```logs
+Expected iDontThrow to throw, but it didn't throw at all
+```
+
+### Throws substring
+
+You can use an overload of the [throws](/docs/api/expect.assertion.throws.md) method to check if a function throws an
+error that contains a certain string.
+
+```ts
+import { expect } from "@rbxts/expect";
+
+expect(() => {
+  throw "You don't have enough money";
+}).to.throw("enough money");
+```
+
+#### Example error
+
+```logs
+Expected the function to throw with the substring "enough money", but it threw a message without it:
+"You don't have enough space"
+```
+
+### Throws pattern
+
+You can use the [throwsMatch](/docs/api/expect.assertion.throwsmatch.md) method to check if a function throws an error
+that matches the given pattern.
+
+```ts
+import { expect } from "@rbxts/expect";
+
+expect(() => {
+  throw "You don't have enough money";
+}).to.throw("money$");
+```
+
+#### Example error
+
+```logs
+Expected iThrow to throw with a message that matched /money$/, but it threw a message without it:
+"You don't have enough space"
+```

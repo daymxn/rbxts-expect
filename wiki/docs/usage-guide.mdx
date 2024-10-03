@@ -1,0 +1,238 @@
+# Usage Guide
+
+So you're interested in how to use `@rbxts/expect`?
+
+This page will run you through some of the core concepts of `@rbxts/expect`, and give you an idea on the expected usage.
+
+## Matchers
+
+Matchers are methods that perform checks on your actual value. They're the core functionality of `@rbxts/expect`.
+
+```ts
+import { expect } from "@rbxts/expect";
+
+expect([1, 2, 3]).to.not.be.empty();
+// empty is a matcher
+```
+
+Depending on your preference, you can either:
+
+1. Look through the [matchers](category/matchers) category for a compilation of matchers, organized by their effect on
+   certain types.
+2. Look through the [api](api) reference to see _all_ the available matchers.
+
+Both have similiar documentation, the only difference is that the [matchers](category/matchers) category organizes a lot
+of the _common_ matchers by type- where's the [api](api) reference has all the matchers in a single list.
+
+## Proxies
+
+Proxies are effectively just wrappers around values; wrappers that allow `@rbxts/expect` to track the path you access
+(for error messages).
+
+```logs
+Expected parent.cars to be empty, but it had 2 elements.
+
+parent.cars: '["Tesla","Civic"]'
+```
+
+### Creating proxies
+
+To create a proxy, you just need to call the [createProxy](api/expect.createproxy) method before you start your property
+chain.
+
+```ts
+import { expect, createProxy } from "@rbxts/expect";
+
+const dad = {
+  name: "Dad",
+  age: 25,
+  cars: ["Tesla", "Civic"],
+};
+
+const person = {
+  name: "Daymon",
+  age: 24,
+  parent: dad,
+};
+
+expect(createProxy(person).parent.cars).to.be.empty();
+```
+
+```logs title="Console"
+Expected parent.cars to be empty, but it had 2 elements.
+
+parent.cars: '["Tesla","Civic"]'
+```
+
+All the provided matchers come with variants of their error message when used alongside proxies.
+
+### Proxy callbacks
+
+If you're wanting to make multiple checks on a single object, you can use the [withProxy](api/expect.withproxy)
+function, which will invoke your callback with the created proxy.
+
+```ts
+import { expect, withProxy } from "@rbxts/expect";
+
+const dad = {
+  name: "Dad",
+  age: 25,
+  cars: ["Tesla", "Civic"],
+};
+
+const person = {
+  name: "Daymon",
+  age: 24,
+  parent: dad,
+};
+
+withProxy(person, (proxy) => {
+  expect(proxy.age).to.equal(24);
+  expect(proxy.parent).to.be.ok();
+  expect(proxy.parent.cars).to.be.empty();
+});
+```
+
+```logs title="Console"
+Expected parent.cars to be empty, but it had 2 elements.
+
+parent.cars: '["Tesla","Civic"]'
+```
+
+:::warning
+
+Proxies are _ONLY_ intended to be used on the _left_ side of checks (the "actual" value).
+
+Using a proxy on the right side (the "expected" value) is _undefined_ behavior and, depending on the method, may result
+in a warning to your console.
+
+:::
+
+## Config
+
+`@rbxts/expect` exports the [ExpectConfig](api/expect.expectconfig) interface as a means for configuring certain
+behaviors in your `expect` calls.
+
+```ts
+export interface ExpectConfig {
+  /**
+   * The length at which collapsible values become collapsed variants.
+   *
+   * @defaultValue `20`
+   *
+   * @remarks
+   * When actual/expected values are beyond this length in size (as strings), they
+   * are converted into "collapsed" versions of themselves.
+   *
+   * Arrays are collapsed to `[...]`
+   * Objects are collapsed to `{...}`
+   * Strings are collapsed to `"..."`
+   * And everything else is collapsed to `'...'`
+   *
+   * @see {@link ActualPlaceholder.fullValue | fullValue}
+   */
+  collapseLength: number;
+}
+```
+
+### Managing the default config
+
+You can use the [setDefaultExpectConfig](api/expect.setdefaultexpectconfig) and
+[resetDefaultExpectConfig](api/expect.resetdefaultexpectconfig) functions to update the default config.
+
+```ts
+import { expect, withProxy, setDefaultExpectConfig, resetDefaultExpectConfig } from "@rbxts/expect";
+
+export = () => {
+  beforeAll(() => {
+    setDefaultExpectConfig({
+      collapseLength: 10,
+    });
+  });
+
+  afterAll(() => {
+    resetDefaultExpectConfig();
+  });
+
+  it("checks if the actual value is included in the array", () => {
+    expect(5).to.be.anyOf([1, 2, 3, 4, 5]).but.not.anyOf([1, 2, 3, 4]);
+  });
+};
+```
+
+Since `expect` uses the latest config whenever it needs a value, you don't need to provide the config anywhere in your
+`expect` calls.
+
+## Usage outside of tests
+
+Since `@rbxts/expect` is test-agnostic, you don't need to use it in a testing environment.
+
+```ts
+import { expect } from "@rbxts/expect";
+import { remotes } from "./remotes";
+import { saves } from "./saves";
+import { pets } from "./data";
+
+remotes.purchasePet.connect(async (player, petId) => {
+  const data = saves.get(player);
+  const pet = pets.get(petId);
+
+  expect(data.money).to.be.gte(pet.cost);
+
+  data.money -= pet.cost;
+  data.pets.push(pet);
+
+  data.save();
+
+  return "Pet purchased!";
+});
+```
+
+Although, if you want to transform your messages in a different way than what `@rbxts/expect` outputs, it's your job to
+catch the exception and rethrow it accordingly.
+
+```ts
+try {
+  expect(data.money).to.be.gte(pet.cost);
+} catch (e) {
+  throw "You don't have enough money!";
+}
+```
+
+## Client usage
+
+Since `@rbxts/expect` doesn't use any server-side services, you can use it on the client without any issues.
+
+```ts
+import { expect } from "@rbxts/expect";
+import { pets } from "@shared/data";
+import { LocalData } from "@client/save";
+import { remotes } from "@shared/remotes";
+
+export async function buyPet(petId: string) {
+  const pet = pets.get(petId);
+
+  expect(LocalData.money).to.be.gte(pet.cost);
+
+  return remotes.purchasePet(petId);
+}
+```
+
+This way, you can also add a layer of your tech stack that validates state before sending server events; reducing
+overhead to your server.
+
+:::warning
+
+While you can utilize `@rbxts/expect` on the client, you should _always_ have checks on the server too.
+
+Rule #1 of Client-Server security: "Never. Trust. The. Client."
+
+:::
+
+## Next steps
+
+If you're wanting to learn more, feel free to check out any of the following resources:
+
+- [Using with TestEZ](using-with-testez)
+- [Matchers](category/matchers)
+- [Extension Guides](category/extension-guides)

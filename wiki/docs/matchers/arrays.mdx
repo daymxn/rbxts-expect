@@ -1,0 +1,194 @@
+---
+description: Matchers available for testing arrays.
+---
+
+# Arrays
+
+An array is classified as a table of incrementing number keys that start at `1`, and without any holes.
+
+In typescript, the distinction between an `object` and an `array` is pretty black and white, while in lua, this
+distinction is usually lost.
+
+`@rbxts/expect` attempts to rectify this by providing helper methods for checking arrays.
+
+## API
+
+### Is an Array
+
+You can use the [array](/docs/api/expect.assertion.array.md) method to check if a provided value is actually an array.
+
+```ts
+import { expect } from "@rbxts/expect";
+
+expect([1, 2, 3]).to.be.an.array();
+```
+
+#### Example error
+
+```logs
+Expected '{"name": "Daymon"}' to be an array, but it had a non number key 'name' (string)
+```
+
+### Array type
+
+You can use an overload on the [array](/docs/api/expect.assertion.array.md) method to check if an array contains
+elements all of a certain type.
+
+This includes support for checkable types, [t checks](https://www.npmjs.com/package/@rbxts/t), and even user-defined
+callbacks.
+
+```ts
+import { expect, TypeCheckCallback } from "@rbxts/expect";
+import t from "@rbxts/t";
+
+const isNumber: TypeCheckCallback = (value) => {
+  return typeOf(value) === "number";
+};
+
+expect([1, 2, 3]).to.be.an.arrayOf("number");
+expect([1, 2, 3]).to.be.an.arrayOf(t.number);
+expect([1, 2, 3]).to.be.an.arrayOf(isNumber);
+```
+
+#### Example error
+
+```logs
+Expected '[1,2,3]' to be an array of type 'string', but there was an element that was a 'number'
+
+Index: 1
+Value: 1
+```
+
+### Includes
+
+You can use the [includes](/docs/api/expect.assertion.includes.md) method to check if a value is present in the array.
+
+```ts
+import { expect } from "@rbxts/expect";
+
+expect([1, 2, 3]).to.include(4);
+```
+
+#### Example error
+
+```logs
+Expected '[1,2,3]' to include '4', but it was missing
+```
+
+### Empty
+
+You can use the [empty](/docs/api/expect.assertion.empty.md) method to check if an array contains any elements.
+
+```ts
+import { expect } from "@rbxts/expect";
+
+expect([]).to.be.empty();
+```
+
+#### Example error
+
+```logs
+Expected '[1,2,3]' to be empty, but it had 3 elements
+```
+
+### Length
+
+You can use the [length](/docs/api/expect.assertion.length.md) method to check if an array has a certain amount of
+elements.
+
+```ts
+import { expect } from "@rbxts/expect";
+
+expect([1, 2, 3]).to.have.a.lengthOf(3);
+```
+
+#### Example error
+
+```logs
+Expected '[1,2]' to have exactly '3' element(s), but it actually had '2'
+```
+
+### Deep equal
+
+You can use the [deepEqual](/docs/api/expect.assertion.deepequal.md) method to check if two arrays are _deeply_ equal to
+one another.
+
+```ts
+import { expect } from "@rbxts/expect";
+
+expect([1, 2, 3]).to.deepEqual([1, 2, 3]);
+```
+
+#### Example error
+
+```logs
+Expected '[1,2]' to deep equal '[1]', but there were extra elements
+
+Expected: '[1]'
+Actual: '[1,2]'
+Extra Elements: '[2]'
+```
+
+### Starts with
+
+:::info
+
+[GitHub Issue #3](https://github.com/daymxn/rbxts-expect/issues/3)
+
+:::
+
+### Ends with
+
+:::info
+
+[GitHub Issue #4](https://github.com/daymxn/rbxts-expect/issues/4)
+
+:::
+
+### All of
+
+:::info
+
+[GitHub Issue #14](https://github.com/daymxn/rbxts-expect/issues/14)
+
+:::
+
+### Unique
+
+:::info
+
+[GitHub Issue #13](https://github.com/daymxn/rbxts-expect/issues/13)
+
+:::
+
+### Sorted
+
+:::info
+
+[GitHub Issue #2](https://github.com/daymxn/rbxts-expect/issues/2)
+
+:::
+
+### Some
+
+:::info
+
+[GitHub Issue #1](https://github.com/daymxn/rbxts-expect/issues/1)
+
+:::
+
+### Contain exactly
+
+:::info
+
+[GitHub Issue #15](https://github.com/daymxn/rbxts-expect/issues/15)
+
+:::
+
+### Contain exactly in order
+
+:::info
+
+[GitHub Issue #15](https://github.com/daymxn/rbxts-expect/issues/15)
+
+:::

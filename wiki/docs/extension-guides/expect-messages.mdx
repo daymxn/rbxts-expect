@@ -1,0 +1,1134 @@
+---
+description: Learn what expect messages are, and how to create them.
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+# Expect Messages
+
+Expect messages are the error messages that [custom methods](custom-methods) throw whenever they fail.
+
+`@rbxts/expect` provides various utility methods to make creating these messages easier, and to help you practice
+property [DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself) principles.
+
+:::info what you'll learn
+
+- What expect messages are
+- The different components of an expect message
+- How to implement your own expect message
+- Guidance on proper usage
+
+:::
+
+## Overview
+
+[ExpectMessageBuilder](/docs/api/expect.expectmessagebuilder.md) is how we define the _structure_ of an error message.
+
+We then "populate" this message through methods on [ExpectMessageBuilder](/docs/api/expect.expectmessagebuilder.md),
+when in our [custom method](custom-methods).
+
+At the end of our methods, we _return_ this populated instance, and `@rbxts/expect` will handle throwing the actual
+error.
+
+### Creation
+
+To create an [ExpectMessageBuilder](/docs/api/expect.expectmessagebuilder.md), you just call the
+[default constructor](/docs/api/expect.expectmessagebuilder._constructor_.md).
+
+```ts
+import { ExpectMessageBuilder, place } from "@rbxts/expect";
+
+const baseMessage = new ExpectMessageBuilder(
+  `Expected ${place.actual.value} to equal ${place.expected.value}`,
+  `Expected ${place.actual.value} to NOT equal ${place.expected.value}`,
+);
+```
+
+The first argument is the message that will be used when your check fails:
+
+```ts
+expect(1).to.equal(2);
+```
+
+The second argument is the message that will be used when your check passes, but it was negated:
+
+```ts
+expect(1).to.not.equal(2);
+```
+
+### Placeholders
+
+You might've noticed these in the previous examples, but placeholders (prefixed with the `place` keyword) are basically
+just drop-in replacements for a variety of data that will be automatically populated before your message is thrown.
+
+```ts
+export interface ActualPlaceholder {
+  fullValue: string;
+  type: string;
+  value: string;
+}
+export interface ExpectedPlaceholder {
+  fullValue: string;
+  type: string;
+  value: string;
+}
+export interface Placeholder {
+  actual: ActualPlaceholder;
+  expected: ExpectedPlaceholder;
+  index: string;
+  name: string;
+  nil: string;
+  not: string;
+  path: string;
+  reason: string;
+  undefined: string;
+}
+export const place: Placeholder;
+```
+
+You'll learn more about each placeholder, and their usage, in the following sections.
+
+### Usage
+
+To _use_ a message, you call the [use](/docs/api/expect.expectmessagebuilder.use.md) method; this will return a copy of
+the message. With this copy, you can then call various methods on the message to populate data- and use the
+[pass](/docs/api/expect.expectmessagebuilder.pass.md)/[fail](/docs/api/expect.expectmessagebuilder.fail.md) methods to
+return it.
+
+```ts
+import { CustomMethodImpl, ExpectMessageBuilder, place } from "@rbxts/expect";
+
+const baseMessage = new ExpectMessageBuilder(
+  `Expected ${place.name} to ${place.not} strictly equal ${place.expected.value}`,
+);
+
+const equal: CustomMethodImpl<defined> = (_, actual: defined, expected: defined) => {
+  // highlight-next-line
+  const message = baseMessage.use().expectedValue(expected);
+
+  return actual === expected ? message.pass() : message.fail();
+};
+```
+
+:::warning
+
+Not calling [use](/docs/api/expect.expectmessagebuilder.use.md) may cause your variables to leak into other (unrelated)
+messages. It's important to call `use` before adding data.
+
+The _only_ reason you can populate data before calling `use` is because this allows you to populate "default" data.
+
+You'll learn more about what this looks like in the [metadata](#metadata) section.
+
+:::
+
+## Variable data
+
+[VariableData](/docs/api/expect.variabledata.md) is the type used behind the scenes for the "actual" and "expected"
+variables.
+
+```ts
+export interface VariableData {
+  value: unknown;
+  type?: string;
+}
+```
+
+These correspond to the [ActualPlaceholder](/docs/api/expect.actualplaceholder.md) and
+[ExpectedPlaceholder](/docs/api/expect.expectedplaceholder.md) types as well.
+
+```ts
+export interface ActualPlaceholder {
+  fullValue: string;
+  type: string;
+  value: string;
+}
+export interface ExpectedPlaceholder {
+  fullValue: string;
+  type: string;
+  value: string;
+}
+```
+
+### Usage
+
+For example, lets say we were checking if two values are equal.
+
+```ts
+import { ExpectMessageBuilder, place, CustomMethodImpl } from "@rbxts/expect";
+
+const baseMessage = new ExpectMessageBuilder(
+  `Expected ${place.actual.value} (${place.actual.type}) to equal ${place.expected.value} (${place.expected.type})`,
+);
+
+const equal: CustomMethodImpl<defined> = (_, actual: defined, expected: defined) => {
+  const message = baseMessage
+    .use()
+    .actualValue(actual)
+    .actualType(typeOf(actual))
+    .expectedValue(expected)
+    .expectedType(typeOf(expected));
+
+  return actual === expected ? message.pass() : message.fail();
+};
+```
+
+```logstitle="Console"
+Expected '5' (number) to equal "5" (string)
+```
+
+Using the helper methods on `ExpectMessageBuilder`, we "populated" the data for the actual and expected variables in our
+final message.
+
+Alternatively, you can use the `actual` and `expected` methods to populate the value and type at the same time.
+
+```ts
+const equal: CustomMethodImpl<defined> = (_, actual: defined, expected: defined) => {
+  const message = baseMessage
+    .use()
+    .actual({
+      value: actual,
+      type: typeOf(actual),
+    })
+    .expected({
+      value: expected,
+      type: typeOf(expected),
+    });
+
+  return actual === expected ? message.pass() : message.fail();
+};
+```
+
+### Automatic behavior
+
+`expect` automatically populates some data for you, so some of this can actually be removed entirely.
+
+#### Type
+
+By default, the `type` property is automatically computed according to the `value`. So if you're calling `typeOf`, you
+don't have to manually populate this.
+
+```ts
+const equal: CustomMethodImpl<defined> = (_, actual: defined, expected: defined) => {
+  const message = baseMessage.use().actualValue(actual).expectedValue(expected);
+
+  return actual === expected ? message.pass() : message.fail();
+};
+```
+
+##### So why have it
+
+There are certain situations where the inferred type from `typeOf` may not be desired.
+
+For example, what if we wanted to support a custom class type?
+
+```ts
+const equal: CustomMethodImpl<defined> = (_, actual: defined, expected: defined) => {
+  const message = baseMessage.use().expectedValue(expected);
+
+  if (isMyCustomType(expected)) {
+    message.expectedType("MyCustomType");
+    // logic unique to MyCustomType ...
+  }
+  // ...
+};
+```
+
+#### Actual
+
+By default, the data for `actual` is automatically computed and populated for you. So if you're not mutating it, or
+adding additional context- there's no need to do it manually.
+
+```ts
+const equal: CustomMethodImpl<defined> = (_, actual: defined, expected: defined) => {
+  const message = baseMessage.use().expectedValue(expected);
+
+  return actual === expected ? message.pass() : message.fail();
+};
+```
+
+##### So why have it
+
+While the `actual` variable is set automatically, sometimes your method has additional context- or a better way to
+represent the value.
+
+A prime example of this is the [enum](/docs/api/expect.assertion.enum) method.
+
+```ts
+const baseMessage = new ExpectMessageBuilder(`Expected ${place.actual.value} to equal ${place.expected.value}`);
+
+const equal: CustomMethodImpl<defined> = (_, enumTable, actual: defined, expected: defined) => {
+  const message = baseMessage.use().expectedValue(expected);
+  const valueAsEnum = enumTable[actual];
+  message.actualValue(valueAsEnum);
+  // ...
+};
+```
+
+So instead of this output:
+
+```logs
+Expected '0' to equal "Basketball"
+```
+
+We can get this output:
+
+```logs
+Expected "Soccer" to equal "Basketball"
+```
+
+### Full Value
+
+You might have noticed that there's a property on the placeholder types called `fullValue` that isn't present on the
+`VariableData` types.
+
+```ts
+export interface ActualPlaceholder {
+  // highlight-next-line
+  fullValue: string;
+  type: string;
+  value: string;
+}
+export interface ExpectedPlaceholder {
+  // highlight-next-line
+  fullValue: string;
+  type: string;
+  value: string;
+}
+```
+
+By default, the `value` property is what we call the "collapsed" version of the value.
+
+This means that it respects the [collapseLength](/docs/api/expect.expectconfig.collapselength.md) as defined in the
+config.
+
+```ts
+const baseMessage = new ExpectMessageBuilder(
+  `Expected ${place.actual.value} to be empty\nFullValue: ${place.actual.fullValue}`,
+);
+```
+
+```logstitle="Console"
+Expected '[...]' to be empty
+FullValue: '[1,2,3,4,5,6,7,8,9,10]'
+```
+
+You can use the `fullValue` property to ignore the `collapseLength` and attach the full version of the value.
+
+This allows you to keep the first sentence of your check _short_ and _easy to read_, while also providing enough data
+_after_ the first message- to debug the issue.
+
+## Keywords
+
+Some of the placeholders are either drop-ins for certain words, or are only present given a certain context.
+
+### Not
+
+The `not` placeholder is a drop-in for the word `"NOT"`, but is _only_ present if your message is negated.
+
+This can come in handy when the only difference between your failure message and your negated message is the word "NOT".
+
+```ts
+new ExpectMessageBuilder(`Expected ${place.actual.value} to ${place.not} be empty`);
+
+// is the same as
+new ExpectMessageBuilder(
+  `Expected ${place.actual.value} to be empty`,
+  `Expected ${place.actual.value} to NOT be empty`,
+);
+```
+
+:::tip
+
+By default, if you don't provide a negated message as the second argument of your `ExpectMessageBuilder` constructor
+call, it defaults to the first argument (your standard failure message).
+
+This allows you to take full advantage of the `not` keyword.
+
+:::
+
+### Nil
+
+The `nil` and `undefined` placeholders are drop-ins for the word `"nil"`.
+
+For example, let's say we were checking if an object was an arry:
+
+```ts
+new ExpectMessageBuilder(`Expected ${place.actual.value} to be an array`);
+```
+
+In our method, we could do something like this:
+
+```ts
+message.actualValue(actualValue ?? place.nil);
+```
+
+Then, (if `actual` was undefined) our output would come out like so:
+
+```logs
+Expected 'nil' to be an array
+```
+
+:::tip
+
+Behind the scenes, `expect` automatically does this for the `actual` and `expected` values.
+
+The placeholders are provided anyways to allow you to do something similiar for nested values, or values beyond `actual`
+and `expected`.
+
+:::
+
+## Path
+
+The `path` placeholder maps to the path on nested variables.
+
+When working with tables, you might want to retain the path to the property that failed.
+
+Using a `path`, you can specify a place in your message for this data to be provided.
+
+While you can call the [path method](/docs/api/expect.expectmessagebuilder.path.md) to manually provide this data,
+[proxies](/docs/usage-guide#proxies) will automatically provide this for you.
+
+```ts
+new ExpectMessageBuilder(`${place.path} - Expected ${place.actual.value} to be an array`);
+```
+
+```logstitle="Console"
+parent.cars - Expected '2' to be an array
+```
+
+## Name
+
+The `name` placeholder maps to either the [path](#path) or the value of the `actual`.
+
+A common theme in messages in to display the path when working with tables, and display the actual value when working
+with non tables.
+
+Using a `name`, you can specify to use the `path` whenever it's available, but fallback to the `actual` value.
+
+```ts
+new ExpectMessageBuilder(`Expected ${place.name} to be an array`);
+```
+
+<Tabs>
+<TabItem value="tables" default>
+
+```ts
+withProxy(person, (p) => {
+  expect(p.cars).to.be.an.array();
+});
+```
+
+```logstitle="Console"
+Expected parent.cars to be an array
+```
+
+</TabItem>
+
+<TabItem value="others">
+
+```ts
+expect(5).to.be.an.array();
+```
+
+```logstitle="Console"
+Expected '5' to be an array
+```
+
+</TabItem>
+</Tabs>
+
+### Custom names
+
+The default `name` is the value of the `actual` variable. But you can override this default via the `name` method.
+
+For example, maybe you wanna attach the type alongside the value.
+
+```ts
+new ExpectMessageBuilder(`Expected ${place.name} to be an array`).name(`${place.actual.value} (${place.actual.type})`);
+```
+
+```logstitle="Console"
+Expected '5' (number) to be an array
+```
+
+## Metadata
+
+Metadata is additional data that follows after the main message, in the format of `key: value`.
+
+Lets say we're checking that all the values in an array are equal to an `expected` value.
+
+```ts
+for (const [index, value] of ipairs(actual)) {
+  message.metadata({ Index: index, Value: value });
+  if (value !== expected) return message.fail();
+}
+```
+
+```logstitle="Console"
+Expected '[1,1,2]' to all be equal to '1', but there was a value that was not.
+
+Index: 3
+Value: 2
+```
+
+Metadata is useful for data that is only known at runtime, or data that is only needed for additional debugging- and
+should be seperate from the main contents of the message.
+
+:::tip
+
+Metadata is sorted alphabetically in the output, but priority is placed for the following keys (in order): 'index',
+'key', 'value', 'expected', 'actual'.
+
+So if any of those keys are in your metadata, they'll come before the rest of your metadata. The capitalization doesn't
+matter either, so long as the keys are _exactly_ equal.
+
+:::
+
+### Kind of metadata
+
+Beyond the base `metadata`, there are additional kinds of metadata that only get attached under certain circumstances.
+
+#### Failure metadata
+
+Failure metadata is metadata that is _only_ attached to the message if your check fails.
+
+A failure is effectively the same thing as `!negated`. Useful for when you wanna conditionally attach data, but only
+when the case is not a negation.
+
+Lets say we're checking that all the values in an array are equal to an `expected` value.
+
+```ts
+for (const [index, value] of ipairs(actual)) {
+  message.failureMetadata({ Index: index, Value: value });
+  if (value !== expected) return message.fail();
+}
+```
+
+```logstitle="Console"
+Expected '[1,1,2]' to all be equal to '1', but there was a value that was not.
+
+Index: 3
+Value: 2
+```
+
+This might look the same as using a normal `metadata`, but the difference comes into play when the result is a pass.
+
+If we used normal `metadata`, and our check was passed- but it was negated:
+
+```ts
+expect([1, 1, 1]).to.not.allEqual(1);
+```
+
+```logstitle="Console"
+Expected '[1,1,1]' to NOT all be equal to '1'.
+
+Index: 3
+Value: 1
+```
+
+But if we use `failureMetadata` instead, it won't be attached in the case of a pass:
+
+```logstitle="Console"
+Expected '[1,1,1]' to NOT all be equal to '1'.
+```
+
+:::tip
+
+Failure metadata will come _after_ any attached (base) `metadata`, if there's any present.
+
+:::
+
+#### Nested metadata
+
+Nested metadata is metadata that is _only_ attached to the message if there's a [path](#path) present.
+
+Useful for when you wanna conditionally attach data, but only when the case is on nested objects.
+
+A very common use-case is attaching data about the actual value for nested objects when using a [name](#name), so you
+still get the path to the variable in the initial message.
+
+```ts
+const baseMessage = new ExpectMessageBuilder(
+  `Expected ${place.name} to ${place.not} equal ${place.expected.value} (${place.expected.type})`,
+)
+  .name(`${place.actual.value} (${place.actual.type})`)
+  .nestedMetadata({
+    [place.path]: `${place.actual.value} (${place.actual.type})`,
+  });
+```
+
+<Tabs>
+
+<TabItem value="with a path" default>
+
+```logstitle="Console"
+Expected parent.age to equal "5" (string)
+
+parent.age: '5' (number)
+```
+
+</TabItem>
+
+<TabItem value="without a path">
+
+```logstitle="Console"
+Expected '5' (number) to equal "5" (string)
+```
+
+</TabItem>
+
+</Tabs>
+
+:::tip
+
+Nested metadata will come _before_ **all** other metadata types (including the "base" `metadata`), if there's any
+present.
+
+:::
+
+#### Surface metadata
+
+Surface metadata is metadata that is _only_ attached to the message if there's NOT a [path](#path) present.
+
+Effectively the opposite of [nested metadata](#nested-metadata).
+
+Useful for when you wanna conditionally attach data, but only when the case is on non nested objects.
+
+For example, let's say we were checking if an object was empty, and we wanted to use the name `the object` to keep the
+message short:
+
+```ts
+const baseMessage = new ExpectMessageBuilder(`Expected ${place.name} to ${place.not} be empty`)
+  .name("the object")
+  .nestedMetadata({ [place.path]: place.actual.value });
+```
+
+We might have logic like so:
+
+```ts
+if (amount > 1) {
+  return message.suffix(`, but it had ${amount} keys`).surfaceMetadata({ Value: place.actual.value }).fail();
+}
+```
+
+<Tabs>
+
+<TabItem value="with a path" default>
+
+```logstitle="Console"
+Expected parent.parent to be empty, but it had 2 keys
+
+parent.parent: '{"name":"Daymon","age":24}'
+```
+
+</TabItem>
+
+<TabItem value="without a path">
+
+```logstitle="Console"
+Expected the object to be empty, but it had 2 keys
+
+Value: '{"name":"Daymon","age":24}'
+```
+
+</TabItem>
+
+</Tabs>
+
+:::tip
+
+Surface metadata (like nested metadata) will come _before_ **all** other metadata types (including the "base"
+`metadata`), if there's any present.
+
+:::
+
+## Reason
+
+The `reason` placeholder is a a utility placeholder for describing why the check failed.
+
+A lot of times, your check might me making multiple assertions, or have different errors depending on the context.
+
+Using a `reason`, you can specify a place in your message for this data to be provided.
+
+```ts
+const baseMessage = new ExpectMessageBuilder(
+  `Expected ${place.name} to ${place.not} equal ${place.expected.value}, but ${place.reason}`,
+);
+
+const equal: CustomMethodImpl<defined> = (_, actual: defined, expected: defined) => {
+  const message = baseMessage.use().expectedValue(expected);
+
+  if (typeOf(actual) !== typeOf(expected)) {
+    return message.reason("it was a different type").fail();
+  }
+
+  if (actual !== value) {
+    return message.reason("it had a different value").fail();
+  }
+
+  // apply a default reason for negations
+  return message.reason("it did").pass();
+};
+```
+
+```logstitle="Console"
+Expected "4" to equal '4', but it was a different type
+```
+
+```logstitle="Console"
+Expected '10' to equal '10', but it was a different type
+```
+
+```logstitle="Console"
+Expected '10' to NOT equal '10', but it did
+```
+
+:::tip
+
+You can use the helper method `failWithReason` to provide a `reason` and return a `fail` at the same time.
+
+```ts
+return message.failWithReason("it was a different type");
+
+// is the same as
+return message.reason("it was a different type").fail();
+```
+
+:::
+
+### Automatic attachment
+
+If you don't have a place in your message for `reason` to be populated, but still call "provide" a reason via the
+[reason](/docs/api/expect.expectmessagebuilder.reason.md) method, then the message builder will automatically attach a
+`Reason: ${place.reason}` after your message.
+
+```ts
+const baseMessage = new ExpectMessageBuilder(`Expected ${place.name} to ${place.not} equal ${place.expected.value}`);
+
+const equal: CustomMethodImpl<defined> = (_, actual: defined, expected: defined) => {
+  const message = baseMessage.use().expectedValue(expected);
+
+  if (typeOf(actual) !== typeOf(expected)) {
+    return message.reason("it was a different type").fail();
+  }
+
+  if (actual !== value) {
+    return message.reason("it had a different value").fail();
+  }
+
+  return message.pass();
+};
+```
+
+```logs
+Expected "4" to equal '4'
+Reason: it was a different type
+```
+
+This way, you can add a `reason` whenever you need it, without needing to find a predefined spot for it in your message.
+
+:::info
+
+If your message has any [metadata](#metadata) attach to it, the `Reason: message` line will come before it.
+
+:::
+
+## Prefix types
+
+The base message is typically referred to as the "prefix" of your message, in contrast to all the data that follows.
+
+But there are a few different types of prefixes your message can have.
+
+### Failure prefix
+
+Otherwise known as the "base" prefix. This is the prefix attached to your messages whenever your check fails.
+
+You can specify this prefix when creating your `ExpectMessageBuilder` instance.
+
+```ts
+new ExpectMessageBuilder(`Expected ${place.name} to equal ${place.expected.value}`);
+```
+
+You can also also _append_ this prefix with the `appendPrefix` method.
+
+```ts
+new ExpectMessageBuilder(`Expected ${place.name} to equal ${place.expected.value}`).appendPrefix(", but it was not");
+
+// Would be the same as
+new ExpectMessageBuilder(
+  `Expected ${place.name} to equal ${place.expected.value},
+but it was not`,
+);
+```
+
+Or when you call `use`, you can provide an additional message to append as well.
+
+```ts
+const baseMessage = new ExpectMessageBuilder(`Expected ${place.name} to equal ${place.expected.value}`);
+
+const equal: CustomMethodImpl<defined> = (_, actual: defined, expected: defined) => {
+  const message = baseMessage.use(", but it was not").expectedValue(expected);
+
+  return actual === expected ? message.pass() : message.fail();
+};
+```
+
+### Negated prefix
+
+The negated prefix is a prefix that _replaces_ the failure prefix, but _only_ when your message is negated.
+
+You can specify this prefix (as the second argument) when creating your `ExpectMessageBuilder` instance.
+
+```ts
+new ExpectMessageBuilder(
+  `Expected ${place.name} to equal ${place.expected.value}`,
+  `Expected ${place.name} to NOT equal ${place.expected.value}`,
+);
+```
+
+Calling `appendPrefix` and `use` will _also_ append to the negation prefix.
+
+:::tip
+
+By default, the negation prefix is set to be the same as the failure prefix.
+
+This allows you to do things like this:
+
+```ts
+new ExpectMessageBuilder(`Expected ${place.name} to ${place.not} equal ${place.expected.value}`);
+```
+
+:::
+
+### Trailing failure prefix
+
+The trailing failure prefix is a prefix that is attached to the end of your prefix, but _only_ if the check fails.
+
+Another way to look at it is that it's a prefix attached to the end of your [failure prefix](#failure-prefix), but NOT
+your [negated prefix](#negated-prefix).
+
+You can specify a trailing failure prefix with the `trailingFailurePrefix` method.
+
+```ts
+new ExpectMessageBuilder(`Expected ${place.name} to ${place.not} equal ${place.expected.value}`).trailingFailurePrefix(
+  ", but it was not",
+);
+
+// Would be the same as
+new ExpectMessageBuilder(
+  `Expected ${place.name} to equal ${place.expected.value}, but it was not`,
+  `Expected ${place.name} to NOT equal ${place.expected.value}`,
+);
+```
+
+Alternatively, you can specify a trailing failure prefix as the second argument of your `use` call.
+
+```ts
+const baseMessage = new ExpectMessageBuilder(`Expected ${place.name} to equal ${place.expected.value}`);
+
+const equal: CustomMethodImpl<defined> = (_, actual: defined, expected: defined) => {
+  const message = baseMessage.use("", ", but it was not").expectedValue(expected);
+
+  return actual === expected ? message.pass() : message.fail();
+};
+```
+
+## Suffix types
+
+Suffixes are messages that come _after_ the [prefix](#prefix-types), but before the [metadata](#metadata).
+
+### Failure suffix
+
+This is the suffix attached to your messages whenever your check fails.
+
+You can specify a string for this suffix via the `suffix` method.
+
+```ts
+new ExpectMessageBuilder(`Expected ${place.name} to ${place.not} equal ${place.expected.value}`)
+  .suffix(` because ${place.reason}`)
+  .appendPrefix(", but it was not");
+
+// Would be the same as
+new ExpectMessageBuilder(
+  `Expected ${place.name} to ${place.not} equal ${place.expected.value},
+but it was not because ${place.reason}`,
+);
+```
+
+### Negation suffix
+
+The negation suffix is a suffix that _replaces_ the failure suffix, but _only_ when your message is negated.
+
+You can specify a string for this suffix via the `negationSuffix` method.
+
+```ts
+new ExpectMessageBuilder(`Expected ${place.name} to ${place.not} equal ${place.expected.value}`)
+  .suffix(", but it was not.")
+  .negationSuffix(", but it did");
+
+// Would be the same as
+new ExpectMessageBuilder(
+  `Expected ${place.name} to equal ${place.expected.value}, but it was not.`,
+  `Expected ${place.name} to NOT equal ${place.expected.value}, but it did.`,
+);
+```
+
+### Trailing failure suffix
+
+The trailing failure suffix is a suffix that is attached to the end of your suffix, but _only_ if the check fails.
+
+Another way to look at it is that it's a suffix attached to the end of your [failure suffix](#failure-suffix), but NOT
+your [negation suffix](#negation-suffix).
+
+You can specify a trailing failure suffix with the `trailingFailureSuffix` method.
+
+```ts
+new ExpectMessageBuilder(`Expected ${place.name} to ${place.not} equal ${place.expected.value}`)
+  .suffix(", but it was not.")
+  .negationSuffix(", but it did")
+  .trailingFailureSuffix(` because ${place.reason}`);
+
+// Would be the same as
+new ExpectMessageBuilder(
+  `Expected ${place.name} to equal ${place.expected.value}, but it was not because ${place.reason}`,
+  `Expected ${place.name} to NOT equal ${place.expected.value}, but it did because ${place.reason}`,
+);
+```
+
+## Options
+
+You can configure certain output behaviors for your `ExpectMessageBuilder` instances via the
+`ExpectMessageBuilderOptions` interface.
+
+```ts
+export interface ExpectMessageBuilderOptions {
+  trimSpaces: boolean;
+  wrapValues: boolean;
+  attachFullOnCollapse: boolean;
+  trimWhiteSpace: boolean;
+}
+```
+
+You pass this interface as the third argument to your `ExpectMessageBuilder` constructor call.
+
+```ts
+new ExpectMessageBuilder(`Expected ${place.name} to equal ${place.expected.value}`, undefined, {
+  trimWhiteSpace: false,
+});
+```
+
+### Trim spaces
+
+:::info
+
+By default, `trimSpaces` is enabled.
+
+:::
+
+The `trimSpaces` option is for trimming the spaces around placeholders when they're absent.
+
+For example, given the following message:
+
+```ts
+const baseMessage = new ExpectMessageBuilder(
+  `Expected ${place.actual.value} to ${place.not} equal ${place.expected.value}`,
+);
+```
+
+If the statement was _not_ negated, that means that `${place.not}` would be absent.
+
+<Tabs>
+
+<TabItem value="trimSpaces: true" default>
+
+```logstile="Console"
+Expected 5 to equal 5
+```
+
+</TabItem>
+
+<TabItem value="trimSpaces: false">
+
+```logstile="Console"
+Expected 5 to   equal 5
+```
+
+</TabItem>
+
+</Tabs>
+
+### Wrap values
+
+:::info
+
+By default, `wrapValues` is enabled.
+
+:::
+
+The `wrapValues` option is for wrapping [VariableData](#variable-data) in quotes when output.
+
+Strings are wrapped in double quotes (`"`), while everything else is wrapped in single quotes (`'`).
+
+<Tabs>
+
+<TabItem value="wrapValues: true" default>
+
+```logstile="Console"
+Expected '5' to equal "daymon"
+```
+
+</TabItem>
+
+<TabItem value="wrapValues: false">
+
+```logstile="Console"
+Expected 5 to equal daymon
+```
+
+</TabItem>
+
+</Tabs>
+
+### Attach full on collapse
+
+:::info
+
+By default, `attachFullOnCollapse` is enabled.
+
+:::
+
+The `attachFullOnCollapse` option is for automatically attaching the [full version](#full-value) of variables whenever
+they end up collapsed.
+
+<Tabs>
+
+<TabItem value="attachFullOnCollapse: true" default>
+
+```logstile="Console"
+Expected {...} to equal {...}
+
+Expected (full): '{ name: "Daymon", age: 5 }'
+Actual (full): '{ name: "Daymon", age: 6 }'
+```
+
+</TabItem>
+
+<TabItem value="attachFullOnCollapse: false">
+
+```logstile="Console"
+Expected {...} to equal {...}
+```
+
+</TabItem>
+
+</Tabs>
+
+Useful for ensuring your primary failure message is short (and easy to read quickly), while retaining further details
+for debugging.
+
+Also allows you to take full advantage of collapsing, without needing to manually attach `place.actual.fullValue` and
+`place.expected.fullValue`.
+
+### Trim white space
+
+:::info
+
+By default, `trimWhiteSpace` is enabled.
+
+:::
+
+The `trimWhiteSpace` option is for trimming the white space around the _entire_ message, after it's been full built.
+
+Lets say you appended the path to the start of your messages:
+
+```ts
+const baseMessage = new ExpectMessageBuilder(
+  `${place.path} Expected ${place.actual.value} to ${place.not} equal ${place.expected.value}`,
+);
+```
+
+If the statement ended up not having a path, your message would come out with a leading space.
+
+<Tabs>
+
+<TabItem value="trimWhiteSpace: false" default>
+
+```logstile="Console"
+ Expected 5 to equal 4
+```
+
+</TabItem>
+
+<TabItem value="trimWhiteSpace: true">
+
+```logstile="Console"
+Expected 5 to equal 4
+```
+
+</TabItem>
+
+</Tabs>
+
+## Custom encoding
+
+Sometimes, you need to add variables to your message that are outside the scope of the `actual` and `expected`
+variables.
+
+A good example of this is our [deepEquals](/docs/api/expect.assertion.deepequal.md) method.
+
+```logstitle="Console"
+Expected '{...}' to deep equal '{...}', but 'cars' was missing some elements
+
+Expected: '["Tesla","Civic"]'
+Actual: '["Tesla"]'
+Missing: '["Civic"]'
+
+Expected (full): '{"name":"Daymon","cars":["Tesla","Civic"]}'
+Actual (full): '{"name":"Daymon","cars":["Tesla"]}'
+```
+
+You can use the `encode` method on your `ExpectMessageBuilder` instances to mirror this behavior.
+
+```ts
+return message
+  .suffix(`, but '${result.path}' was missing some elements`)
+  .metadata({
+    Actual: message.encode(result.leftValue),
+    Expected: message.encode(result.rightValue),
+    Missing: message.encode(result.leftMissing),
+  })
+  .fail();
+```
+
+:::tip
+
+There are various parameters you can pass to `encode` for further configuration.
+
+For the sake of keeping this page short, we won't get into them here. If you'd like to learn more about them, take a
+look at the [api docs for encode](/docs/api/expect.expectmessagebuilder.encode.md).
+
+:::
+
+## Best practices
+
+- **Keep proxies in mind**: Ensure your output messages are adjusted in a way that is easily consumable when used
+  alongside [proxies](/docs/usage-guide#proxies).
+- **Provide context**: If your check fails because of a certain key or index, ensure that key or index is included in
+  your output. Your message should contain enough metadata so that someone can properly debug the issue without needing
+  to rewrite the test just to get further details.
+- **Call `use` before populating with values**: It's fine to call methods to add placeholder or static values before
+  calling `use`, but failing to call `use` before adding _invocation specific_ data (such as the expected value, or
+  index values) will cause your expect message to _leak_ values into subsquent callers.
+- **Use nested metadata when using names**: If a path is used, you lose the data associated about your variable when you
+  use a `name`. To ensure this data is present, take advantage of [nestedMetadata](#nested-metadata).
+
+## Summary
+
+Let's recap what we've learned about expect messages:
+
+- They define the **structure** of an error message
+- They get **populated** within our custom methods
+- They can be used alongside **placeholders** to define drop-in sites for common variables
+- They define how a message **changes** when used with _proxies_ or when the check is _negated_
+- They can provide **metadata** to follow after the message for _additional context_

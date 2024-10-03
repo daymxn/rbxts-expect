@@ -1,0 +1,78 @@
+---
+description: Common matchers available for testing ALL types.
+---
+
+# Basic
+
+This page contains matchers that apply to _all_ types.
+
+## API
+
+### Any of
+
+You can use the [anyOf](/docs/api/expect.assertion.anyof.md) method to check if a provided value is shallowly equal to
+one of the values in an array.
+
+```ts
+import { expect } from "@rbxts/expect";
+
+expect(1).to.be.anyOf([1, 2, 3]);
+```
+
+#### Example error
+
+```logs
+Expected '5' (number) to be any of '[1,2,3,4]'
+```
+
+### Equal
+
+You can use the [equals](/docs/api/expect.assertion.equals.md) method to check if a provided value is strictly equal to
+another value.
+
+```ts
+import { expect } from "@rbxts/expect";
+
+expect(1).to.equal(1);
+```
+
+#### Example error
+
+```logs
+Expected '5' (number) to strictly equal "5" (string)
+```
+
+### Instance of
+
+You can use the [instanceOf](/docs/api/expect.assertion.instanceof.md) method to check if a provided value is of a
+certain type.
+
+This includes support for checkable types, [t checks](https://www.npmjs.com/package/@rbxts/t), and even user-defined
+callbacks.
+
+```ts
+import { expect, TypeCheckCallback } from "@rbxts/expect";
+import t from "@rbxts/t";
+
+const isNumber: TypeCheckCallback = (value) => {
+  return typeOf(value) === "number";
+};
+
+expect(1).to.be.an.instanceOf("number");
+expect(1).to.be.an.instanceOf(t.number);
+expect(1).to.be.an.instanceOf(isNumber);
+```
+
+#### Example error
+
+```logs
+Expected '5' to be of type 'string', but it was a 'number'
+```
+
+### Satisfy
+
+:::info
+
+[GitHub Issue #5](https://github.com/daymxn/rbxts-expect/issues/5)
+
+:::

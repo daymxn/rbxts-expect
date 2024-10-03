@@ -1,0 +1,70 @@
+---
+description: Learn how to use `@rbxts/expect` with TestEZ.
+hide_table_of_contents: true
+---
+
+# Using with TestEZ
+
+[TestEZ](https://www.npmjs.com/package/@rbxts/testez) is (currently) the most popular testing framework for roblox
+projects.
+
+If you're intending to use `@rbxts/expect` in your TestEZ tests, this page will highlight a few things to be mindful of.
+
+## Using `expect`
+
+Since the intended behavior for TestEZ is to use a global type reference for their types, if you try to use TestEZ with
+`@rbxts/expect`, you may find yourself using the `TestEZ` version of `expect` instead of the `expect` from
+`@rbxts/expect`.
+
+```ts
+/// <reference types="@rbxts/testez/globals" />
+
+export = () => {
+  it("works", () => {
+    // Property 'deepEqual' does not exist on type 'Expectation<number[]> & CustomMatchers'
+    // error-next-line
+    expect([1, 2, 3]).to.deepEqual([1, 2, 3]);
+  });
+};
+```
+
+To fix this, you need to explicitly import `expect` from `@rbxts/expect`.
+
+```ts
+/// <reference types="@rbxts/testez/globals" />
+
+import { expect } from "@rbxts/expect";
+
+export = () => {
+  it("works", () => {
+    expect([1, 2, 3]).to.deepEqual([1, 2, 3]); // works!
+  });
+};
+```
+
+### ESLint
+
+You can use the `no-restricted-globals` rule to catch cases where you accidentally use the wrong `expect`.
+
+```ts
+"rules": {
+  "no-restricted-globals": [
+    "error",
+    {
+      "name": "expect",
+      "message": "Use @rbxts/expect instead."
+    }
+  ]
+}
+```
+
+## Migration table
+
+In migrating from the [TestEZ expect](https://roblox.github.io/testez/api-reference/#expect) to the
+[`@rbxts/expect` expect](api/expect.expect), you might find yourself using the wrong method or property.
+
+You can use the table below to map from `TestEZ` to `@rbxts/expect`.
+
+<TestEZTable />
+
+Anything that isn't in the table is the same across both.

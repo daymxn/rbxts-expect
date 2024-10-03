@@ -1,17 +1,19 @@
 {
 	"name": "@rbxts/expect",
-	"version": "0.0.1",
-	"description": "Assertion library for ROBLOX.",
-	"main": "out/init.lua",
+	"version": "1.0.0",
+	"description": "Test-agnostic assertion library for ROBLOX.",
+	"main": "out/init.luau",
 	"scripts": {
-		"build": "rbxtsc",
+		"build": "rbxtsc -p ./tsconfig.release.json",
 		"dev": "rbxtsc -w --type game --rojo test.project.json",
 		"watch": "rbxtsc -w",
 		"scripts:build": "npx tsc --project ./scripts/tsconfig.scripts.json",
 		"scripts:watch": "npm run scripts:build -- -w",
-		"api:build": "npm run build",
+		"api:rollup:generate": "npx tsup",
+		"api:rollup:fix": "npx tsx ./scripts/src/fix-rollup.ts ./src/index.ts ./temp/rollup/index.d.ts",
+		"api:rollup": "npx run-s api:rollup:*",
 		"api:extract": "api-extractor run --local --verbose",
-		"api:update": "npx run-s api:build api:extract",
+		"api:update": "npx run-s build api:rollup api:extract",
 		"api:docs:generate": "api-documenter markdown -i ./temp  -o ./temp/api",
 		"api:docs:fix": "npx tsx ./scripts/src/fix-api-reference.ts ./temp/api ./temp/fixed",
 		"api:docs:export": "npx tsx ./scripts/src/export-api-reference.ts ./temp/fixed ./wiki/docs/api",
@@ -27,7 +29,22 @@
 		"release:version": "npx changeset version",
 		"release:tags": "git push --follow-tags",
 		"release": "npx run-s build change:publish",
-		"prepublishOnly": "npm run build"
+		"publish:local": "npm run build && npm pack --pack-destination ./temp",
+		"prepublishOnly": "npm run build",
+		"check:deps": "npx depcheck"
+	},
+	"tsup": {
+		"entry": [
+			"src/index.ts"
+		],
+		"splitting": false,
+		"sourcemap": false,
+		"clean": true,
+		"outDir": "temp/rollup",
+		"target": "esnext",
+		"dts": {
+			"only": true
+		}
 	},
 	"keywords": [],
 	"author": "Daymon Littrell-Reyes",
@@ -45,6 +62,8 @@
 		"!**/tests/**",
 		"!**/*.tsbuildinfo",
 		"!**/*.spec.lua",
+		"!**/*.spec.luau",
+		"!**/*.spec.ts",
 		"!**/*.spec.d.ts"
 	],
 	"publishConfig": {
@@ -52,11 +71,12 @@
 	},
 	"devDependencies": {
 		"@changesets/cli": "^2.27.7",
-		"@rbxts/compiler-types": "^2.3.0-types.1",
+		"@microsoft/api-extractor": "^7.47.9",
+		"@rbxts/compiler-types": "^3.0.0-types.0",
 		"@rbxts/testez": "git+https://github.com/daymxn/testez.git#patch-1",
 		"@rbxts/types": "^1.0.795",
 		"@types/fs-extra": "^11.0.4",
-		"@types/node": "^22.5.0",
+		"@types/node": "^22.5.5",
 		"@typescript-eslint/eslint-plugin": "^7.1.1",
 		"@typescript-eslint/parser": "^7.1.1",
 		"eslint": "^8.57.0",
@@ -66,22 +86,21 @@
 		"eslint-plugin-roblox-ts": "^0.0.36",
 		"npm-run-all2": "^6.2.2",
 		"prettier": "^3.2.5",
-		"prettier-plugin-organize-imports": "^3.2.4",
-		"roblox-ts": ">=2.3.0-dev-30dae68",
-		"typescript": "^5.4.2"
+		"prettier-plugin-organize-imports": "^4.0.0",
+		"roblox-ts": "^3.0.0-next",
+		"tsup": "^8.2.4",
+		"typescript": "=5.5.3"
 	},
 	"dependencies": {
 		"@rbxts/deep-equal": "^0.8.0",
 		"@rbxts/object-utils": "^1.0.4",
-		"@rbxts/reflection": "^1.0.1",
 		"@rbxts/reverse-array": "^1.0.3",
-		"@rbxts/rust-classes": "^0.12.0",
+		"@rbxts/rust-classes": "^0.12.0-dev-b01f73c",
 		"@rbxts/services": "^1.5.4",
 		"@rbxts/string-utils": "^1.0.3",
-		"@rbxts/t": "^3.1.1",
-		"rbxts-transformer-reflection": "^1.0.2"
+		"@rbxts/t": "^3.1.1"
 	},
 	"peerDependencies": {
-		"roblox-ts": ">=2.3.0-dev-0338e9d"
+		"roblox-ts": "^3.0.0"
 	}
 }

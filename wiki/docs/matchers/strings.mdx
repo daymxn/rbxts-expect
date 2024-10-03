@@ -1,0 +1,91 @@
+---
+description: Matchers available for testing strings.
+---
+
+# Strings
+
+## API
+
+### Substring
+
+You can use the [substring](/docs/api/expect.assertion.substring.md) method to check if a string contains another
+string.
+
+```ts
+import { expect } from "@rbxts/expect";
+
+expect("my name").to.have.the.substring("my");
+```
+
+#### Example error
+
+```logs
+Expected "your name" to have the substring "my"
+```
+
+### Pattern
+
+:::info
+
+[GitHub Issue #18](https://github.com/daymxn/rbxts-expect/issues/18)
+
+:::
+
+### Empty
+
+You can use the [empty](/docs/api/expect.assertion.empty.md) method to check if a string has any characters.
+
+```ts
+import { expect } from "@rbxts/expect";
+
+expect("").to.be.empty();
+```
+
+#### Example error
+
+```logs
+Expected "daymon" to be empty, but it was not
+```
+
+### Size
+
+You can use the [size](/docs/api/expect.assertion.size.md) method to check if a string has a certain amount of
+character.
+
+```ts
+import { expect } from "@rbxts/expect";
+
+expect("daymon").to.have.a.sizeOf(6);
+```
+
+#### Example error
+
+```logs
+Expected "12345" to have a size of exactly '6', but it actually had a size of '5'
+```
+
+### Starts with
+
+:::info
+
+[GitHub Issue #3](https://github.com/daymxn/rbxts-expect/issues/3)
+
+:::
+
+### Ends with
+
+:::info
+
+[GitHub Issue #4](https://github.com/daymxn/rbxts-expect/issues/4)
+
+:::
+
+### All of
+
+:::info
+
+[GitHub Issue #14](https://github.com/daymxn/rbxts-expect/issues/14)
+
+:::
+
+## Chaining
