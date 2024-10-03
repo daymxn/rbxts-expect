@@ -17,6 +17,8 @@
 
 import "./any-of";
 import "./array";
+import "./contain-exactly";
+import "./contain-exactly-in-order";
 import "./deep-equal";
 import "./empty";
 import "./enum";

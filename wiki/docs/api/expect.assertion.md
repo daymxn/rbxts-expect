@@ -640,6 +640,50 @@ Asserts that the value is a [boolean](https://create.roblox.com/docs/luau/boolea
 </td></tr>
 <tr><td>
 
+[containExactly(expectedValues)](./expect.assertion.containexactly.md)
+
+
+</td><td>
+
+Asserts that the array contains all of the values in `expectedValues`<!-- -->, and nothing more or less.
+
+
+</td></tr>
+<tr><td>
+
+[containExactlyInOrder(expectedValues)](./expect.assertion.containexactlyinorder.md)
+
+
+</td><td>
+
+Asserts that the array contains all of the values in `expectedValues`<!-- -->, with nothing more or less, and in the same order.
+
+
+</td></tr>
+<tr><td>
+
+[containsExactly(expectedValues)](./expect.assertion.containsexactly.md)
+
+
+</td><td>
+
+Asserts that the array contains all of the values in `expectedValues`<!-- -->, and nothing more or less.
+
+
+</td></tr>
+<tr><td>
+
+[containsExactlyInOrder(expectedValues)](./expect.assertion.containsexactlyinorder.md)
+
+
+</td><td>
+
+Asserts that the array contains all of the values in `expectedValues`<!-- -->, with nothing more or less, and in the same order.
+
+
+</td></tr>
+<tr><td>
+
 [deepEqual(expectedValue)](./expect.assertion.deepequal.md)
 
 
