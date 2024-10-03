@@ -72,7 +72,9 @@ export const TEST_SON: Person = {
  *   expect([1]).to.be.empty();
  * });
  * ```
+ *
  * Output:
+ *
  * ```logs
  * The function did not throw a message.
  * ```
@@ -83,7 +85,9 @@ export const TEST_SON: Person = {
  *   expect([1]).to.be.empty();
  * }, `Expected '[1]' to be empty, but it had an element`);
  * ```
+ *
  * Output if the string(s) weren't found in the error:
+ *
  * ```logs
  * The function threw with the wrong message.
  *
@@ -93,7 +97,9 @@ export const TEST_SON: Person = {
  *   Actual Message:
  *   Expected '[1]' to be empty, but it had the element '1'
  * ```
+ *
  * Output if the function didn't throw at all:
+ *
  * ```logs
  * The function did not throw a message.
  *
@@ -110,6 +116,7 @@ export const TEST_SON: Person = {
  *
  * If it doesn't find any of the provided substrings, it will
  * throw with that specific substring:
+ *
  * ```logs
  * The function threw with the wrong message.
  *
