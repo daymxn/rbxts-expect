@@ -111,6 +111,18 @@ export interface Assertion<T = unknown> {
 export type InferArrayElement<T> = T extends (infer U)[] ? U : never;
 
 /**
+ * Callback for deciding if a `value` satisfies a condition.
+ *
+ * @example
+ * ```ts
+ * const isEven: Filter<number[]> = (value) => value % 2 === 0;
+ * ```
+ *
+ * @public
+ */
+export type Filter<T = unknown> = (value: InferArrayElement<T>) => boolean;
+
+/**
  * Callback for deciding if a `value` matches a given type `T`.
  *
  * @remarks
