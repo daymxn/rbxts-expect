@@ -17,6 +17,7 @@ export interface ActualPlaceholder {
 // @public
 export interface Assertion<T = unknown> {
     readonly a: this;
+    above(value: number): Assertion<number>;
     readonly also: this;
     readonly an: this;
     readonly and: this;
@@ -28,8 +29,10 @@ export interface Assertion<T = unknown> {
     arrayOf<I extends keyof CheckableTypes>(typeName: I): Assertion<I[]>;
     arrayOf<I>(checker: TypeCheckCallback<I>): Assertion<I[]>;
     arrayOf<I>(tChecker: t.check<I>): Assertion<I[]>;
+    readonly at: this;
     readonly be: this;
     readonly been: this;
+    below(value: number): Assertion<number>;
     boolean(): Assertion<boolean>;
     readonly but: this;
     containExactly(expectedValues: InferArrayElement<T>[]): this;
@@ -49,6 +52,10 @@ export interface Assertion<T = unknown> {
     equal<R = T>(expectedValue: R): Assertion<R>;
     equals<R = T>(expectedValue: R): Assertion<R>;
     function(): Assertion<object>;
+    greaterThan(value: number): Assertion<number>;
+    greaterThanOrEqualTo(value: number): Assertion<number>;
+    gt(value: number): Assertion<number>;
+    gte(value: number): Assertion<number>;
     readonly have: this;
     include(expectedValue: InferArrayElement<T>): this;
     includes(expectedValue: InferArrayElement<T>): this;
@@ -57,8 +64,14 @@ export interface Assertion<T = unknown> {
     instanceOf<I>(tChecker: t.check<I>): Assertion<I>;
     readonly is: this;
     is_array?: boolean;
+    least(value: number): Assertion<number>;
     length(size: number): this;
     lengthOf(size: number): this;
+    lessThan(value: number): Assertion<number>;
+    lessThanOrEqualTo(value: number): Assertion<number>;
+    lt(value: number): Assertion<number>;
+    lte(value: number): Assertion<number>;
+    most(value: number): Assertion<number>;
     // @internal (undocumented)
     _negated: boolean;
     readonly never: this;

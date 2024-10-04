@@ -152,6 +152,27 @@ NOOP property for cleaner chaining; does nothing.
 </td></tr>
 <tr><td>
 
+[at](./expect.assertion.at.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+this
+
+
+</td><td>
+
+NOOP property for cleaner chaining; does nothing.
+
+
+</td></tr>
+<tr><td>
+
 [be](./expect.assertion.be.md)
 
 
@@ -541,6 +562,17 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
+[above(value)](./expect.assertion.above.md)
+
+
+</td><td>
+
+Asserts that the value is greater than `value`<!-- -->.
+
+
+</td></tr>
+<tr><td>
+
 [anyOf(values)](./expect.assertion.anyof.md)
 
 
@@ -624,6 +656,17 @@ Asserts that the value is an array of type `I`<!-- -->, according to a custom ca
 </td><td>
 
 Asserts that the value is an array of type `I`<!-- -->, according to a provided [t check](https://github.com/osyrisrblx/t)<!-- -->.
+
+
+</td></tr>
+<tr><td>
+
+[below(value)](./expect.assertion.below.md)
+
+
+</td><td>
+
+Asserts that the value is less than `value`<!-- -->.
 
 
 </td></tr>
@@ -805,6 +848,50 @@ Asserts that the value is a [function](https://create.roblox.com/docs/luau/funct
 </td></tr>
 <tr><td>
 
+[greaterThan(value)](./expect.assertion.greaterthan.md)
+
+
+</td><td>
+
+Asserts that the value is greater than `value`<!-- -->.
+
+
+</td></tr>
+<tr><td>
+
+[greaterThanOrEqualTo(value)](./expect.assertion.greaterthanorequalto.md)
+
+
+</td><td>
+
+Asserts that the value is greater than or equal to `value`<!-- -->.
+
+
+</td></tr>
+<tr><td>
+
+[gt(value)](./expect.assertion.gt.md)
+
+
+</td><td>
+
+Asserts that the value is greater than `value`<!-- -->.
+
+
+</td></tr>
+<tr><td>
+
+[gte(value)](./expect.assertion.gte.md)
+
+
+</td><td>
+
+Asserts that the value is greater than or equal to `value`<!-- -->.
+
+
+</td></tr>
+<tr><td>
+
 [include(expectedValue)](./expect.assertion.include.md)
 
 
@@ -860,6 +947,17 @@ Asserts that the value is an instance of `I`<!-- -->, according to a provided [t
 </td></tr>
 <tr><td>
 
+[least(value)](./expect.assertion.least.md)
+
+
+</td><td>
+
+Asserts that the value is greater than or equal to `value`<!-- -->.
+
+
+</td></tr>
+<tr><td>
+
 [length(size)](./expect.assertion.length.md)
 
 
@@ -877,6 +975,61 @@ Asserts that the value has a length of `size`<!-- -->.
 </td><td>
 
 Asserts that the value has a length of `size`<!-- -->.
+
+
+</td></tr>
+<tr><td>
+
+[lessThan(value)](./expect.assertion.lessthan.md)
+
+
+</td><td>
+
+Asserts that the value is less than `value`<!-- -->.
+
+
+</td></tr>
+<tr><td>
+
+[lessThanOrEqualTo(value)](./expect.assertion.lessthanorequalto.md)
+
+
+</td><td>
+
+Asserts that the value is less than or equal to `value`<!-- -->.
+
+
+</td></tr>
+<tr><td>
+
+[lt(value)](./expect.assertion.lt.md)
+
+
+</td><td>
+
+Asserts that the value is less than `value`<!-- -->.
+
+
+</td></tr>
+<tr><td>
+
+[lte(value)](./expect.assertion.lte.md)
+
+
+</td><td>
+
+Asserts that the value is less than or equal to `value`<!-- -->.
+
+
+</td></tr>
+<tr><td>
+
+[most(value)](./expect.assertion.most.md)
+
+
+</td><td>
+
+Asserts that the value is less than or equal to `value`<!-- -->.
 
 
 </td></tr>
