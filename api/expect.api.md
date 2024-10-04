@@ -28,6 +28,7 @@ export interface Assertion<T = unknown> {
     arrayOf<I extends keyof CheckableTypes>(typeName: I): Assertion<I[]>;
     arrayOf<I>(checker: TypeCheckCallback<I>): Assertion<I[]>;
     arrayOf<I>(tChecker: t.check<I>): Assertion<I[]>;
+    readonly at: this;
     readonly be: this;
     readonly been: this;
     boolean(): Assertion<boolean>;

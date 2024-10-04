@@ -120,6 +120,18 @@ declare module "@rbxts/expect" {
      *
      * @example
      * ```ts
+     * expect(5).to.be.at.least(4);
+     * ```
+     *
+     * @public
+     */
+    readonly at: this;
+
+    /**
+     * NOOP property for cleaner chaining; does nothing.
+     *
+     * @example
+     * ```ts
      * expect(1).to.not.be.a.string().or.a.table();
      * ```
      *
@@ -234,6 +246,7 @@ extendNOPs([
   "is",
   "an",
   "a",
+  "at",
   "that",
   "which",
   "does",

@@ -152,6 +152,27 @@ NOOP property for cleaner chaining; does nothing.
 </td></tr>
 <tr><td>
 
+[at](./expect.assertion.at.md)
+
+
+</td><td>
+
+`readonly`
+
+
+</td><td>
+
+this
+
+
+</td><td>
+
+NOOP property for cleaner chaining; does nothing.
+
+
+</td></tr>
+<tr><td>
+
 [be](./expect.assertion.be.md)
 
 
