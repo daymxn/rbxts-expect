@@ -4,8 +4,135 @@ description: Matchers available for testing numbers.
 
 # Numbers
 
+## API
+
+### Greater than
+
+You can use the [greaterThan](/docs/api/expect.assertion.greaterthan.md) method to check if a number is greater than
+another.
+
+```ts
+import { expect } from "@rbxts/expect";
+
+expect(10).to.be.greaterThan(5);
+expect(10).to.be.gt(5);
+expect(10).to.be.above(5);
+```
+
+#### Example error
+
+```logs
+Expected '1' to be greater than '2'
+```
+
+### Greater than or equal to
+
+You can use the [greaterThanOrEqualTo](/docs/api/expect.assertion.greaterthanorequalto.md) method to check if a number
+is greater than or equal to another.
+
+```ts
+import { expect } from "@rbxts/expect";
+
+expect(10).to.be.greaterThanOrEqualTo(10);
+expect(10).to.be.gte(5);
+expect(10).to.be.at.least(5);
+```
+
+#### Example error
+
+```logs
+Expected '1' to be greater than or equal to '2'
+```
+
+### Less than
+
+You can use the [lessThan](/docs/api/expect.assertion.lessthan.md) method to check if a number is less than another.
+
+```ts
+import { expect } from "@rbxts/expect";
+
+expect(5).to.be.lessThan(10);
+expect(5).to.be.lt(10);
+expect(5).to.be.below(10);
+```
+
+#### Example error
+
+```logs
+Expected '2' to be less than '1'
+```
+
+### Less than or equal to
+
+You can use the [lessThanOrEqualTo](/docs/api/expect.assertion.lessthanorequalto.md) method to check if a number is less
+than or equal to another.
+
+```ts
+import { expect } from "@rbxts/expect";
+
+expect(5).to.be.lessThanOrEqualTo(5);
+expect(5).to.be.lte(10);
+expect(5).to.be.at.most(10);
+```
+
+#### Example error
+
+```logs
+Expected '2' to be less than or equal to '1'
+```
+
+### Negative
+
 :::info
 
-[GitHub Issue #16](https://github.com/daymxn/rbxts-expect/issues/16)
+[GitHub Issue #9](https://github.com/daymxn/rbxts-expect/issues/9)
+
+:::
+
+### Positive
+
+:::info
+
+[GitHub Issue #9](https://github.com/daymxn/rbxts-expect/issues/9)
+
+:::
+
+### Even
+
+:::info
+
+[GitHub Issue #27](https://github.com/daymxn/rbxts-expect/issues/27)
+
+:::
+
+### Odd
+
+:::info
+
+[GitHub Issue #27](https://github.com/daymxn/rbxts-expect/issues/27)
+
+:::
+
+### Between
+
+:::info
+
+[GitHub Issue #7](https://github.com/daymxn/rbxts-expect/issues/7)
+
+:::
+
+### Finite
+
+:::info
+
+[GitHub Issue #10](https://github.com/daymxn/rbxts-expect/issues/10)
+
+:::
+
+### Close to
+
+:::info
+
+[GitHub Issue #6](https://github.com/daymxn/rbxts-expect/issues/6)
 
 :::
