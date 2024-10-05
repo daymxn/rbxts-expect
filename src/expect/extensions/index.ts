@@ -28,7 +28,7 @@ import "./instance-of";
 import "./length";
 import "./negations";
 import "./noops";
-import "./numbers";
+import "./number-comparators";
 import "./some";
 import "./substring";
 import "./throws";
