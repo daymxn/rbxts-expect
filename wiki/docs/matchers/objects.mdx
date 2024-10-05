@@ -94,11 +94,31 @@ Actual (full): '{"name":"Daymon","age":5}'
 
 ### Match
 
-:::info
+You can use the [match](/docs/api/expect.assertion.match.md) method to check if an object has a collection of certain
+keys with certain values.
 
-[GitHub Issue #19](https://github.com/daymxn/rbxts-expect/issues/19)
+```ts
+import { expect } from "@rbxts/expect";
 
-:::
+expect({
+  name: "Daymon",
+  age: 5,
+}).to.match({
+  age: 5,
+});
+```
+
+#### Example error
+
+```logs
+Expected '{...}' to match '{...}', but 'age' has a different value
+
+Expected: '4' (number)
+Actual: '5' (number)
+
+Expected (full): '{"age":4}'
+Actual (full): '{"name":"Daymon","age":5}'
+```
 
 ### Key/Property
 
