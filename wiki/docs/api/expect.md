@@ -144,6 +144,17 @@ Gets the (current) default [ExpectConfig](./expect.expectconfig.md)<!-- -->.
 </td></tr>
 <tr><td>
 
+[getNearestDefinedProxy(proxy)](./expect.getnearestdefinedproxy.md)
+
+
+</td><td>
+
+Finds the nearest proxy in the hierarchy that has a non null value, if any.
+
+
+</td></tr>
+<tr><td>
+
 [getProxyParent(proxy)](./expect.getproxyparent.md)
 
 

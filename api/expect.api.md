@@ -215,6 +215,9 @@ export type Filter<T = unknown> = (value: T) => boolean;
 export function getDefaultExpectConfig(): ExpectConfig;
 
 // @public
+export function getNearestDefinedProxy<T = unknown, R = unknown>(proxy: Proxy<T>): Proxy<R> | undefined;
+
+// @public
 export function getProxyParent<T = unknown, R = unknown>(proxy: Proxy<T>): Proxy<R> | undefined;
 
 // @public
