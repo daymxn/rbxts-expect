@@ -1,5 +1,5 @@
 ---
-"@rbxts/expect": patch
+"@rbxts/expect": minor
 ---
 
-Add the matchers `greaterThan`, `gt` and `above`
+Added the matchers `greaterThan`, `gt` and `above`

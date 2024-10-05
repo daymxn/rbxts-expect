@@ -63,6 +63,7 @@ export {
   computeFullProxyPath,
   createProxy,
   err,
+  getNearestDefinedProxy,
   getProxyParent,
   getProxyPath,
   getProxyValue,

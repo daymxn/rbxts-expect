@@ -267,9 +267,31 @@ function OnIndex<T>(Self: Proxy<T>, index: unknown) {
 }
 
 /**
- * TODO()
- * @param proxy
- * @returns
+ * Finds the nearest proxy in the hierarchy that has a non null
+ * value, if any.
+ *
+ * @example
+ * ```ts
+ * const person = {
+ *   name: "Daymon",
+ *   child: {
+ *     name: "Michael"
+ *   }
+ * }
+ *
+ * withProxy(person, (proxy) => {
+ *   // assume this is valid typescript
+ *   const greatGrandChild = proxy.child.child.child;
+ *   expect(getNearestDefinedProxy(greatGrandChild)).to.deepEqual(person.child);
+ * });
+ * ```
+ *
+ * @param proxy - The child to start the search from.
+ *
+ * @returns The closest {@link ProxyInstance | proxy} that has a valid (non null) {@link ProxyInstance._proxy_value | value},
+ * or undefined if all proxies have null values.
+ *
+ * @public
  */
 export function getNearestDefinedProxy<T = unknown, R = unknown>(
   proxy: Proxy<T>
