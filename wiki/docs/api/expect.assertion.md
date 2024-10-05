@@ -1167,6 +1167,17 @@ Asserts that the value is _shallow_ equal to one of the provided `values`<!-- --
 </td></tr>
 <tr><td>
 
+[pattern(pattern)](./expect.assertion.pattern.md)
+
+
+</td><td>
+
+Asserts that the `expectedValue` is a string that contains a match for the provided lua `pattern`<!-- -->.
+
+
+</td></tr>
+<tr><td>
+
 [size(size)](./expect.assertion.size.md)
 
 
