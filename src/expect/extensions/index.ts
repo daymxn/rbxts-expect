@@ -23,6 +23,7 @@ import "./deep-equal";
 import "./empty";
 import "./enum";
 import "./equal";
+import "./even-odd";
 import "./include";
 import "./instance-of";
 import "./length";
