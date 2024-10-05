@@ -135,11 +135,22 @@ Expected '2' to be odd, but it was even.
 
 ### Between
 
-:::info
+You can use the [between](/docs/api/expect.assertion.between.md) or [within](/docs/api/expect.assertion.within.md)
+methods to check if a number is within a specified range (inclusively).
 
-[GitHub Issue #7](https://github.com/daymxn/rbxts-expect/issues/7)
+```ts
+import { expect } from "@rbxts/expect";
 
-:::
+expect(5).to.be.within(1, 10);
+expect(0).to.be.between(0, 100);
+expect(-10).to.be.within(-20, 20);
+```
+
+#### Example error
+
+```logs
+Expected '10' to be a number between 5 and 8, but it was too high.
+```
 
 ### Finite
 

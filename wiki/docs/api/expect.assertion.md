@@ -672,6 +672,17 @@ Asserts that the value is less than `value`<!-- -->.
 </td></tr>
 <tr><td>
 
+[between(minValue, maxValue)](./expect.assertion.between.md)
+
+
+</td><td>
+
+Asserts that the actual value is a number within a specified range.
+
+
+</td></tr>
+<tr><td>
+
 [boolean()](./expect.assertion.boolean.md)
 
 
@@ -1261,6 +1272,17 @@ Asserts that the value is of type `I`<!-- -->, according to a custom callback [T
 </td><td>
 
 Asserts that the value is of type `I`<!-- -->, according to a provided [t check](https://github.com/osyrisrblx/t)<!-- -->.
+
+
+</td></tr>
+<tr><td>
+
+[within(minValue, maxValue)](./expect.assertion.within.md)
+
+
+</td><td>
+
+Asserts that the actual value is a number within a specified range.
 
 
 </td></tr>
