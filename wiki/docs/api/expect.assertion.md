@@ -837,6 +837,17 @@ Asserts that the value is _shallow_ equal to the `expectedValue`<!-- -->.
 </td></tr>
 <tr><td>
 
+[even()](./expect.assertion.even.md)
+
+
+</td><td>
+
+Asserts that the actual value is an even number.
+
+
+</td></tr>
+<tr><td>
+
 [function()](./expect.assertion.function.md)
 
 
@@ -1052,6 +1063,17 @@ Asserts that the value is a [number](https://create.roblox.com/docs/luau/numbers
 </td><td>
 
 Asserts that the value is a [table](https://create.roblox.com/docs/luau/tables)<!-- -->.
+
+
+</td></tr>
+<tr><td>
+
+[odd()](./expect.assertion.odd.md)
+
+
+</td><td>
+
+Asserts that the actual value is an odd number.
 
 
 </td></tr>

@@ -51,6 +51,7 @@ export interface Assertion<T = unknown> {
     eql<R = T>(expectedValue: R): Assertion<R>;
     equal<R = T>(expectedValue: R): Assertion<R>;
     equals<R = T>(expectedValue: R): Assertion<R>;
+    even(): Assertion<number>;
     function(): Assertion<object>;
     greaterThan(value: number): Assertion<number>;
     greaterThanOrEqualTo(value: number): Assertion<number>;
@@ -78,6 +79,7 @@ export interface Assertion<T = unknown> {
     readonly not: this;
     number(): Assertion<number>;
     object(): Assertion<object>;
+    odd(): Assertion<number>;
     readonly of: this;
     oneOf<R = T>(values: R[]): Assertion<R>;
     readonly or: this;

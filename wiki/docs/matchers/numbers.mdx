@@ -99,19 +99,39 @@ Expected '2' to be less than or equal to '1'
 
 ### Even
 
-:::info
+You can use the [even](/docs/api/expect.assertion.even.md) method to check if a number is even.
 
-[GitHub Issue #27](https://github.com/daymxn/rbxts-expect/issues/27)
+```ts
+import { expect } from "@rbxts/expect";
 
-:::
+expect(2).to.be.even();
+expect(4).to.be.even();
+expect(-20).to.be.even();
+```
+
+#### Example error
+
+```logs
+Expected '3' to be even, but it was odd.
+```
 
 ### Odd
 
-:::info
+You can use the [odd](/docs/api/expect.assertion.odd.md) method to check if a number is odd.
 
-[GitHub Issue #27](https://github.com/daymxn/rbxts-expect/issues/27)
+```ts
+import { expect } from "@rbxts/expect";
 
-:::
+expect(1).to.be.odd();
+expect(3).to.be.odd();
+expect(-11).to.be.odd();
+```
+
+#### Example error
+
+```logs
+Expected '2' to be odd, but it was even.
+```
 
 ### Between
 
