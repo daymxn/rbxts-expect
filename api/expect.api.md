@@ -33,6 +33,7 @@ export interface Assertion<T = unknown> {
     readonly be: this;
     readonly been: this;
     below(value: number): Assertion<number>;
+    between(minValue: number, maxValue: number): Assertion<number>;
     boolean(): Assertion<boolean>;
     readonly but: this;
     containExactly(expectedValues: InferArrayElement<T>[]): this;
@@ -109,6 +110,7 @@ export interface Assertion<T = unknown> {
     typeOf<I>(tChecker: t.check<I>): Assertion<I>;
     readonly value: T;
     readonly which: this;
+    within(minValue: number, maxValue: number): Assertion<number>;
 }
 
 // @public
