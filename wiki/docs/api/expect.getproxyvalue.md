@@ -8,7 +8,7 @@ hide_title: true
 
 ## getProxyValue() function
 
-Safely gets the [value](./expect.proxyinstance._proxy_value.md) of a proxy, without trigger any metamethods.
+Safely gets the [value](./expect.proxyinstance._proxy_value.md) of a proxy, without triggering any metamethods.
 
 **Signature:**
 

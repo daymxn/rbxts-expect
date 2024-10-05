@@ -263,12 +263,29 @@ function OnIndex<T>(Self: Proxy<T>, index: unknown) {
     throw `You can't acces '${index}' directly. Instead, either use 'rawget', or call one of the helper methods like 'getProxyValue'.`;
   }
 
-  return createProxy(rawget(Self._proxy_value, index), Self, tostring(index));
+  return createProxy(rawget(getProxyValue(Self), index), Self, tostring(index));
+}
+
+/**
+ * TODO()
+ * @param proxy
+ * @returns
+ */
+export function getNearestDefinedProxy<T = unknown, R = unknown>(
+  proxy: Proxy<T>
+): Proxy<R> | undefined {
+  let current: Proxy<T> | undefined = proxy;
+
+  while (current && getProxyValue(current) === undefined) {
+    current = getProxyParent(current);
+  }
+
+  return current as never;
 }
 
 /**
  * Safely gets the {@link ProxyInstance._proxy_value | value} of a proxy,
- * without trigger any metamethods.
+ * without triggering any metamethods.
  *
  * @param proxy - The proxy to get the value of.
  *
@@ -280,9 +297,11 @@ export function getProxyValue<T = unknown>(proxy: Proxy<T>) {
   return rawget(proxy, "_proxy_value") as T;
 }
 
+export function getProxyValueOrValue<T = unknown>(maybeProxy: T) {}
+
 /**
  * Safely gets the {@link ProxyInstance._proxy_path | path} of a proxy,
- * without trigger any metamethods.
+ * without triggering any metamethods.
  *
  * @param proxy - The proxy to get the path of.
  *
@@ -296,7 +315,7 @@ export function getProxyPath<T = unknown>(proxy: Proxy<T>) {
 
 /**
  * Safely gets the {@link ProxyInstance._proxy_parent | parent} of a proxy,
- * without trigger any metamethods.
+ * without triggering any metamethods.
  *
  * @param proxy - The proxy to get the parent of.
  *

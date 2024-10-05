@@ -21,6 +21,7 @@ import "./between";
 import "./contain-exactly";
 import "./contain-exactly-in-order";
 import "./deep-equal";
+import "./defined";
 import "./empty";
 import "./enum";
 import "./equal";

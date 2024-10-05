@@ -42,6 +42,7 @@ export interface Assertion<T = unknown> {
     containsExactlyInOrder(expectedValues: InferArrayElement<T>[]): this;
     deepEqual<R = T>(expectedValue: R): Assertion<R>;
     deepEquals<R = T>(expectedValue: R): Assertion<R>;
+    defined(): this;
     readonly does: this;
     empty(): Assertion<T>;
     enum<R>(enumType: R & Record<number, string>): Assertion<EnumValue<R>>;
@@ -53,6 +54,8 @@ export interface Assertion<T = unknown> {
     equal<R = T>(expectedValue: R): Assertion<R>;
     equals<R = T>(expectedValue: R): Assertion<R>;
     even(): Assertion<number>;
+    exist(): this;
+    exists(): this;
     function(): Assertion<object>;
     greaterThan(value: number): Assertion<number>;
     greaterThanOrEqualTo(value: number): Assertion<number>;
@@ -77,11 +80,14 @@ export interface Assertion<T = unknown> {
     // @internal (undocumented)
     _negated: boolean;
     readonly never: this;
+    nil(): this;
     readonly not: this;
+    null(): this;
     number(): Assertion<number>;
     object(): Assertion<object>;
     odd(): Assertion<number>;
     readonly of: this;
+    ok(): this;
     oneOf<R = T>(values: R[]): Assertion<R>;
     readonly or: this;
     // @internal (undocumented)
@@ -108,6 +114,7 @@ export interface Assertion<T = unknown> {
     typeOf<I extends keyof CheckableTypes>(name: I): Assertion<I>;
     typeOf<I>(checker: TypeCheckCallback<T>): Assertion<I>;
     typeOf<I>(tChecker: t.check<I>): Assertion<I>;
+    undefined(): this;
     readonly value: T;
     readonly which: this;
     within(minValue: number, maxValue: number): Assertion<number>;

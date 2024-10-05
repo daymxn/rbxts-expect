@@ -76,3 +76,43 @@ Expected '5' to be of type 'string', but it was a 'number'
 [GitHub Issue #5](https://github.com/daymxn/rbxts-expect/issues/5)
 
 :::
+
+### Defined
+
+You can use the [defined](/docs/api/expect.assertion.defined.md) method to check if a provided value is not null.
+
+```ts
+import { expect } from "@rbxts/expect";
+
+expect(1).to.be.defined();
+expect(1).to.be.ok();
+expect(1).to.exist();
+
+expect(undefined).to.not.be.defined();
+```
+
+#### Example error
+
+```logs
+Expected the value to be defined, but it was undefined
+```
+
+### Undefined
+
+You can use the [undefined](/docs/api/expect.assertion.undefined.md) method to check if a provided value is null.
+
+```ts
+import { expect } from "@rbxts/expect";
+
+expect(undefined).to.be.undefined();
+expect(undefined).to.be.null();
+expect(undefined).to.be.nil();
+
+expect(5).to.not.be.undefined();
+```
+
+#### Example error
+
+```logs
+Expected '5' (number) to be undefined, but it was defined
+```

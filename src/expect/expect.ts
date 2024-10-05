@@ -20,7 +20,7 @@ import Object from "@rbxts/object-utils";
 import { reverseArray } from "@rbxts/reverse-array";
 import { includes } from "@rbxts/string-utils";
 import { mapObjectValues } from "@src/util/object";
-import { computeFullProxyPath, isProxy } from "@src/util/proxy";
+import { computeFullProxyPath, getProxyValue, isProxy } from "@src/util/proxy";
 import { getNegationExtensions, getNOPExtensions } from "./extend";
 import { CustomMethodImpl, getMethodExtensions } from "./extend/methods";
 
@@ -175,7 +175,7 @@ export function expect<T>(value: T): Assertion<T> {
   };
 
   if (isProxy(value)) {
-    newAssert.value = value._proxy_value;
+    newAssert.value = getProxyValue(value);
     newAssert._proxy = value;
   } else {
     newAssert.value = value;

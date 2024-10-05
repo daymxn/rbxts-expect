@@ -760,6 +760,17 @@ Asserts that the value is _deep_ equal to the `expectedValue`<!-- -->.
 </td></tr>
 <tr><td>
 
+[defined()](./expect.assertion.defined.md)
+
+
+</td><td>
+
+Asserts that the actual value is a non `null` value.
+
+
+</td></tr>
+<tr><td>
+
 [empty()](./expect.assertion.empty.md)
 
 
@@ -854,6 +865,28 @@ Asserts that the value is _shallow_ equal to the `expectedValue`<!-- -->.
 </td><td>
 
 Asserts that the actual value is an even number.
+
+
+</td></tr>
+<tr><td>
+
+[exist()](./expect.assertion.exist.md)
+
+
+</td><td>
+
+Asserts that the actual value is a non `null` value.
+
+
+</td></tr>
+<tr><td>
+
+[exists()](./expect.assertion.exists.md)
+
+
+</td><td>
+
+Asserts that the actual value is a non `null` value.
 
 
 </td></tr>
@@ -1057,6 +1090,28 @@ Asserts that the value is less than or equal to `value`<!-- -->.
 </td></tr>
 <tr><td>
 
+[nil()](./expect.assertion.nil.md)
+
+
+</td><td>
+
+Asserts that the actual value is a `null` value.
+
+
+</td></tr>
+<tr><td>
+
+[null()](./expect.assertion.null.md)
+
+
+</td><td>
+
+Asserts that the actual value is a `null` value.
+
+
+</td></tr>
+<tr><td>
+
 [number()](./expect.assertion.number.md)
 
 
@@ -1085,6 +1140,17 @@ Asserts that the value is a [table](https://create.roblox.com/docs/luau/tables)<
 </td><td>
 
 Asserts that the actual value is an odd number.
+
+
+</td></tr>
+<tr><td>
+
+[ok()](./expect.assertion.ok.md)
+
+
+</td><td>
+
+Asserts that the actual value is a non `null` value.
 
 
 </td></tr>
@@ -1272,6 +1338,17 @@ Asserts that the value is of type `I`<!-- -->, according to a custom callback [T
 </td><td>
 
 Asserts that the value is of type `I`<!-- -->, according to a provided [t check](https://github.com/osyrisrblx/t)<!-- -->.
+
+
+</td></tr>
+<tr><td>
+
+[undefined()](./expect.assertion.undefined.md)
+
+
+</td><td>
+
+Asserts that the actual value is a `null` value.
 
 
 </td></tr>
