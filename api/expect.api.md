@@ -90,6 +90,7 @@ export interface Assertion<T = unknown> {
     ok(): this;
     oneOf<R = T>(values: R[]): Assertion<R>;
     readonly or: this;
+    pattern(pattern: string): this;
     // @internal (undocumented)
     _proxy?: Proxy<T>;
     // @internal (undocumented)

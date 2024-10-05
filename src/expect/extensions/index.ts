@@ -32,6 +32,7 @@ import "./length";
 import "./negations";
 import "./noops";
 import "./number-comparators";
+import "./pattern";
 import "./some";
 import "./substring";
 import "./throws";

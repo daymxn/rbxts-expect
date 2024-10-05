@@ -25,11 +25,20 @@ Expected "your name" to have the substring "my"
 
 ### Pattern
 
-:::info
+You can use the [pattern](/docs/api/expect.assertion.pattern.md) method to check if a string contains a match for a
+[roblox string pattern](https://create.roblox.com/docs/luau/strings#string-pattern-reference).
 
-[GitHub Issue #18](https://github.com/daymxn/rbxts-expect/issues/18)
+```ts
+import { expect } from "@rbxts/expect";
 
-:::
+expect("Hello World").to.have.the.pattern("%u%l");
+```
+
+#### Example error
+
+```logs
+Expected "hello world" to have a match for the pattern /%u%l/, but it was missing
+```
 
 ### Empty
 
