@@ -8,7 +8,7 @@ hide_title: true
 
 ## getProxyParent() function
 
-Safely gets the [parent](./expect.proxyinstance._proxy_parent.md) of a proxy, without trigger any metamethods.
+Safely gets the [parent](./expect.proxyinstance._proxy_parent.md) of a proxy, without triggering any metamethods.
 
 **Signature:**
 

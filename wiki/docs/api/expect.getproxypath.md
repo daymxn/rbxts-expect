@@ -8,7 +8,7 @@ hide_title: true
 
 ## getProxyPath() function
 
-Safely gets the [path](./expect.proxyinstance._proxy_path.md) of a proxy, without trigger any metamethods.
+Safely gets the [path](./expect.proxyinstance._proxy_path.md) of a proxy, without triggering any metamethods.
 
 **Signature:**
 

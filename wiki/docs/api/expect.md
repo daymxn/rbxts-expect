@@ -149,7 +149,7 @@ Gets the (current) default [ExpectConfig](./expect.expectconfig.md)<!-- -->.
 
 </td><td>
 
-Safely gets the [parent](./expect.proxyinstance._proxy_parent.md) of a proxy, without trigger any metamethods.
+Safely gets the [parent](./expect.proxyinstance._proxy_parent.md) of a proxy, without triggering any metamethods.
 
 
 </td></tr>
@@ -160,7 +160,7 @@ Safely gets the [parent](./expect.proxyinstance._proxy_parent.md) of a proxy, wi
 
 </td><td>
 
-Safely gets the [path](./expect.proxyinstance._proxy_path.md) of a proxy, without trigger any metamethods.
+Safely gets the [path](./expect.proxyinstance._proxy_path.md) of a proxy, without triggering any metamethods.
 
 
 </td></tr>
@@ -171,7 +171,7 @@ Safely gets the [path](./expect.proxyinstance._proxy_path.md) of a proxy, withou
 
 </td><td>
 
-Safely gets the [value](./expect.proxyinstance._proxy_value.md) of a proxy, without trigger any metamethods.
+Safely gets the [value](./expect.proxyinstance._proxy_value.md) of a proxy, without triggering any metamethods.
 
 
 </td></tr>
