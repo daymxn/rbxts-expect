@@ -1,5 +1,5 @@
 ---
-"@rbxts/expect": patch
+"@rbxts/expect": minor
 ---
 
-Add the NOP `at` for numbers
+Added the NOP `at` for numbers

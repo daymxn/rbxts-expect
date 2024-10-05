@@ -1,5 +1,5 @@
 ---
-"@rbxts/expect": patch
+"@rbxts/expect": minor
 ---
 
-Add support for the `defined`, `ok`, `exist`, `exists`, `undefined`, `null` and `nil` matchers
+Added support for the `defined`, `ok`, `exist`, `exists`, `undefined`, `null` and `nil` matchers
