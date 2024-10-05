@@ -92,7 +92,7 @@
 		"typescript": "=5.5.3"
 	},
 	"dependencies": {
-		"@rbxts/deep-equal": "^0.8.0",
+		"@rbxts/deep-equal": "^0.8.1",
 		"@rbxts/object-utils": "^1.0.4",
 		"@rbxts/reverse-array": "^1.0.3",
 		"@rbxts/rust-classes": "^0.12.0-dev-b01f73c",
