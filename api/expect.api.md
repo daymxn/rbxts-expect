@@ -76,6 +76,9 @@ export interface Assertion<T = unknown> {
     lessThanOrEqualTo(value: number): Assertion<number>;
     lt(value: number): Assertion<number>;
     lte(value: number): Assertion<number>;
+    match<R extends object>(expected: R): Assertion<R & T>;
+    matches<R extends object>(expected: R): Assertion<R & T>;
+    matchExactly<R = T>(expectedValue: R): Assertion<R>;
     most(value: number): Assertion<number>;
     // @internal (undocumented)
     _negated: boolean;

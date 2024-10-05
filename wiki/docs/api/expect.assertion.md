@@ -1079,6 +1079,39 @@ Asserts that the value is less than or equal to `value`<!-- -->.
 </td></tr>
 <tr><td>
 
+[match(expected)](./expect.assertion.match.md)
+
+
+</td><td>
+
+Asserts that the actual value has the same properties and values as the `expected`<!-- -->.
+
+
+</td></tr>
+<tr><td>
+
+[matches(expected)](./expect.assertion.matches.md)
+
+
+</td><td>
+
+Asserts that the actual value has the same properties and values as the `expected`<!-- -->.
+
+
+</td></tr>
+<tr><td>
+
+[matchExactly(expectedValue)](./expect.assertion.matchexactly.md)
+
+
+</td><td>
+
+Asserts that the value is _deep_ equal to the `expectedValue`<!-- -->.
+
+
+</td></tr>
+<tr><td>
+
 [most(value)](./expect.assertion.most.md)
 
 

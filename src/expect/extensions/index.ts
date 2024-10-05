@@ -29,6 +29,7 @@ import "./even-odd";
 import "./include";
 import "./instance-of";
 import "./length";
+import "./match";
 import "./negations";
 import "./noops";
 import "./number-comparators";
