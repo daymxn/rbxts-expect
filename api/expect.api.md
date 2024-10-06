@@ -36,6 +36,8 @@ export interface Assertion<T = unknown> {
     between(minValue: number, maxValue: number): Assertion<number>;
     boolean(): Assertion<boolean>;
     readonly but: this;
+    closeTo(value: number): Assertion<number>;
+    closeTo(value: number, margin: number): Assertion<number>;
     containExactly(expectedValues: InferArrayElement<T>[]): this;
     containExactlyInOrder(expectedValues: InferArrayElement<T>[]): this;
     containsExactly(expectedValues: InferArrayElement<T>[]): this;
@@ -80,6 +82,8 @@ export interface Assertion<T = unknown> {
     matches<R extends object>(expected: R): Assertion<R & T>;
     matchExactly<R = T>(expectedValue: R): Assertion<R>;
     most(value: number): Assertion<number>;
+    near(value: number): Assertion<number>;
+    near(value: number, margin: number): Assertion<number>;
     // @internal (undocumented)
     _negated: boolean;
     readonly never: this;

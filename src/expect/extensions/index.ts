@@ -30,6 +30,7 @@ import "./include";
 import "./instance-of";
 import "./length";
 import "./match";
+import "./near";
 import "./negations";
 import "./noops";
 import "./number-comparators";

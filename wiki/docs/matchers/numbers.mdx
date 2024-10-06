@@ -160,10 +160,25 @@ Expected '10' to be a number between 5 and 8, but it was too high.
 
 :::
 
-### Close to
+### Near
 
-:::info
+You can use the [near](/docs/api/expect.assertion.near.md) or [closeTo](/docs/api/expect.assertion.closeto.md) methods
+to check if a number is within a margin of another.
 
-[GitHub Issue #6](https://github.com/daymxn/rbxts-expect/issues/6)
+When a margin isn't specified, epsilon is used instead (per
+[IEEE 754 float64](https://en.wikipedia.org/wiki/Double-precision_floating-point_format)).
 
-:::
+```ts
+import { expect } from "@rbxts/expect";
+
+expect(5).to.be.near(5 + 1e-8);
+expect(1.5).to.be.near(1, 0.5);
+expect(math.pi).to.be.near(3, 0.2);
+expect(-10).to.be.closeTo(0, 15);
+```
+
+#### Example error
+
+```logs
+Expected '1' to be a number close to '0', but it was too high
+```

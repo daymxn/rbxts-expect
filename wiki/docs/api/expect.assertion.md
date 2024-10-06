@@ -694,6 +694,28 @@ Asserts that the value is a [boolean](https://create.roblox.com/docs/luau/boolea
 </td></tr>
 <tr><td>
 
+[closeTo(value)](./expect.assertion.closeto.md)
+
+
+</td><td>
+
+Asserts that the actual value is a number within epsilon of `value`<!-- -->.
+
+
+</td></tr>
+<tr><td>
+
+[closeTo(value, margin)](./expect.assertion.closeto_1.md)
+
+
+</td><td>
+
+Asserts that the actual value is a number within `margin` of `value`<!-- -->.
+
+
+</td></tr>
+<tr><td>
+
 [containExactly(expectedValues)](./expect.assertion.containexactly.md)
 
 
@@ -1118,6 +1140,28 @@ Asserts that the value is _deep_ equal to the `expectedValue`<!-- -->.
 </td><td>
 
 Asserts that the value is less than or equal to `value`<!-- -->.
+
+
+</td></tr>
+<tr><td>
+
+[near(value)](./expect.assertion.near.md)
+
+
+</td><td>
+
+Asserts that the actual value is a number within epsilon of `value`<!-- -->.
+
+
+</td></tr>
+<tr><td>
+
+[near(value, margin)](./expect.assertion.near_1.md)
+
+
+</td><td>
+
+Asserts that the actual value is a number within `margin` of `value`<!-- -->.
 
 
 </td></tr>
