@@ -22,22 +22,22 @@ import { err, TEST_SON } from "@src/util/tests";
 export = () => {
   describe("equal", () => {
     it("compares the values strictly", () => {
-      expect(5).to.equal(5).but.not.equal("5");
-      expect("Daymon").to.equal("Daymon").but.not.equal("daymon");
-      expect(undefined).to.equal(undefined);
+      expect(5).to.shallowEqual(5).but.not.shallowEqual("5");
+      expect("Daymon").to.shallowEqual("Daymon").but.not.shallowEqual("daymon");
+      expect(undefined).to.shallowEqual(undefined);
     });
   });
 
   describe("error message", () => {
     it("throws if the values are not equal", () => {
       err(() => {
-        expect(5).to.equal("5");
+        expect(5).to.shallowEqual("5");
       }, `Expected '5' (number) to strictly equal "5" (string)`);
     });
 
     it("throws if the actual value is undefined", () => {
       err(() => {
-        expect(undefined).to.equal("5");
+        expect(undefined).to.shallowEqual("5");
       }, `Expected the value to strictly equal "5" (string), but it was undefined`);
     });
 
@@ -45,7 +45,7 @@ export = () => {
       err(
         () => {
           withProxy(TEST_SON, (proxy) => {
-            expect(proxy.parent?.age).to.equal("5");
+            expect(proxy.parent?.age).to.shallowEqual("5");
           });
         },
         'Expected parent.age to strictly equal "5" (string)',

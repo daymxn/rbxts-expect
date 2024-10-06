@@ -43,11 +43,11 @@ expect(5).to.be.a.number().that.equals(5);
 expect("Daymon").to.have.the.substring("day");
 expect("Mom").to.be.a.string().that.has.a.sizeOf(3);
 
-expect(new Vector3(1, 2, 3)).to.deepEqual(new Vector3(1, 2, 3));
+expect(new Vector3(1, 2, 3)).to.equal(new Vector3(1, 2, 3));
 expect({
   name: "Daymon",
   age: 24
-}).to.deepEqual({
+}).to.equal({
   name: "Daymon",
   age: 24
 });

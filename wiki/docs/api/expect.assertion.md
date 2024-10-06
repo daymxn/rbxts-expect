@@ -864,7 +864,7 @@ Asserts that the value is _deep_ equal to the `expectedValue`<!-- -->.
 
 </td><td>
 
-Asserts that the value is _shallow_ equal to the `expectedValue`<!-- -->.
+Asserts that the value is _deep_ equal to the `expectedValue`<!-- -->.
 
 
 </td></tr>
@@ -875,7 +875,7 @@ Asserts that the value is _shallow_ equal to the `expectedValue`<!-- -->.
 
 </td><td>
 
-Asserts that the value is _shallow_ equal to the `expectedValue`<!-- -->.
+Asserts that the value is _deep_ equal to the `expectedValue`<!-- -->.
 
 
 </td></tr>
@@ -1272,6 +1272,28 @@ Asserts that the `expectedValue` is a string that contains a match for the provi
 </td><td>
 
 Asserts that the value is a positive number.
+
+
+</td></tr>
+<tr><td>
+
+[shallowEqual(expectedValue)](./expect.assertion.shallowequal.md)
+
+
+</td><td>
+
+Asserts that the value is _shallow_ equal to the `expectedValue`<!-- -->.
+
+
+</td></tr>
+<tr><td>
+
+[shallowEquals(expectedValue)](./expect.assertion.shallowequals.md)
+
+
+</td><td>
+
+Asserts that the value is _shallow_ equal to the `expectedValue`<!-- -->.
 
 
 </td></tr>

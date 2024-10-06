@@ -20,11 +20,11 @@ import { expect } from "@src/index";
 export = () => {
   describe("negations", () => {
     it("cancel each other out", () => {
-      expect(5).to.not.not.equal(5);
+      expect(5).to.not.not.shallowEqual(5);
     });
 
     it("all work", () => {
-      expect(5).to.not.never.equal(5);
+      expect(5).to.not.never.shallowEqual(5);
     });
   });
 };

@@ -75,7 +75,7 @@ The expected value of the defined enum type.
 
 This is _not_ for ROBLOX specific enums, but for _user_ defined enums.
 
-The reason you would use this over [equal](./expect.assertion.equal.md)<!-- -->, is that `enum` not only throws more descriptive errors about enums, but it also attaches the [enum_type](./expect.assertion.enum_type.md) property for chained methods to provide their own more descriptive errors about enums.
+The reason you would use this over [equal](./expect.assertion.shallowequal.md)<!-- -->, is that `enum` not only throws more descriptive errors about enums, but it also attaches the [enum_type](./expect.assertion.enum_type.md) property for chained methods to provide their own more descriptive errors about enums.
 
 ## Example
 

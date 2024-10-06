@@ -8,7 +8,7 @@ hide_title: true
 
 ## Assertion.equals() method
 
-Asserts that the value is _shallow_ equal to the `expectedValue`<!-- -->.
+Asserts that the value is _deep_ equal to the `expectedValue`<!-- -->.
 
 **Signature:**
 
@@ -55,4 +55,4 @@ R
 
 ## Remarks
 
-_Type alias for [equal](./expect.assertion.equal.md)<!-- -->._
+_Type alias for [deepEqual](./expect.assertion.deepequal.md)<!-- -->_

@@ -21,13 +21,13 @@ export = () => {
   describe("noop", () => {
     it("return the source instance", () => {
       const source = expect(5);
-      expect(source.to).to.equal(source.be);
+      expect(source.to).to.shallowEqual(source.be);
     });
 
     it("all work", () => {
       expect(
         5
-      ).to.the.and.be.been.is.an.a.or.of.that.which.does.still.also.but.have.equal(
+      ).to.the.and.be.been.is.an.a.or.of.that.which.does.still.also.but.have.shallowEqual(
         5
       );
     });

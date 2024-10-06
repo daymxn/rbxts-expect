@@ -8,7 +8,7 @@ hide_title: true
 
 ## Assertion.equal() method
 
-Asserts that the value is _shallow_ equal to the `expectedValue`<!-- -->.
+Asserts that the value is _deep_ equal to the `expectedValue`<!-- -->.
 
 **Signature:**
 
@@ -55,14 +55,4 @@ R
 
 ## Remarks
 
-A value is shallow equal if they pass according to `===`<!-- -->.
-
-If you need to deeply check if values are equal, use [deepEqual](./expect.assertion.deepequal.md)<!-- -->.
-
-## Example
-
-
-```ts
-expect(5).to.equal(5);
-expect("daymon").to.not.equal("bryan");
-```
+_Type alias for [deepEqual](./expect.assertion.deepequal.md)<!-- -->_
