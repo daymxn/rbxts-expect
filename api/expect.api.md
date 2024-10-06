@@ -47,6 +47,10 @@ export interface Assertion<T = unknown> {
     defined(): this;
     readonly does: this;
     empty(): Assertion<T>;
+    endsWith(elements: InferArrayElement<T>[]): this;
+    endsWith(str: string): Assertion<string>;
+    endWith(elements: InferArrayElement<T>[]): this;
+    endWith(str: string): Assertion<string>;
     enum<R>(enumType: R & Record<number, string>): Assertion<EnumValue<R>>;
     enum<R>(enumType: R & Record<number, string>, value: R[keyof R]): Assertion<EnumValue<R>>;
     enum<R>(enumType: R & Record<number, string>, value: keyof R): Assertion<EnumValue<R>>;
