@@ -15,30 +15,15 @@
  * limitations under the License.
  */
 
-import "./any-of";
-import "./array";
-import "./between";
-import "./contain-exactly";
-import "./contain-exactly-in-order";
-import "./deep-equal";
-import "./defined";
-import "./empty";
-import "./end-with";
-import "./enum";
-import "./even-odd";
-import "./include";
-import "./instance-of";
-import "./length";
-import "./match";
-import "./near";
-import "./negations";
-import "./noops";
-import "./number-comparators";
-import "./pattern";
-import "./positive-negative";
-import "./shallow-equal";
-import "./some";
-import "./start-with";
-import "./substring";
-import "./throws";
-import "./true-false";
+/**
+ * Newer versions of roblox-ts automatically transpile if conditions
+ * to ts-like truthy checks.
+ *
+ * Instead, this function performs a
+ * [luau truthy check](https://create.roblox.com/docs/luau/booleans#conditionals).
+ *
+ * @internal
+ */
+export function isLuauTruthy(value: unknown) {
+  return value !== false && value !== undefined;
+}

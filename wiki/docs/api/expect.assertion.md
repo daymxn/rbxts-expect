@@ -958,6 +958,28 @@ Asserts that the actual value is a non `null` value.
 </td></tr>
 <tr><td>
 
+[false()](./expect.assertion.false.md)
+
+
+</td><td>
+
+Asserts that the value is a boolean of `false`<!-- -->.
+
+
+</td></tr>
+<tr><td>
+
+[falsy()](./expect.assertion.falsy.md)
+
+
+</td><td>
+
+Asserts that the value is a "falsy" value, according to luau.
+
+
+</td></tr>
+<tr><td>
+
 [function()](./expect.assertion.function.md)
 
 
@@ -1525,6 +1547,28 @@ Asserts that the function throws an exception that contains the string `substrin
 </td><td>
 
 Asserts that the function throws an exception that matches the lua pattern `pattern`<!-- -->.
+
+
+</td></tr>
+<tr><td>
+
+[true()](./expect.assertion.true.md)
+
+
+</td><td>
+
+Asserts that the value is a boolean of `true`<!-- -->.
+
+
+</td></tr>
+<tr><td>
+
+[truthy()](./expect.assertion.truthy.md)
+
+
+</td><td>
+
+Asserts that the value is a "truthy" value, according to luau.
 
 
 </td></tr>

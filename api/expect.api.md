@@ -62,6 +62,8 @@ export interface Assertion<T = unknown> {
     even(): Assertion<number>;
     exist(): this;
     exists(): this;
+    false(): this;
+    falsy(): this;
     function(): Assertion<object>;
     greaterThan(value: number): Assertion<number>;
     greaterThanOrEqualTo(value: number): Assertion<number>;
@@ -131,6 +133,8 @@ export interface Assertion<T = unknown> {
     throws(substring: string): Assertion<T>;
     throwsMatch(pattern: string): Assertion<T>;
     readonly to: this;
+    true(): this;
+    truthy(): this;
     typeOf<I extends keyof CheckableTypes>(name: I): Assertion<I>;
     typeOf<I>(checker: TypeCheckCallback<T>): Assertion<I>;
     typeOf<I>(tChecker: t.check<I>): Assertion<I>;
