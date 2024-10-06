@@ -1167,6 +1167,17 @@ Asserts that the actual value is a number within `margin` of `value`<!-- -->.
 </td></tr>
 <tr><td>
 
+[negative()](./expect.assertion.negative.md)
+
+
+</td><td>
+
+Asserts that the value is a negative number.
+
+
+</td></tr>
+<tr><td>
+
 [nil()](./expect.assertion.nil.md)
 
 
@@ -1250,6 +1261,17 @@ Asserts that the value is _shallow_ equal to one of the provided `values`<!-- --
 </td><td>
 
 Asserts that the `expectedValue` is a string that contains a match for the provided lua `pattern`<!-- -->.
+
+
+</td></tr>
+<tr><td>
+
+[positive()](./expect.assertion.positive.md)
+
+
+</td><td>
+
+Asserts that the value is a positive number.
 
 
 </td></tr>

@@ -86,6 +86,7 @@ export interface Assertion<T = unknown> {
     near(value: number, margin: number): Assertion<number>;
     // @internal (undocumented)
     _negated: boolean;
+    negative(): Assertion<number>;
     readonly never: this;
     nil(): this;
     readonly not: this;
@@ -98,6 +99,7 @@ export interface Assertion<T = unknown> {
     oneOf<R = T>(values: R[]): Assertion<R>;
     readonly or: this;
     pattern(pattern: string): this;
+    positive(): Assertion<number>;
     // @internal (undocumented)
     _proxy?: Proxy<T>;
     // @internal (undocumented)
