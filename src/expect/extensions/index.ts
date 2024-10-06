@@ -37,5 +37,6 @@ import "./pattern";
 import "./positive-negative";
 import "./shallow-equal";
 import "./some";
+import "./start-with";
 import "./substring";
 import "./throws";

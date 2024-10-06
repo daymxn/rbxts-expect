@@ -39,3 +39,14 @@ export function mapObjectValues<T extends object>(
 export function isArray(element: unknown): element is defined[] {
   return t.array(t.any)(element);
 }
+
+/**
+ * @internal
+ */
+export function getIndexOrNull(element: unknown, index: number) {
+  try {
+    return (element as defined[])[index];
+  } catch (e) {
+    return undefined;
+  }
+}

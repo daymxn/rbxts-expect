@@ -1343,6 +1343,50 @@ Asserts that at least one element in the array satisfies the specified [Filter](
 </td></tr>
 <tr><td>
 
+[startsWith(elements)](./expect.assertion.startswith.md)
+
+
+</td><td>
+
+Asserts that the array starts with the specified elements.
+
+
+</td></tr>
+<tr><td>
+
+[startsWith(str)](./expect.assertion.startswith_1.md)
+
+
+</td><td>
+
+Asserts that the actual value is a string that starts with the specified string.
+
+
+</td></tr>
+<tr><td>
+
+[startWith(elements)](./expect.assertion.startwith.md)
+
+
+</td><td>
+
+Asserts that the array starts with the specified elements.
+
+
+</td></tr>
+<tr><td>
+
+[startWith(str)](./expect.assertion.startwith_1.md)
+
+
+</td><td>
+
+Asserts that the actual value is a string that starts with the specified string.
+
+
+</td></tr>
+<tr><td>
+
 [string()](./expect.assertion.string.md)
 
 
