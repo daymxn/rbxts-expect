@@ -29,12 +29,6 @@ const Table: React.FC = () => {
       </thead>
       <tbody>
         <Entry
-          old={`expect(5).to.be.near(5 + 1e-8)`}
-          new={`expect(5).to.be.closeTo(5 + 1e-8)`}
-        >
-          Will be supported with issue <a href="https://github.com/daymxn/rbxts-expect/issues/6">#6</a>
-        </Entry>
-        <Entry
           old={`expect(5).to.be.a("number")`}
           new={`expect(5).to.be.a.number()`}
         >
