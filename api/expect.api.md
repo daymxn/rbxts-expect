@@ -110,6 +110,10 @@ export interface Assertion<T = unknown> {
     sizeOf(size: number): this;
     some(condition: Filter<InferArrayElement<T>>): this;
     some(reason: string, condition: Filter<InferArrayElement<T>>): this;
+    startsWith(elements: InferArrayElement<T>[]): this;
+    startsWith(str: string): Assertion<string>;
+    startWith(elements: InferArrayElement<T>[]): this;
+    startWith(str: string): Assertion<string>;
     readonly still: this;
     string(): Assertion<string>;
     substring(str: string): Assertion<T>;

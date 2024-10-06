@@ -131,11 +131,22 @@ Extra Elements: '[2]'
 
 ### Starts with
 
-:::info
+You can use the [startsWith](/docs/api/expect.assertion.startWith.md) method to check if an array starts with another
+array.
 
-[GitHub Issue #3](https://github.com/daymxn/rbxts-expect/issues/3)
+```ts
+import { expect } from "@rbxts/expect";
 
-:::
+expect([1, 2, 3]).to.startWith([1, 2]);
+```
+
+#### Example error
+
+```logs
+Expected '[1,2,3]' to be an array that starts with '[1,4,5]', but it was missing 2 elements
+
+Missing: '[4,5]'
+```
 
 ### Ends with
 

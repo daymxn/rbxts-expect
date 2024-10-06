@@ -23,14 +23,16 @@ export = () => {
   describe("length", () => {
     it("checks if arrays have the given amount of elements", () => {
       expect([1, 2, 3]).to.have.size(3).but.not.size(2);
+      expect([]).to.have.size(0).but.not.size(1);
     });
 
     it("checks if strings have the given amount of characters ", () => {
       expect("12345").to.have.size(5).but.not.size(4);
+      expect("").to.have.size(0).but.not.size(1);
     });
 
     it("checks if objects have the given amount of keys", () => {
-      expect({}).to.have.size(1);
+      expect({}).to.have.size(0).but.not.size(1);
       expect({
         name: "Daymon",
         age: 5,
