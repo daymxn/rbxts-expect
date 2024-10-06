@@ -83,19 +83,41 @@ Expected '2' to be less than or equal to '1'
 
 ### Negative
 
-:::info
+You can use the [negative](/docs/api/expect.assertion.negative.md) method to check if a number is less than zero.
 
-[GitHub Issue #9](https://github.com/daymxn/rbxts-expect/issues/9)
+```ts
+import { expect } from "@rbxts/expect";
 
-:::
+expect(-5).to.be.negative();
+
+expect(0).to.not.be.negative();
+expect(5).to.not.be.negative();
+```
+
+#### Example error
+
+```logs
+Expected '1' to be a negative number, but it was positive
+```
 
 ### Positive
 
-:::info
+You can use the [positive](/docs/api/expect.assertion.positive.md) method to check if a number is greater than zero.
 
-[GitHub Issue #9](https://github.com/daymxn/rbxts-expect/issues/9)
+```ts
+import { expect } from "@rbxts/expect";
 
-:::
+expect(5).to.be.positive();
+
+expect(0).to.not.be.positive();
+expect(-5).to.not.be.positive();
+```
+
+#### Example error
+
+```logs
+Expected '-1' to be a positive number, but it was negative
+```
 
 ### Even
 

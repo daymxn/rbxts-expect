@@ -35,6 +35,7 @@ import "./negations";
 import "./noops";
 import "./number-comparators";
 import "./pattern";
+import "./positive-negative";
 import "./some";
 import "./substring";
 import "./throws";
