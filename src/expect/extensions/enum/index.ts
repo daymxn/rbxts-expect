@@ -136,7 +136,7 @@ declare module "@rbxts/expect" {
      * @remarks
      * This is _not_ for ROBLOX specific enums, but for _user_ defined enums.
      *
-     * The reason you would use this over {@link Assertion.equal | equal}, is that
+     * The reason you would use this over {@link Assertion.shallowEqual | equal}, is that
      * `enum` not only throws more descriptive errors about enums, but it also attaches
      * the {@link Assertion.enum_type | enum_type} property for chained methods
      * to provide their own more descriptive errors about enums.
@@ -170,7 +170,7 @@ declare module "@rbxts/expect" {
      * @remarks
      * This is _not_ for ROBLOX specific enums, but for _user_ defined enums.
      *
-     * The reason you would use this over {@link Assertion.equal | equal}, is that
+     * The reason you would use this over {@link Assertion.shallowEqual | equal}, is that
      * `enum` not only throws more descriptive errors about enums, but it also attaches
      * the {@link Assertion.enum_type | enum_type} property for chained methods
      * to provide their own more descriptive errors about enums.

@@ -232,6 +232,26 @@ declare module "@rbxts/expect" {
      *
      * @public
      */
+    equal<R = T>(expectedValue: R): Assertion<R>;
+
+    /**
+     * Asserts that the value is _deep_ equal to the `expectedValue`.
+     *
+     * @remarks
+     * _Type alias for {@link Assertion.deepEqual | deepEqual}_
+     *
+     * @public
+     */
+    equals<R = T>(expectedValue: R): Assertion<R>;
+
+    /**
+     * Asserts that the value is _deep_ equal to the `expectedValue`.
+     *
+     * @remarks
+     * _Type alias for {@link Assertion.deepEqual | deepEqual}_
+     *
+     * @public
+     */
     eql<R = T>(expectedValue: R): Assertion<R>;
   }
 }
@@ -241,4 +261,6 @@ extendMethods({
   deepEqual: eql,
   matchExactly: eql,
   eql: eql,
+  equal: eql,
+  equals: eql,
 });

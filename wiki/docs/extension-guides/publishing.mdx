@@ -220,7 +220,7 @@ const baseMessage = new ExpectMessageBuilder(`Expected ${place.name} to ${place.
 /**
  * Asserts that the value is _shallow_ equal to the `expectedValue`.
  */
-export const equal: CustomMethodImpl<defined> = (_, actual, expected: defined) => {
+export const shallowEqual: CustomMethodImpl<defined> = (_, actual, expected: defined) => {
   const message = baseMessage.use().expectedValue(expected);
 
   return actual === expected ? message.pass() : message.fail();
@@ -231,12 +231,12 @@ declare module "@rbxts/expect" {
     /**
      * Asserts that the value is _shallow_ equal to the `expectedValue`.
      */
-    equal<R = T>(expectedValue: R): Assertion<R>;
+    shallowEqual<R = T>(expectedValue: R): Assertion<R>;
   }
 }
 
 extendMethods({
-  equal: equal,
+  shallowEqual: shallowEqual,
 });
 ```
 

@@ -52,29 +52,29 @@ declare module "@rbxts/expect" {
      *
      * @example
      * ```ts
-     * expect(5).to.equal(5);
-     * expect("daymon").to.not.equal("bryan");
+     * expect(5).to.shallowEqual(5);
+     * expect("daymon").to.not.shallowEqual("bryan");
      * ```
      *
      * @public
      */
-    equal<R = T>(expectedValue: R): Assertion<R>;
+    shallowEqual<R = T>(expectedValue: R): Assertion<R>;
 
     /**
      * Asserts that the value is _shallow_ equal to the `expectedValue`.
      *
      * @remarks
-     * _Type alias for {@link Assertion.equal | equal}._
+     * _Type alias for {@link Assertion.shallowEqual | shallowEqual}._
      *
      * @public
      */
-    equals<R = T>(expectedValue: R): Assertion<R>;
+    shallowEquals<R = T>(expectedValue: R): Assertion<R>;
 
     /**
      * Asserts that the value is _shallow_ equal to the `expectedValue`.
      *
      * @remarks
-     * _Type alias for {@link Assertion.equal | equal}._
+     * _Type alias for {@link Assertion.shallowEqual | equal}._
      *
      * @public
      */
@@ -84,6 +84,6 @@ declare module "@rbxts/expect" {
 
 extendMethods({
   eq: equal,
-  equal: equal,
-  equals: equal,
+  shallowEqual: equal,
+  shallowEquals: equal,
 });

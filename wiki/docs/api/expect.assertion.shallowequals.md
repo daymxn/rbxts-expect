@@ -1,19 +1,19 @@
 ---
-id: expect.assertion.eq
-title: Assertion.eq() method
+id: expect.assertion.shallowequals
+title: Assertion.shallowEquals() method
 hide_title: true
 ---
 
-[@rbxts/expect](./expect.md) &gt; [Assertion](./expect.assertion.md) &gt; [eq](./expect.assertion.eq.md)
+[@rbxts/expect](./expect.md) &gt; [Assertion](./expect.assertion.md) &gt; [shallowEquals](./expect.assertion.shallowequals.md)
 
-## Assertion.eq() method
+## Assertion.shallowEquals() method
 
 Asserts that the value is _shallow_ equal to the `expectedValue`<!-- -->.
 
 **Signature:**
 
 ```typescript
-eq<R = T>(expectedValue: R): Assertion<R>;
+shallowEquals<R = T>(expectedValue: R): Assertion<R>;
 ```
 
 ## Parameters
@@ -55,4 +55,4 @@ R
 
 ## Remarks
 
-_Type alias for [equal](./expect.assertion.shallowequal.md)<!-- -->._
+_Type alias for [shallowEqual](./expect.assertion.shallowequal.md)<!-- -->._

@@ -104,6 +104,8 @@ export interface Assertion<T = unknown> {
     _proxy?: Proxy<T>;
     // @internal (undocumented)
     _self: this;
+    shallowEqual<R = T>(expectedValue: R): Assertion<R>;
+    shallowEquals<R = T>(expectedValue: R): Assertion<R>;
     size(size: number): this;
     sizeOf(size: number): this;
     some(condition: Filter<InferArrayElement<T>>): this;
