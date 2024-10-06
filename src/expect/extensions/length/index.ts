@@ -47,9 +47,6 @@ function validateArrayIsSize(actual: defined[], size: number) {
     .use(`exactly ${place.expected.value} element(s)`)
     .expectedValue(size);
 
-  // TODO(): wait why am I doing this?
-  if (actual.isEmpty()) return message.pass();
-
   const actualSize = actual.size();
 
   if (actualSize === size) return message.pass();
