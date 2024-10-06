@@ -150,11 +150,21 @@ Missing: '[4,5]'
 
 ### Ends with
 
-:::info
+You can use the [endsWith](/docs/api/expect.assertion.endWith.md) method to check if an array ends with another array.
 
-[GitHub Issue #4](https://github.com/daymxn/rbxts-expect/issues/4)
+```ts
+import { expect } from "@rbxts/expect";
 
-:::
+expect([1, 2, 3]).to.endWith([2, 3]);
+```
+
+#### Example error
+
+```logs
+Expected '[1,2,3,4]' to be an array that ends with '[1,2,4]', but it was missing 2 elements
+
+Missing: '[1,2]'
+```
 
 ### All of
 

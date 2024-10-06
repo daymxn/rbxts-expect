@@ -23,6 +23,7 @@ import "./contain-exactly-in-order";
 import "./deep-equal";
 import "./defined";
 import "./empty";
+import "./end-with";
 import "./enum";
 import "./even-odd";
 import "./include";

@@ -92,11 +92,19 @@ Expected "day" to be a string that starts with "bry", but it was missing
 
 ### Ends with
 
-:::info
+You can use the [endsWith](/docs/api/expect.assertion.endWith.md) method to check if a string ends with another string.
 
-[GitHub Issue #4](https://github.com/daymxn/rbxts-expect/issues/4)
+```ts
+import { expect } from "@rbxts/expect";
 
-:::
+expect("daymon").to.endWith("mon");
+```
+
+#### Example error
+
+```logs
+Expected "daymon" to be a string that ends with "yan", but it was missing
+```
 
 ### All of
 

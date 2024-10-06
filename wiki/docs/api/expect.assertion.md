@@ -804,6 +804,50 @@ Asserts that the value is empty.
 </td></tr>
 <tr><td>
 
+[endsWith(elements)](./expect.assertion.endswith.md)
+
+
+</td><td>
+
+Asserts that the array ends with the specified elements.
+
+
+</td></tr>
+<tr><td>
+
+[endsWith(str)](./expect.assertion.endswith_1.md)
+
+
+</td><td>
+
+Asserts that the actual value is a string that ends with the specified string.
+
+
+</td></tr>
+<tr><td>
+
+[endWith(elements)](./expect.assertion.endwith.md)
+
+
+</td><td>
+
+Asserts that the array ends with the specified elements.
+
+
+</td></tr>
+<tr><td>
+
+[endWith(str)](./expect.assertion.endwith_1.md)
+
+
+</td><td>
+
+Asserts that the actual value is a string that ends with the specified string.
+
+
+</td></tr>
+<tr><td>
+
 [enum(enumType)](./expect.assertion.enum.md)
 
 
