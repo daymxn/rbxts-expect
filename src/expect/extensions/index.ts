@@ -29,6 +29,7 @@ import "./even-odd";
 import "./finite";
 import "./include";
 import "./instance-of";
+import "./key";
 import "./length";
 import "./match";
 import "./near";

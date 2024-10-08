@@ -1101,6 +1101,17 @@ Asserts that the value is an instance of `I`<!-- -->, according to a provided [t
 </td></tr>
 <tr><td>
 
+[key(key)](./expect.assertion.key.md)
+
+
+</td><td>
+
+Asserts that the table has the key `key`<!-- -->.
+
+
+</td></tr>
+<tr><td>
+
 [least(value)](./expect.assertion.least.md)
 
 
@@ -1349,6 +1360,17 @@ Asserts that the `expectedValue` is a string that contains a match for the provi
 </td><td>
 
 Asserts that the value is a positive number.
+
+
+</td></tr>
+<tr><td>
+
+[property(property)](./expect.assertion.property.md)
+
+
+</td><td>
+
+Asserts that the table has the property `property`<!-- -->.
 
 
 </td></tr>

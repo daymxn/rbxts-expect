@@ -78,6 +78,7 @@ export interface Assertion<T = unknown> {
     instanceOf<I>(tChecker: t.check<I>): Assertion<I>;
     readonly is: this;
     is_array?: boolean;
+    key(key: string): this;
     least(value: number): Assertion<number>;
     length(size: number): this;
     lengthOf(size: number): this;
@@ -107,6 +108,7 @@ export interface Assertion<T = unknown> {
     readonly or: this;
     pattern(pattern: string): this;
     positive(): Assertion<number>;
+    property(property: string): this;
     // @internal (undocumented)
     _proxy?: Proxy<T>;
     satisfies(filter: Filter<T>): this;
