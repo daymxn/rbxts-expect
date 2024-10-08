@@ -1,5 +1,11 @@
 # @rbxts/expect
 
+## 2.0.1
+
+### Patch Changes
+
+- 072dc32: Add missing keywords to package
+
 ## 2.0.0
 
 ### Major Changes
