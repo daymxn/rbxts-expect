@@ -122,11 +122,25 @@ Actual (full): '{"name":"Daymon","age":5}'
 
 ### Key/Property
 
-:::info
+You can use the [key](/docs/api/expect.assertion.key.md) or [property](/docs/api/expect.assertion.property.md) methods
+to check if an object has a certina key.
 
-[GitHub Issue #20](https://github.com/daymxn/rbxts-expect/issues/20)
+```ts
+import { expect } from "@rbxts/expect";
 
-:::
+expect({
+  name: "Daymon",
+  age: 5,
+}).to.have.the.key("name");
+```
+
+#### Example error
+
+```logs
+Expected '{...}' to have the key "parent", but it was missing
+
+Actual (full): '{"name":"Daymon","age":5}'
+```
 
 ## Extra
 

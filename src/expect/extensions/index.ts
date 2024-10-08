@@ -15,6 +15,7 @@
  * limitations under the License.
  */
 
+import "./all";
 import "./any-of";
 import "./array";
 import "./between";
@@ -26,8 +27,10 @@ import "./empty";
 import "./end-with";
 import "./enum";
 import "./even-odd";
+import "./finite";
 import "./include";
 import "./instance-of";
+import "./key";
 import "./length";
 import "./match";
 import "./near";
@@ -36,6 +39,7 @@ import "./noops";
 import "./number-comparators";
 import "./pattern";
 import "./positive-negative";
+import "./satisfy";
 import "./shallow-equal";
 import "./some";
 import "./start-with";

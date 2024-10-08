@@ -176,11 +176,23 @@ Expected '10' to be a number between 5 and 8, but it was too high.
 
 ### Finite
 
-:::info
+You can use the [finite](/docs/api/expect.assertion.finite.md) method to check if a number is within `+-math.huge`
 
-[GitHub Issue #10](https://github.com/daymxn/rbxts-expect/issues/10)
+```ts
+import { expect } from "@rbxts/expect";
 
-:::
+expect(5).to.be.finite();
+expect(-5).to.be.finite();
+
+expect("5").to.not.be.finite();
+expect(math.huge).to.not.be.finite();
+```
+
+#### Example error
+
+```logs
+Expected 'inf' to be a finite number, but it was 'math.huge'
+```
 
 ### Near
 

@@ -188,15 +188,11 @@ remotes.purchasePet.connect(async (player, petId) => {
 });
 ```
 
-Although, if you want to transform your messages in a different way than what `@rbxts/expect` outputs, it's your job to
-catch the exception and rethrow it accordingly.
+You can also provide your own override for the message failure by providing a string as the second argument to
+[expect](/docs/api/expect.expect.md).
 
 ```ts
-try {
-  expect(data.money).to.be.gte(pet.cost);
-} catch (e) {
-  throw "You don't have enough money!";
-}
+expect(data.money, "You don't have enough money!").to.be.gte(pet.cost);
 ```
 
 ## Client usage

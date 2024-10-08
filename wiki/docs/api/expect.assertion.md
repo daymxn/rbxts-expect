@@ -573,6 +573,28 @@ Asserts that the value is greater than `value`<!-- -->.
 </td></tr>
 <tr><td>
 
+[all(condition)](./expect.assertion.all.md)
+
+
+</td><td>
+
+Asserts that all elements in the array satisfy the specified [Filter](./expect.filter.md)<!-- -->.
+
+
+</td></tr>
+<tr><td>
+
+[all(reason, condition)](./expect.assertion.all_1.md)
+
+
+</td><td>
+
+Asserts that all elements in the array satisfy the specified [Filter](./expect.filter.md)<!-- -->.
+
+
+</td></tr>
+<tr><td>
+
 [anyOf(values)](./expect.assertion.anyof.md)
 
 
@@ -980,6 +1002,17 @@ Asserts that the value is a "falsy" value, according to luau.
 </td></tr>
 <tr><td>
 
+[finite()](./expect.assertion.finite.md)
+
+
+</td><td>
+
+Asserts that the actual value is a number within `+-math.huge`<!-- -->.
+
+
+</td></tr>
+<tr><td>
+
 [function()](./expect.assertion.function.md)
 
 
@@ -1085,6 +1118,17 @@ Asserts that the value is an instance of `I`<!-- -->, according to a custom call
 </td><td>
 
 Asserts that the value is an instance of `I`<!-- -->, according to a provided [t check](https://github.com/osyrisrblx/t)<!-- -->.
+
+
+</td></tr>
+<tr><td>
+
+[key(key)](./expect.assertion.key.md)
+
+
+</td><td>
+
+Asserts that the table has the key `key`<!-- -->.
 
 
 </td></tr>
@@ -1338,6 +1382,39 @@ Asserts that the `expectedValue` is a string that contains a match for the provi
 </td><td>
 
 Asserts that the value is a positive number.
+
+
+</td></tr>
+<tr><td>
+
+[property(property)](./expect.assertion.property.md)
+
+
+</td><td>
+
+Asserts that the table has the property `property`<!-- -->.
+
+
+</td></tr>
+<tr><td>
+
+[satisfies(filter)](./expect.assertion.satisfies.md)
+
+
+</td><td>
+
+Asserts that the value returns true for the given `filter`<!-- -->.
+
+
+</td></tr>
+<tr><td>
+
+[satisfy(filter)](./expect.assertion.satisfy.md)
+
+
+</td><td>
+
+Asserts that the value returns true for the given `filter`<!-- -->.
 
 
 </td></tr>

@@ -71,11 +71,20 @@ Expected '5' to be of type 'string', but it was a 'number'
 
 ### Satisfy
 
-:::info
+You can use the [satisfy](/docs/api/expect.assertion.satisfy.md) method to check if a provided value passes a given
+callback.
 
-[GitHub Issue #5](https://github.com/daymxn/rbxts-expect/issues/5)
+```ts
+import { expect } from "@rbxts/expect";
 
-:::
+expect(4).to.satisfy((value) => 4 % 2 === 0);
+```
+
+#### Example error
+
+```logs
+Expected '5' (number) to satisfy a given callback, but it didn't
+```
 
 ### Defined
 

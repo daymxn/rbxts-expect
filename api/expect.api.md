@@ -18,6 +18,8 @@ export interface ActualPlaceholder {
 export interface Assertion<T = unknown> {
     readonly a: this;
     above(value: number): Assertion<number>;
+    all(condition: Filter<InferArrayElement<T>>): this;
+    all(reason: string, condition: Filter<InferArrayElement<T>>): this;
     readonly also: this;
     readonly an: this;
     readonly and: this;
@@ -64,6 +66,7 @@ export interface Assertion<T = unknown> {
     exists(): this;
     false(): this;
     falsy(): this;
+    finite(): Assertion<number>;
     function(): Assertion<object>;
     greaterThan(value: number): Assertion<number>;
     greaterThanOrEqualTo(value: number): Assertion<number>;
@@ -77,6 +80,7 @@ export interface Assertion<T = unknown> {
     instanceOf<I>(tChecker: t.check<I>): Assertion<I>;
     readonly is: this;
     is_array?: boolean;
+    key(key: string): this;
     least(value: number): Assertion<number>;
     length(size: number): this;
     lengthOf(size: number): this;
@@ -106,8 +110,11 @@ export interface Assertion<T = unknown> {
     readonly or: this;
     pattern(pattern: string): this;
     positive(): Assertion<number>;
+    property(property: string): this;
     // @internal (undocumented)
     _proxy?: Proxy<T>;
+    satisfies(filter: Filter<T>): this;
+    satisfy(filter: Filter<T>): this;
     // @internal (undocumented)
     _self: this;
     shallowEqual<R = T>(expectedValue: R): Assertion<R>;
@@ -165,7 +172,7 @@ export type EnumValue<E> = E[keyof E];
 export function err(callback: () => unknown, ...messages: string[]): void;
 
 // @public
-export function expect<T>(value: T): Assertion<T>;
+export function expect<T>(value: T, customMessage?: string): Assertion<T>;
 
 // @public
 export interface ExpectConfig {

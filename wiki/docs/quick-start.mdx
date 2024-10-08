@@ -175,6 +175,18 @@ Expected (full): '{"child":{"name":"rigby","age":5},"name":"daymon","age":24}'
 Actual (full): '{"child":{"name":"nova","age":5},"name":"daymon","age":24}'
 ```
 
+### Custom messages
+
+```ts
+import { expect } from "@rbxts/expect";
+
+expect(5, "You don't have enough money!").to.be.gte(10);
+```
+
+```logs title="Console"
+You don't have enough money!
+```
+
 ## Next steps
 
 If you're wanting to learn more, feel free to check out any of the following resources:
