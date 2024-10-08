@@ -18,6 +18,8 @@ export interface ActualPlaceholder {
 export interface Assertion<T = unknown> {
     readonly a: this;
     above(value: number): Assertion<number>;
+    all(condition: Filter<InferArrayElement<T>>): this;
+    all(reason: string, condition: Filter<InferArrayElement<T>>): this;
     readonly also: this;
     readonly an: this;
     readonly and: this;

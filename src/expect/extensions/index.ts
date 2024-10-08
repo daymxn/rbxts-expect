@@ -15,6 +15,7 @@
  * limitations under the License.
  */
 
+import "./all";
 import "./any-of";
 import "./array";
 import "./between";

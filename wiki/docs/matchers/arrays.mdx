@@ -190,6 +190,27 @@ Missing: '[1,2]'
 
 :::
 
+### All
+
+You can use the [all](/docs/api/expect.assertion.all.md) method to check if all the elments in an array pass some
+condition.
+
+```ts
+import { expect } from "@rbxts/expect";
+
+expect([2, 4, 6]).to.all((it) => it % 2 === 0);
+expect(["Bryce", "Bryan"]).to.all(`start with "Bry"`, (it) => startsWith(it, "Bry"));
+```
+
+#### Example error
+
+```logs
+Expected '["Bryce", "Bryan", "Daymon"]' to all start with "Bry", but there was an element that failed the check
+
+Index: 3
+Value: "Daymon"
+```
+
 ### Some
 
 You can use the [some](/docs/api/expect.assertion.some.md) method to check if an array passes some condition.

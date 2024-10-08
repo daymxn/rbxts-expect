@@ -573,6 +573,28 @@ Asserts that the value is greater than `value`<!-- -->.
 </td></tr>
 <tr><td>
 
+[all(condition)](./expect.assertion.all.md)
+
+
+</td><td>
+
+Asserts that all elements in the array satisfy the specified [Filter](./expect.filter.md)<!-- -->.
+
+
+</td></tr>
+<tr><td>
+
+[all(reason, condition)](./expect.assertion.all_1.md)
+
+
+</td><td>
+
+Asserts that all elements in the array satisfy the specified [Filter](./expect.filter.md)<!-- -->.
+
+
+</td></tr>
+<tr><td>
+
 [anyOf(values)](./expect.assertion.anyof.md)
 
 
