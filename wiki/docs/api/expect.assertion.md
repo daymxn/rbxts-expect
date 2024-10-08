@@ -1343,6 +1343,28 @@ Asserts that the value is a positive number.
 </td></tr>
 <tr><td>
 
+[satisfies(filter)](./expect.assertion.satisfies.md)
+
+
+</td><td>
+
+Asserts that the value returns true for the given `filter`<!-- -->.
+
+
+</td></tr>
+<tr><td>
+
+[satisfy(filter)](./expect.assertion.satisfy.md)
+
+
+</td><td>
+
+Asserts that the value returns true for the given `filter`<!-- -->.
+
+
+</td></tr>
+<tr><td>
+
 [shallowEqual(expectedValue)](./expect.assertion.shallowequal.md)
 
 

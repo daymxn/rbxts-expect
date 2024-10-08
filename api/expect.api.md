@@ -108,6 +108,8 @@ export interface Assertion<T = unknown> {
     positive(): Assertion<number>;
     // @internal (undocumented)
     _proxy?: Proxy<T>;
+    satisfies(filter: Filter<T>): this;
+    satisfy(filter: Filter<T>): this;
     // @internal (undocumented)
     _self: this;
     shallowEqual<R = T>(expectedValue: R): Assertion<R>;

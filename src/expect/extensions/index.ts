@@ -36,6 +36,7 @@ import "./noops";
 import "./number-comparators";
 import "./pattern";
 import "./positive-negative";
+import "./satisfy";
 import "./shallow-equal";
 import "./some";
 import "./start-with";
