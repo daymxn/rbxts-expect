@@ -980,6 +980,17 @@ Asserts that the value is a "falsy" value, according to luau.
 </td></tr>
 <tr><td>
 
+[finite()](./expect.assertion.finite.md)
+
+
+</td><td>
+
+Asserts that the actual value is a number within `+-math.huge`<!-- -->.
+
+
+</td></tr>
+<tr><td>
+
 [function()](./expect.assertion.function.md)
 
 

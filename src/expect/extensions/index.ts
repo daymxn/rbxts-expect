@@ -26,6 +26,7 @@ import "./empty";
 import "./end-with";
 import "./enum";
 import "./even-odd";
+import "./finite";
 import "./include";
 import "./instance-of";
 import "./length";

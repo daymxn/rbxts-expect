@@ -64,6 +64,7 @@ export interface Assertion<T = unknown> {
     exists(): this;
     false(): this;
     falsy(): this;
+    finite(): Assertion<number>;
     function(): Assertion<object>;
     greaterThan(value: number): Assertion<number>;
     greaterThanOrEqualTo(value: number): Assertion<number>;
