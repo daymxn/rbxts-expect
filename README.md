@@ -229,11 +229,11 @@ You can either checkout our [Quick Start](https://rbxts-expect.daymxn.com/docs/q
 
 ## Roadmap
 
-- Add publishing for wally
-- Add docs for lua usage
-- Implement workflow for test coverage
-- Add workflow for checking API diff and version bumping according to semver
-- Add note in contributing about checking the api diff
+* Add publishing for wally
+* Add docs for lua usage
+* Implement workflow for test coverage
+* Add workflow for checking API diff and version bumping according to semver
+* Add note in contributing about checking the api diff
 
 ## Contributing
 
