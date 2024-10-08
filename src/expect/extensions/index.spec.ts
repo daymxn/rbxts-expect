@@ -17,4 +17,22 @@
 
 /// <reference types="@rbxts/testez/globals" />
 
-export = () => {};
+import { expect } from "@src/expect";
+import { err } from "@src/util";
+
+export = () => {
+  describe("expect", () => {
+    it("should override error messages", () => {
+      err(() => {
+        expect(5, "Your mom").to.be.undefined();
+      }, "Your mom");
+
+      err(() => {
+        expect(undefined, "Your mom").to.not.be.undefined();
+      }, "Your mom");
+
+      expect(5, "should not throw").to.be.defined();
+      expect(undefined, "should not throw").to.not.be.defined();
+    });
+  });
+};

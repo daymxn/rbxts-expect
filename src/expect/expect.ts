@@ -92,50 +92,36 @@ const isTesting = (_G as Record<string, boolean>)["RUNNING_GLOBAL"];
  *
  * @param method - The assertion callback to map.
  * @param value - The "actual" value of the assertion.
+ * @param customMessage - A custom message to override exceptions with.
  *
  * @returns A method version of the callback.
  */
-function MapAssertion<T>(method: CustomMethodImpl<unknown>, value: T) {
+function MapAssertion<T>(
+  method: CustomMethodImpl<unknown>,
+  value: T,
+  customMessage?: string
+) {
   return (source: Assertion<T>, ...args: never[]) => {
     const result = method(source, value, ...args);
 
-    return result.match(
-      (message) => {
-        if (source._negated) {
-          if (source._proxy) {
-            message.path(computeFullProxyPath(source._proxy));
-          }
+    if (result.isOk() !== source._negated) return source;
 
-          if (isTesting) {
-            throw message.actualValue(value).build(true, true);
-          } else {
-            error(
-              message.actualValue(value).build(true, true),
-              discoverStackLevel()
-            );
-          }
-        }
-        return source;
-      },
-      (message) => {
-        if (source._negated) {
-          return source;
-        }
+    const message = result.asPtr();
 
-        if (source._proxy) {
-          message.path(computeFullProxyPath(source._proxy));
-        }
+    if (source._proxy) {
+      message.path(computeFullProxyPath(source._proxy));
+    }
 
-        if (isTesting) {
-          throw message.actualValue(value).build(false, false);
-        } else {
-          error(
-            message.actualValue(value).build(false, false),
-            discoverStackLevel()
-          );
-        }
-      }
-    );
+    const finalMessage =
+      customMessage !== undefined
+        ? customMessage
+        : message.actualValue(value).build(result.isOk(), source._negated);
+
+    if (isTesting) {
+      throw finalMessage;
+    } else {
+      error(finalMessage, discoverStackLevel());
+    }
   };
 }
 
@@ -153,6 +139,8 @@ function MapAssertion<T>(method: CustomMethodImpl<unknown>, value: T) {
  * [API](https://rbxts-expect.daymxn.com/docs/api).
  *
  * @param value - The "actual" value to perform checks against.
+ * @param customMessage - A custom message to use if the check fails; replaces
+ * whatever message expect throws.
  *
  * @returns An instance of {@link Assertion} that you should chain for checks.
  *
@@ -167,9 +155,14 @@ function MapAssertion<T>(method: CustomMethodImpl<unknown>, value: T) {
  * expect(Sport.Basketball).to.be.the.enum(Sport).and.to.be.oneOf(["Basketball", "Soccer"]);
  * ```
  *
+ * @example Using a custom message
+ * ```ts
+ * expect(player.money, "You don't have enough money").to.be.gte(pet.cost);
+ * ```
+ *
  * @public
  */
-export function expect<T>(value: T): Assertion<T> {
+export function expect<T>(value: T, customMessage?: string): Assertion<T> {
   const newAssert: Record<string, unknown> = {
     _negated: false,
   };
@@ -182,7 +175,7 @@ export function expect<T>(value: T): Assertion<T> {
   }
 
   const mappedAssertions = mapObjectValues(getMethodExtensions(), (method) =>
-    MapAssertion(method, newAssert.value)
+    MapAssertion(method, newAssert.value, customMessage)
   );
 
   Object.assign(newAssert, mappedAssertions);

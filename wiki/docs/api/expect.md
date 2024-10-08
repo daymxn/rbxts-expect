@@ -89,7 +89,7 @@ Throws an error if the `callback` doesn't throw.
 </td></tr>
 <tr><td>
 
-[expect(value)](./expect.expect.md)
+[expect(value, customMessage)](./expect.expect.md)
 
 
 </td><td>

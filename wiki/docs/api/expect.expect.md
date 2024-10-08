@@ -13,7 +13,7 @@ Perform assertions/checks on the state of a value.
 **Signature:**
 
 ```typescript
-declare function expect<T>(value: T): Assertion<T>;
+declare function expect<T>(value: T, customMessage?: string): Assertion<T>;
 ```
 
 ## Parameters
@@ -50,6 +50,22 @@ The "actual" value to perform checks against.
 
 
 </td></tr>
+<tr><td>
+
+customMessage
+
+
+</td><td>
+
+string
+
+
+</td><td>
+
+_(Optional)_ A custom message to use if the check fails; replaces whatever message expect throws.
+
+
+</td></tr>
 </tbody></table>
 **Returns:**
 
@@ -65,7 +81,7 @@ You can then use the instance returned by `expect` to make various "assertions" 
 
 For a full list of available checks, take a look at the [API](https://rbxts-expect.daymxn.com/docs/api).
 
-## Example
+## Example 1
 
 
 ```ts
@@ -76,4 +92,12 @@ expect("Daymon").to.have.the.substring("Day");
 expect([1,2,3]).to.include(1).but.not.include(4);
 
 expect(Sport.Basketball).to.be.the.enum(Sport).and.to.be.oneOf(["Basketball", "Soccer"]);
+```
+
+## Example 2
+
+Using a custom message
+
+```ts
+expect(player.money, "You don't have enough money").to.be.gte(pet.cost);
 ```

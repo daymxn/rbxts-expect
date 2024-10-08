@@ -170,7 +170,7 @@ export type EnumValue<E> = E[keyof E];
 export function err(callback: () => unknown, ...messages: string[]): void;
 
 // @public
-export function expect<T>(value: T): Assertion<T>;
+export function expect<T>(value: T, customMessage?: string): Assertion<T>;
 
 // @public
 export interface ExpectConfig {

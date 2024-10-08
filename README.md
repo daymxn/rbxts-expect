@@ -210,7 +210,7 @@ remotes.purchasePet.connect(async (player, petId) => {
   const data = saves.get(player);
   const pet = pets.get(petId);
 
-  expect(data.money).to.be.gte(pet.cost);
+  expect(data.money, "You don't have enough money!").to.be.gte(pet.cost);
 
   data.money -= pet.cost;
   data.pets.push(pet);
