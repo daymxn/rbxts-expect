@@ -46,7 +46,7 @@
 			"only": true
 		}
 	},
-	"keywords": [],
+	"keywords": ["rbxts", "expect", "test", "assertion", "typescript", "roblox"],
 	"author": "Daymon Littrell-Reyes",
 	"repository": {
 		"type": "git",
