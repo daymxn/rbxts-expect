@@ -1,6 +1,6 @@
 {
 	"name": "@rbxts/expect",
-	"version": "2.0.0",
+	"version": "2.0.1",
 	"description": "Test-agnostic assertion library for ROBLOX.",
 	"main": "out/init.luau",
 	"scripts": {
@@ -46,7 +46,14 @@
 			"only": true
 		}
 	},
-	"keywords": ["rbxts", "expect", "test", "assertion", "typescript", "roblox"],
+	"keywords": [
+		"rbxts",
+		"expect",
+		"test",
+		"assertion",
+		"typescript",
+		"roblox"
+	],
 	"author": "Daymon Littrell-Reyes",
 	"repository": {
 		"type": "git",
