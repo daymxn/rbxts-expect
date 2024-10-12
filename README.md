@@ -231,8 +231,9 @@ You can either checkout our [Quick Start](https://rbxts-expect.daymxn.com/docs/q
 
 * Add publishing for wally
 * Add docs for lua usage
-* Implement workflow for test coverage
+* Implement workflow for test coverage (Blocked by [lune/issues/259](https://github.com/lune-org/lune/issues/259))
 * Add workflow for checking API diff and version bumping according to semver
+* Add workflow for checking format/linting
 * Add note in contributing about checking the api diff
 
 ## Contributing
