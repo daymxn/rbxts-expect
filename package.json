@@ -7,30 +7,40 @@
 		"build": "rbxtsc -p ./tsconfig.release.json",
 		"dev": "rbxtsc -w --type game --rojo test.project.json",
 		"watch": "rbxtsc -w",
+
 		"scripts:build": "npx tsc --project ./scripts/tsconfig.scripts.json",
 		"scripts:watch": "npm run scripts:build -- -w",
+
 		"api:rollup:generate": "npx tsup",
 		"api:rollup:fix": "npx tsx ./scripts/src/fix-rollup.ts ./src/index.ts ./temp/rollup/index.d.ts",
 		"api:rollup": "npx run-s api:rollup:*",
+
 		"api:extract": "api-extractor run --local --verbose",
 		"api:update": "npx run-s build api:rollup api:extract",
+
 		"api:docs:generate": "api-documenter markdown -i ./temp  -o ./temp/api",
 		"api:docs:fix": "npx tsx ./scripts/src/fix-api-reference.ts ./temp/api ./temp/fixed",
 		"api:docs:export": "npx tsx ./scripts/src/export-api-reference.ts ./temp/fixed ./wiki/docs/api",
 		"api:docs": "npx run-s api:docs:*",
 		"api": "npx run-s api:update api:docs",
+
 		"format": "npx eslint --fix",
 		"lint": "npm run format",
+
 		"lock": "npm i --package-lock-only",
+
 		"change": "npx changeset add",
 		"change:status": "npx changeset status",
 		"change:export": "npx changeset status --output changes.json",
 		"change:publish": "npx changeset publish",
+
 		"release:version": "npx changeset version",
 		"release:tags": "git push --follow-tags",
 		"release": "npx run-s build change:publish",
+
 		"publish:local": "npm run build && npm pack --pack-destination ./temp",
 		"prepublishOnly": "npm run build",
+
 		"check:deps": "npx depcheck"
 	},
 	"tsup": {
