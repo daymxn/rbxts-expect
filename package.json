@@ -24,7 +24,8 @@
 		"api:docs": "npx run-s api:docs:*",
 		"api": "npx run-s api:update api:docs",
 
-		"format": "npx eslint --fix",
+		"format": "npx eslint . --fix",
+		"lint:check": "npx eslint . --max-warnings=0",
 		"lint": "npm run format",
 
 		"lock": "npm i --package-lock-only",
