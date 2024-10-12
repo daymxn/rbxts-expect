@@ -7,7 +7,7 @@
 	  "sourceType": "module",
 	  "project": ["./tsconfig.json", "./scripts/tsconfig.scripts.json"]
 	},
-	"ignorePatterns": ["/out", "*.js", "node_modules", "out", "/node_modules"],
+	"ignorePatterns": ["*.js", "node_modules", "out", "/node_modules", "wiki", "example", "temp"],
 	"plugins": ["@typescript-eslint", "roblox-ts", "prettier", "headers"],
 	"extends": [
 	  "eslint:recommended",
