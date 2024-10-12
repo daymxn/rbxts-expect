@@ -70,7 +70,7 @@ const beUndefined: CustomMethodImpl = (_, actual) => {
       [place.path]: place.actual.value,
     })
     .failWithReason("was defined");
-};
+}
 
 declare module "@rbxts/expect" {
   interface Assertion<T> {
