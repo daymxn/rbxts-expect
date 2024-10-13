@@ -29,10 +29,10 @@ jobs:
         run: |
           if [ -f api-diff.txt ]; then
             echo "api-diff exists"
-            echo "::set-output name=diff-exists::true"
+            echo "diff-exists::true" >> $GITHUB_OUTPUT
           else
             echo "api-diff does not exist"
-            echo "::set-output name=diff-exists::false"
+            echo "diff-exists::false" >> $GITHUB_OUTPUT
           fi
 
       - name: Find Comment
@@ -54,7 +54,7 @@ jobs:
 
       - name: Delete comment
         if: steps.check-diff.outputs.diff-exists == 'false'
-        uses: detomarco/delete-comment@v1
+        uses: detomarco/delete-comments@1.1.0
         with:
           comment_id: ${{ steps.fc.outputs.comment-id }}
 
