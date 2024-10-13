@@ -15,7 +15,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 20
           cache: npm
 
       - name: Install dependencies
@@ -56,7 +56,7 @@ jobs:
         if: steps.check-diff.outputs.diff-exists == 'false'
         uses: detomarco/delete-comments@1.1.0
         with:
-          comment_id: ${{ steps.fc.outputs.comment-id }}
+          comment-id: ${{ steps.fc.outputs.comment-id }}
 
       - name: Fail Workflow if API Diff Exists
         if: steps.check-diff.outputs.diff-exists == 'true'
