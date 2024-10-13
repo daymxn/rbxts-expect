@@ -24,7 +24,41 @@ jobs:
       - name: Run Diff
         run: npm run api:check -- --report
 
-      - name: Add PR Comment
-        uses: mshick/add-pr-comment@v2.8.2
+      - name: Check for API report
+        id: check-diff
+        run: |
+          if [ -f api-diff.txt ]; then
+            echo "api-diff exists"
+            echo "::set-output name=diff-exists::true"
+          else
+            echo "api-diff does not exist"
+            echo "::set-output name=diff-exists::false"
+          fi
+
+      - name: Find Comment
+        uses: peter-evans/find-comment@v3
+        id: fc
         with:
-          message-path: api-diff.txt
+          issue-number: ${{ github.event.pull_request.number }}
+          comment-author: 'github-actions[bot]'
+          body-includes: API Diff
+        
+      - name: Create or update comment
+        if: steps.check-diff.outputs.diff-exists == 'true'
+        uses: peter-evans/create-or-update-comment@v4
+        with:
+          comment-id: ${{ steps.fc.outputs.comment-id }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body-path: api.diff.txt
+          edit-mode: replace
+
+      - name: Delete comment
+        if: steps.check-diff.outputs.diff-exists == 'false'
+        uses: actions/github-script@v7.0.1
+        with:
+          script: |
+            github.issues.deleteComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              comment_id: ${{ steps.fc.outputs.comment-id }},
+            })
