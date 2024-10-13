@@ -18,6 +18,8 @@
 		"api:extract": "api-extractor run --local --verbose",
 		"api:update": "npx run-s build api:rollup api:extract",
 
+		"cli": "npx tsx ./scripts/src/cli.ts",
+		"api:check": "npm run cli -- diff ./api/expect.api.md  -o ./api-diff.txt",
 		"api:docs:generate": "api-documenter markdown -i ./temp  -o ./temp/api",
 		"api:docs:fix": "npx tsx ./scripts/src/fix-api-reference.ts ./temp/api ./temp/fixed",
 		"api:docs:export": "npx tsx ./scripts/src/export-api-reference.ts ./temp/fixed ./wiki/docs/api",
@@ -110,13 +112,15 @@
 		"typescript": "=5.5.3"
 	},
 	"dependencies": {
+		"@commander-js/extra-typings": "^12.1.0",
 		"@rbxts/deep-equal": "^0.8.1",
 		"@rbxts/object-utils": "^1.0.4",
 		"@rbxts/reverse-array": "^1.0.3",
 		"@rbxts/rust-classes": "^0.12.0-dev-b01f73c",
 		"@rbxts/services": "^1.5.4",
 		"@rbxts/string-utils": "^1.0.3",
-		"@rbxts/t": "^3.1.1"
+		"@rbxts/t": "^3.1.1",
+		"commander": "^12.1.0"
 	},
 	"peerDependencies": {
 		"roblox-ts": "^3.0.0"

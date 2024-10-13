@@ -15,16 +15,12 @@
  * limitations under the License.
  */
 
-export function prependIfAbsent(source: string, text: string) {
-  if (source.includes(text)) return source;
-  return `${text}\n${source}`;
-}
-
-export function codeBlock(code: string, language: string = "") {
-  const ticks = "```";
-  return `${ticks}${language}\n${code}\n${ticks}`;
-}
-
-export function inlineCode(code: string) {
-  return `\`${code}\``;
-}
+export const promiseTry = <T>(fn: () => T | Promise<T>): Promise<T> => {
+  return new Promise((resolve, reject) => {
+    try {
+      resolve(fn());
+    } catch (error) {
+      reject(error);
+    }
+  });
+};

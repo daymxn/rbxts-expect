@@ -15,16 +15,13 @@
  * limitations under the License.
  */
 
-export function prependIfAbsent(source: string, text: string) {
-  if (source.includes(text)) return source;
-  return `${text}\n${source}`;
-}
+import { Command } from "@commander-js/extra-typings";
+import { diffCommand } from "./generate-api-diff";
 
-export function codeBlock(code: string, language: string = "") {
-  const ticks = "```";
-  return `${ticks}${language}\n${code}\n${ticks}`;
-}
+const program = new Command();
 
-export function inlineCode(code: string) {
-  return `\`${code}\``;
-}
+program.name("scripts").description("CLI tool for invoking build scripts");
+
+program.addCommand(diffCommand);
+
+program.parse(process.argv);
