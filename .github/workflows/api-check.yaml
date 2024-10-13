@@ -29,10 +29,10 @@ jobs:
         run: |
           if [ -f api-diff.txt ]; then
             echo "api-diff exists"
-            echo "diff-exists::true" >> $GITHUB_OUTPUT
+            echo "diff-exists=true" >> $GITHUB_OUTPUT
           else
             echo "api-diff does not exist"
-            echo "diff-exists::false" >> $GITHUB_OUTPUT
+            echo "diff-exists=false" >> $GITHUB_OUTPUT
           fi
 
       - name: Find Comment
