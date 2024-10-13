@@ -1,0 +1,30 @@
+name: API Check
+
+on:
+  pull_request:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Diff
+        run: npm run api:check -- --report
+
+      - name: Add PR Comment
+        uses: mshick/add-pr-comment@v2.8.2
+        with:
+          message-path: api-diff.txt
