@@ -44,6 +44,11 @@ export const diffCommand = new Command("diff")
       .then((diff) => (options.report ? generateReport(diff) : diff))
       .finally(() => restoreFile(backup, input));
 
+    if (diff === "") {
+      console.log("API file is up-to-date, no diff found.");
+      return;
+    }
+
     if (options.ouput) {
       await writeFile(options.ouput, diff);
 
@@ -54,6 +59,8 @@ export const diffCommand = new Command("diff")
   });
 
 async function generateReport(diff: string) {
+  if (diff.length === 0) return "";
+
   return `Your change includes changes that impact the public API.
 
 Please run ${inlineCode("npm run api:update")} to update the public API file.
