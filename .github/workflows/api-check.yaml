@@ -4,7 +4,7 @@ on:
   pull_request:
 
 jobs:
-  lint:
+  api-check:
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
@@ -54,11 +54,12 @@ jobs:
 
       - name: Delete comment
         if: steps.check-diff.outputs.diff-exists == 'false'
-        uses: actions/github-script@v7.0.1
+        uses: detomarco/delete-comment@v1
         with:
-          script: |
-            github.issues.deleteComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              comment_id: ${{ steps.fc.outputs.comment-id }},
-            })
+          comment_id: ${{ steps.fc.outputs.comment-id }}
+
+      - name: Fail Workflow if API Diff Exists
+        if: steps.check-diff.outputs.diff-exists == 'true'
+        run: |
+          echo "Please update the local API file."
+          exit 1
