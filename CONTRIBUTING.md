@@ -60,19 +60,16 @@ To make changes, clone the repo to your local disk.
 
 `git clone git@github.com:daymxn/rbxts-expect.git`
 
-Then, checkout to a new feature branch labeled in the following format.
+Then, checkout to a new feature branch named whatever you want it to be.
 
-`git checkout -b NAME-CATEGORY-FEATURE`
-
-Where `NAME` is your *firstLast* name or your *github* username. `CATEGORY` is something like; feature or bugfix.
-And `FEATURE` is the title of the new feature (or bug) you're contributing for.
+`git checkout -b SOME_BRANCH_NAME`
 
 After you've made changes to your local branch, and you want to submit, you can open a Pull Request (PR)
 via the [GitHub web panel](https://github.com/daymxn/rbxts-expect/compare).
 
 ### Code Formatting
 
-Code in this repo is formatted according to eslint and prettier. You can use the attached `.vscode` folder for automatically formatting on file save, or you can manually run either via the command line with the `format` or `lint` scripts:
+Code in this repo is formatted according to eslint and prettier. You can use the attached `.vscode` folder for automatically formatting on file save, or you can manually run both via the command line with the `format` or `lint` scripts:
 
 ```sh
 npm run format
@@ -90,6 +87,17 @@ npm run change
 ```
 
 It will prompt you with options for setting the message and version type.
+
+> [!IMPORTANT]
+> If your change impacts the public API, ensure you're choosing the appropriate version type (according to [semver](https://semver.org/)).
+>
+> Alternatively, just follow the given table:
+>
+> `major` = Removes something from the public api, or changes the behavior of something in a breaking manner.
+>
+> `minor` = Adds to the public api.
+>
+> `patch` = Fixes a bug. The bug fix must be done in a non breaking manner, other-wise it's a major change.
 
 #### Additional Commands
 
