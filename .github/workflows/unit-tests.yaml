@@ -36,9 +36,13 @@ jobs:
 
       - name: Run tests
         run: npm run test:report
+      
+      - name: Log report
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: "cat temp/report.md"
 
       - name: Add comment
-        if: always()
+        if: github.event_name == 'pull_request'
         uses: mshick/add-pr-comment@a65df5f64fc741e91c59b8359a4bc56e57aaf5b1
         with:
           message-path: temp/report.md
