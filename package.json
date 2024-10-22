@@ -52,8 +52,8 @@
 		"test:build": "rojo build test.project.json -o ./tests/test.rbxl",
 		"test:update": "npx run-s build:dev test:build",
 		"test:run": "lune run ./tests/lune ./tests/test.rbxl",
-		"test:report": "npm run test:run -- --json --markdown --exit",
-		"test:debug": "npm run test:run -- --redirect-output",
+		"test:report": "npm run test:run -- -- --json --markdown --exit",
+		"test:debug": "npm run test:run -- -- --redirect-output",
 		"test": "npx run-s test:update test:debug"
 	},
 	"tsup": {
