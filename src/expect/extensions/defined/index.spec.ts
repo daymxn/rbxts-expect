@@ -59,7 +59,7 @@ export = () => {
           });
         },
         `Expected parent.age to be undefined, but it was defined`,
-        `parent.age: '5'`
+        `parent.age: '5'FORCE_FAILURE_2`
       );
 
       err(
@@ -69,7 +69,7 @@ export = () => {
           });
         },
         `Expected data to be defined, but it was undefined`,
-        `Actual: '{"parent":{"data":{"id":1},"cars":["Tesla","Civic"],"name":"Daymon","age":5},"cars":[],"name":"Kyle","age":4}'`
+        `Actual: '{FORCE_FAILURE`
       );
     });
   });

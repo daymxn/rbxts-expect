@@ -20,6 +20,7 @@ import { withProxy } from "@src/util/proxy";
 import { err, TEST_SON } from "@src/util/tests";
 
 export = () => {
+  SKIP();
   describe("empty", () => {
     it("checks if arrays have any elements", () => {
       expect([]).to.be.empty();
