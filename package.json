@@ -5,6 +5,7 @@
 	"main": "out/init.luau",
 	"scripts": {
 		"build": "rbxtsc -p ./tsconfig.release.json",
+		"build:dev": "rbxtsc -p --type game --rojo test.project.json",
 		"dev": "rbxtsc -w --type game --rojo test.project.json",
 		"watch": "rbxtsc -w",
 
@@ -44,7 +45,16 @@
 		"publish:local": "npm run build && npm pack --pack-destination ./temp",
 		"prepublishOnly": "npm run build",
 
-		"check:deps": "npx depcheck"
+		"check:deps": "npx depcheck",
+
+		"lune:setup": "rokit install && lune setup",
+
+		"test:build": "rojo build test.project.json -o ./tests/test.rbxl",
+		"test:update": "npx run-s build:dev test:build",
+		"test:run": "lune run ./tests/lune ./tests/test.rbxl",
+		"test:report": "npm run test:run -- -- --json --markdown --exit",
+		"test:debug": "npm run test:run -- -- --redirect-output",
+		"test": "npx run-s test:update test:debug"
 	},
 	"tsup": {
 		"entry": [

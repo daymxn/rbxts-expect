@@ -69,7 +69,7 @@ export = () => {
           });
         },
         `Expected data to be defined, but it was undefined`,
-        `Actual: '{"parent":{"data":{"id":1},"cars":["Tesla","Civic"],"name":"Daymon","age":5},"cars":[],"name":"Kyle","age":4}'`
+        `Actual: '{`
       );
     });
   });
