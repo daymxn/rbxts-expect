@@ -62,7 +62,7 @@ export = () => {
         },
         `Expected '5' to deep equal "5", but they have different types`,
         'Expected: "5" (string)',
-        "Actual: '5' (number)TEMP_FAILURE"
+        "Actual: '5' (number)"
       );
     });
 
