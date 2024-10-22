@@ -6,6 +6,9 @@ on:
     paths:
       - "src/**"
       - "scripts/**"
+  push:
+    branches:
+      - main
 
 jobs:
   lint:

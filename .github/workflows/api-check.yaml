@@ -2,6 +2,9 @@ name: API Check
 
 on:
   pull_request:
+  push:
+    branches:
+      - main
 
 jobs:
   api-check:
