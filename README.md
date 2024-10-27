@@ -10,7 +10,7 @@
 > Test-agnostic assertion library for ROBLOX.
 
 <p align="left">
-<a alt="Released version" href="https://www.npmjs.com/package/@rbxts/rbxts-expect">
+<a alt="Released version" href="https://www.npmjs.com/package/@rbxts/expect">
 <img src="https://img.shields.io/npm/v/%40rbxts%2Fexpect?style=flat-square"></a>
 <img alt="Last release date" src="https://img.shields.io/github/release-date/daymxn/rbxts-expect?label=last%20release">
 <a alt="Last commit date" href="https://github.com/daymxn/rbxts-expect/commits/main/">
