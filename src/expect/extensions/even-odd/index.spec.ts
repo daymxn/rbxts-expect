@@ -57,11 +57,11 @@ export = () => {
 
     it("throws when it's undefined", () => {
       err(() => {
-        expect().to.be.even();
+        expect(undefined).to.be.even();
       }, "Expected the value to be even, but it was undefined");
 
       err(() => {
-        expect().to.be.odd();
+        expect(undefined).to.be.odd();
       }, "Expected the value to be odd, but it was undefined");
     });
 

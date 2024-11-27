@@ -34,12 +34,14 @@ export = () => {
   describe("error message", () => {
     it("throws if the check fails", () => {
       err(() => {
-        expect([1, 2]).to.have.includes(3);
+        // eslint-disable-next-line unicorn/prefer-includes
+        expect([1, 2]).to.have.some((it) => it === 3);
       }, `Expected '[1,2]' to have at least one element that passes some check`);
 
       err(
         () => {
-          expect([1, 2]).to.not.have.includes(2);
+          // eslint-disable-next-line unicorn/prefer-includes
+          expect([1, 2]).to.not.have.some((it) => it === 2);
         },
         `Expected '[1,2]' to NOT have any elements that passes some check, but it did at index '2'`,
         "Value of [2]: '2'",

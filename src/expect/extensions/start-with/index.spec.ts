@@ -84,7 +84,7 @@ export = () => {
 
     it("throws if the type is undefined", () => {
       err(() => {
-        expect().to.startWith("day");
+        expect(undefined).to.startWith("day");
       }, `Expected the value to be a string that starts with "day", but it was undefined`);
 
       err(() => {

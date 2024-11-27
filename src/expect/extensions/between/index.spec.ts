@@ -58,7 +58,7 @@ export = () => {
 
     it("throws when it's undefined", () => {
       err(() => {
-        expect().to.be.between(1, 2);
+        expect(undefined).to.be.between(1, 2);
       }, "Expected the value to be a number between 1 and 2, but it was undefined");
     });
 

@@ -71,7 +71,7 @@ export = () => {
     });
 
     it("makes sure the type is a table", () => {
-      expect().to.not.be.an.array();
+      expect(undefined).to.not.be.an.array();
       expect("1").to.not.be.an.array();
     });
   });
@@ -167,7 +167,7 @@ export = () => {
 
     it("throws if it's undefined", () => {
       err(() => {
-        expect().to.be.an.array();
+        expect(undefined).to.be.an.array();
       }, "Expected nil to be an array, but it was undefined");
     });
 

@@ -24,7 +24,7 @@ export = () => {
     it("compares the values strictly", () => {
       expect(5).to.shallowEqual(5).but.not.shallowEqual("5");
       expect("Daymon").to.shallowEqual("Daymon").but.not.shallowEqual("daymon");
-      expect().to.shallowEqual();
+      expect(undefined).to.shallowEqual(undefined);
     });
   });
 
@@ -37,7 +37,7 @@ export = () => {
 
     it("throws if the actual value is undefined", () => {
       err(() => {
-        expect().to.shallowEqual("5");
+        expect(undefined).to.shallowEqual("5");
       }, `Expected the value to strictly equal "5" (string), but it was undefined`);
     });
 

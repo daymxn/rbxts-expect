@@ -56,7 +56,7 @@ export = () => {
 
     it("throws when it's undefined", () => {
       err(() => {
-        expect().to.be.near(1);
+        expect(undefined).to.be.near(1);
       }, "Expected the value to be a number close to '1', but it was undefined");
     });
 

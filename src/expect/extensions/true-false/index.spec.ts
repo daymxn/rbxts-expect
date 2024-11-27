@@ -53,7 +53,7 @@ export = () => {
       expect(false).to.be.falsy();
       expect(true).to.not.be.falsy();
 
-      expect().to.be.falsy();
+      expect(undefined).to.be.falsy();
     });
   });
 
@@ -80,15 +80,15 @@ export = () => {
 
     it("throws when it's undefined", () => {
       err(() => {
-        expect().to.be.true();
+        expect(undefined).to.be.true();
       }, `Expected the value to be 'true', but it was undefined`);
 
       err(() => {
-        expect().to.be.false();
+        expect(undefined).to.be.false();
       }, `Expected the value to be 'false', but it was undefined`);
 
       err(() => {
-        expect().to.be.truthy();
+        expect(undefined).to.be.truthy();
       }, `Expected the value to be truthy, but it was undefined`);
     });
 

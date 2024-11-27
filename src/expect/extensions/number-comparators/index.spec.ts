@@ -65,19 +65,19 @@ export = () => {
 
     it("throws when it's undefined", () => {
       err(() => {
-        expect().to.be.greaterThan(2);
+        expect(undefined).to.be.greaterThan(2);
       }, "Expected the value to be greater than '2', but it was undefined");
 
       err(() => {
-        expect().to.be.gte(2);
+        expect(undefined).to.be.gte(2);
       }, "Expected the value to be greater than or equal to '2', but it was undefined");
 
       err(() => {
-        expect().to.be.lessThan(1);
+        expect(undefined).to.be.lessThan(1);
       }, "Expected the value to be less than '1', but it was undefined");
 
       err(() => {
-        expect().to.be.lte(1);
+        expect(undefined).to.be.lte(1);
       }, "Expected the value to be less than or equal to '1', but it was undefined");
     });
 

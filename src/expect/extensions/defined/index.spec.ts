@@ -24,13 +24,13 @@ export = () => {
     it("checks if value is not null", () => {
       expect("daymon").to.be.ok().and.to.be.defined().and.to.exist().and.also.exists();
 
-      expect().to.not.be.ok();
+      expect(undefined).to.not.be.ok();
     });
   });
 
   describe("undefined", () => {
     it("checks if value is null", () => {
-      expect().to.be.undefined().and.to.be.null().and.to.nil();
+      expect(undefined).to.be.undefined().and.to.be.null().and.to.nil();
 
       expect("Daymon").to.not.be.undefined();
     });
@@ -43,7 +43,7 @@ export = () => {
       }, `Expected "Daymon" (string) to be undefined, but it was defined`);
 
       err(() => {
-        expect().to.be.ok();
+        expect(undefined).to.be.ok();
       }, `Expected the value to be defined, but it was undefined`);
     });
 

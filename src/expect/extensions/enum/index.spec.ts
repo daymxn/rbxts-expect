@@ -60,11 +60,11 @@ export = () => {
 
     it("throws if it's undefined", () => {
       err(() => {
-        expect().to.be.enum(NormalEnum);
+        expect(undefined).to.be.enum(NormalEnum);
       }, "Expected the value to be a valid enum of '(First | Second | Third)', but it was undefined");
 
       err(() => {
-        expect().to.be.enum(NormalEnum, NormalEnum.Second);
+        expect(undefined).to.be.enum(NormalEnum, NormalEnum.Second);
       }, "Expected the value to be the enum 'Second', but it was undefined");
     });
 

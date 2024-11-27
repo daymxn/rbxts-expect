@@ -50,7 +50,7 @@ export = () => {
 
     it("throws when it's undefined", () => {
       err(() => {
-        expect().to.have.the.key("name");
+        expect(undefined).to.have.the.key("name");
       }, 'Expected the value to have the key "name", but it was undefined');
     });
 

@@ -46,7 +46,7 @@ export = () => {
 
     it("throws if it's undefined", () => {
       err(() => {
-        expect().to.be.anyOf([1, 2]);
+        expect(undefined).to.be.anyOf([1, 2]);
       }, "Expected the value to be any of '[1,2]', but it was undefined");
     });
 

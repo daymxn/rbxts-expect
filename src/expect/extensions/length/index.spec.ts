@@ -93,7 +93,7 @@ export = () => {
 
     it("throws if the type is undefined", () => {
       err(() => {
-        expect().to.have.size(1);
+        expect(undefined).to.have.size(1);
       }, `Expected nil to have a size of '1', but it was undefined`);
     });
 

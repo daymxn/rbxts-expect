@@ -63,11 +63,11 @@ export = () => {
 
     it("throws when it's undefined", () => {
       err(() => {
-        expect().to.be.positive();
+        expect(undefined).to.be.positive();
       }, "Expected the value to be a positive number, but it was undefined");
 
       err(() => {
-        expect().to.be.negative();
+        expect(undefined).to.be.negative();
       }, "Expected the value to be a negative number, but it was undefined");
     });
 

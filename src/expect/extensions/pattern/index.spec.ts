@@ -45,7 +45,7 @@ export = () => {
 
     it("throws when it's undefined", () => {
       err(() => {
-        expect().to.have.the.pattern("Goodbye");
+        expect(undefined).to.have.the.pattern("Goodbye");
       }, "Expected the value to have a match for the pattern /Goodbye/, but it was undefined");
     });
 

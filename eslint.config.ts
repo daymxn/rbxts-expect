@@ -101,6 +101,13 @@ export default tseslint.config(
           name: "e",
         },
       ],
+      "unicorn/no-useless-undefined": [
+        "warn",
+        {
+          checkArguments: false,
+        },
+      ],
+      "unicorn/prefer-string-slice": "off",
     },
   },
   {

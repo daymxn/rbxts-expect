@@ -49,7 +49,7 @@ export = () => {
 
         throw "Expected the function to throw.";
       } catch (e) {
-        expect(e).to.have.slice(Math.max(0, "Expected iThrow to"));
+        expect(e).to.have.substring("Expected iThrow to");
       }
     });
 
@@ -59,7 +59,7 @@ export = () => {
 
         throw "Expected the function to throw.";
       } catch (e) {
-        expect(e).to.have.slice(Math.max(0, "Expected the function to"));
+        expect(e).to.have.substring("Expected the function to");
       }
     });
   });
@@ -124,11 +124,11 @@ export = () => {
 
     it("throws if it's undefined", () => {
       err(() => {
-        expect().to.throwMatch("^Message");
+        expect(undefined).to.throwMatch("^Message");
       }, "Expected the value to throw with a message that matched /^Message/, but it was undefined");
 
       err(() => {
-        expect().to.throw("Your Message");
+        expect(undefined).to.throw("Your Message");
       }, `Expected the value to throw with the substring "Your Message", but it was undefined`);
     });
 

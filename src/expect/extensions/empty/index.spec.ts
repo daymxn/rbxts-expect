@@ -87,7 +87,7 @@ export = () => {
 
     it("throws if the type is undefined", () => {
       err(() => {
-        expect().to.be.empty();
+        expect(undefined).to.be.empty();
       }, `Expected nil to be empty, but it was undefined`);
     });
 
