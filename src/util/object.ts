@@ -21,14 +21,8 @@ import { t } from "@rbxts/t";
 /**
  * @internal
  */
-export function mapObjectValues<T extends object>(
-  object: T,
-  callback: (value: NonNullable<T[keyof T]>) => unknown
-): T {
-  const mapped = Object.entries(object).map(([key, value]) => [
-    key,
-    callback(value as never),
-  ]);
+export function mapObjectValues<T extends object>(object: T, callback: (value: NonNullable<T[keyof T]>) => unknown): T {
+  const mapped = Object.entries(object).map(([key, value]) => [key, callback(value as never)]);
 
   return Object.fromEntries(mapped as never) as T;
 }
@@ -46,7 +40,7 @@ export function isArray(element: unknown): element is defined[] {
 export function getIndexOrNull(element: unknown, index: number) {
   try {
     return (element as defined[])[index];
-  } catch (e) {
-    return undefined;
+  } catch {
+    return;
   }
 }

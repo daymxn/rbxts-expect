@@ -21,9 +21,7 @@ import { ExpectMessageBuilder } from "@src/message";
 import { place } from "@src/message/placeholders";
 import { isArray } from "@src/util/object";
 
-const baseMessage = new ExpectMessageBuilder(
-  `Expected ${place.name} to ${place.not} have `
-)
+const baseMessage = new ExpectMessageBuilder(`Expected ${place.name} to ${place.not} have `)
   .nestedMetadata({ [place.path]: place.actual.value })
   .negationSuffix(`, but it did`);
 
@@ -43,9 +41,7 @@ function validateObjectIsSize(actual: object, size: number) {
 }
 
 function validateArrayIsSize(actual: defined[], size: number) {
-  const message = baseMessage
-    .use(`exactly ${place.expected.value} element(s)`)
-    .expectedValue(size);
+  const message = baseMessage.use(`exactly ${place.expected.value} element(s)`).expectedValue(size);
 
   const actualSize = actual.size();
 
@@ -55,40 +51,30 @@ function validateArrayIsSize(actual: defined[], size: number) {
 }
 
 function validateStringIsSize(actual: string, size: number) {
-  const message = baseMessage
-    .use(`a size of exactly ${place.expected.value}`)
-    .expectedValue(size);
+  const message = baseMessage.use(`a size of exactly ${place.expected.value}`).expectedValue(size);
 
   const actualSize = actual.size();
 
   if (actualSize === size) return message.pass();
 
-  return message
-    .suffix(`, but it actually had a size of '${actualSize}'`)
-    .fail();
+  return message.suffix(`, but it actually had a size of '${actualSize}'`).fail();
 }
 
 const lengthOf: CustomMethodImpl = (source, actual, size: number) => {
-  const message = baseMessage
-    .use(`a size of ${place.expected.value}`)
-    .expectedValue(size);
+  const message = baseMessage.use(`a size of ${place.expected.value}`).expectedValue(size);
 
   if (typeIs(actual, "table")) {
     // incase they ran this before running an.array()
-    if (source.is_array || isArray(actual)) {
-      return validateArrayIsSize(actual as defined[], size);
-    } else {
-      return validateObjectIsSize(actual, size);
-    }
+    return source.is_array || isArray(actual)
+      ? validateArrayIsSize(actual as defined[], size)
+      : validateObjectIsSize(actual, size);
   } else if (typeIs(actual, "string")) {
     return validateStringIsSize(actual, size);
   } else if (actual === undefined) {
     return message.suffix(", but it was undefined").fail();
   } else {
     return message
-      .suffix(
-        `, but it was not a 'string' or iterable type. Instead, it was a '${place.actual.type}'`
-      )
+      .suffix(`, but it was not a 'string' or iterable type. Instead, it was a '${place.actual.type}'`)
       .fail();
   }
 };

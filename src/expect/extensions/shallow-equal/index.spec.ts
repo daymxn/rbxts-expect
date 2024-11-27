@@ -24,7 +24,7 @@ export = () => {
     it("compares the values strictly", () => {
       expect(5).to.shallowEqual(5).but.not.shallowEqual("5");
       expect("Daymon").to.shallowEqual("Daymon").but.not.shallowEqual("daymon");
-      expect(undefined).to.shallowEqual(undefined);
+      expect().to.shallowEqual();
     });
   });
 
@@ -37,7 +37,7 @@ export = () => {
 
     it("throws if the actual value is undefined", () => {
       err(() => {
-        expect(undefined).to.shallowEqual("5");
+        expect().to.shallowEqual("5");
       }, `Expected the value to strictly equal "5" (string), but it was undefined`);
     });
 
@@ -49,7 +49,7 @@ export = () => {
           });
         },
         'Expected parent.age to strictly equal "5" (string)',
-        "parent.age: '5' (number)"
+        "parent.age: '5' (number)",
       );
     });
   });

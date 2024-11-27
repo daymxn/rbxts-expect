@@ -10,26 +10,54 @@ some things you should know.
 
 Make sure you've given both the [wiki](https://rbxts-expect.daymxn.com/docs/category/extension-guides) and the [API Reference](https://rbxts-expect.daymxn.com/docs/api) a read before moving forward, such that you understand the design behind **expect**.
 
+### Scripts
+
+We use the [bs-cli](https://github.com/daymxn/bs-cli) to organize our scripts.
+
+Run the help command to see a full list of options.
+
+```sh
+pnpm bs --help
+```
+
 ### Building
 
 Use the `build` command to build the source files.
 
 ```sh
-npm run build
+pnpm build
 ```
 
 Or `watch` to watch the source files.
 
 ```sh
-npm run watch
+pnpm watch
 ```
 
 ### Running Tests
 
+There are two ways to run tests: either inside roblox studio, or with lune.
+
+#### Lune
+
+Use the `test` command to run unit tests inside lune.
+
+```sh
+pnpm test
+```
+
+If you want more control over the test run, you can check out the test options in `bs`.
+
+```sh
+pnpm bs test --help
+```
+
+#### Roblox Studio
+
 Start a watch for the test place.
 
 ```sh
-npm run dev
+pnpm watch
 ```
 
 Serve `test.project.json` with rojo and link with an empty base plate in roblox studio.
@@ -41,14 +69,22 @@ to run the tests.
 
 API docs are built through the following tools:
 
-`api-extractor` -> `api-documenter` -> post processing (`/scripts`) -> docusaurus (`/wiki`)
+`api-extractor` -> `api-documenter` -> post processing (`bs` handles this) -> docusaurus (`/wiki`)
+
+#### Wiki
 
 To host the `wiki` you'll need to scope to the `/wiki` directory and run the commands listed there.
 
-For syncing the API, you can run the `api` command from the **rbxts-expect** root directory.
+```sh
+cd ./wiki
+```
+
+#### Public API
+
+For syncing the API, you can run the `bs api` command from the root directory (not the wiki directory).
 
 ```sh
-npm run api
+pnpm bs api
 ```
 
 This will automatically extract the api, generate the docs for it, perform post processing, and copy it
@@ -69,10 +105,10 @@ via the [GitHub web panel](https://github.com/daymxn/rbxts-expect/compare).
 
 ### Code Formatting
 
-Code in this repo is formatted according to eslint and prettier. You can use the attached `.vscode` folder for automatically formatting on file save, or you can manually run both via the command line with the `format` or `lint` scripts:
+Code in this repo is formatted according to eslint and prettier. You can use the attached `.vscode` folder for automatically formatting on file save, or you can manually run both via the command line with the `bs lint` command:
 
 ```sh
-npm run format
+pnpm bs lint
 ```
 
 ### Changesets
@@ -80,10 +116,10 @@ npm run format
 We use [changesets](https://github.com/changesets/changesets) for our release notes and version bumping.
 
 When submitting a change that should be apart of a release, you
-can run the `change` script.
+can run the `bs change` command.
 
 ```sh
-npm run change
+pnpm bs change
 ```
 
 It will prompt you with options for setting the message and version type.
@@ -101,25 +137,19 @@ It will prompt you with options for setting the message and version type.
 
 #### Additional Commands
 
-Output [to stdout] a summary of the pending changes for a release.
+You can check out the help section of `bs change` to see a list of available commands.
 
 ```sh
-npm run change:status
-```
-
-Export the pending changes to a `changes.json` file at the root directory.
-
-```sh
-npm run change:export
+pnpm bs change --help
 ```
 
 ### Releasing
 
 To invoke a release, you'll need to pull the `main` branch
-and run the `release:version` command.
+and run the `bs change:version` command.
 
 ```sh
-npm run release:version
+pnpm bs change:version
 ```
 
 This will automatically bump the releasing projects.
@@ -128,13 +158,7 @@ After merging these changes back into `main`, you can move forward
 with the actual publishing.
 
 ```sh
-npm run release
+pnpm bs publish
 ```
 
 This will publish the releasing projects to npm, with the generated changelogs.
-
-The last step will be pushing the release tags back to the repo.
-
-```sh
-npm run release:tags
-```

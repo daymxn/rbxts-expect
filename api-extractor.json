@@ -1,6 +1,6 @@
 {
 	"$schema": "https://developer.microsoft.com/json-schemas/api-extractor/v7/api-extractor.schema.json",
-	"mainEntryPointFilePath": "<projectFolder>/temp/rollup/index.d.ts",
+	"mainEntryPointFilePath": "<projectFolder>/dist/index.d.ts",
 	"bundledPackages": [],
 	"newlineKind": "lf",
 	"enumMemberOrder": "preserve",
@@ -11,7 +11,7 @@
 	},
 	"docModel": {
 		"enabled": true,
-		"apiJsonFilePath": "<projectFolder>/temp/<unscopedPackageName>.api.json",
+		"apiJsonFilePath": "<projectFolder>/dist/<unscopedPackageName>.api.json",
 		"projectFolderUrl": ""
 	},
 	"dtsRollup": {

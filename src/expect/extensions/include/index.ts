@@ -19,26 +19,17 @@ import { CustomMethodImpl, extendMethods } from "@src/expect/extend";
 import { ExpectMessageBuilder } from "@src/message";
 import { place } from "@src/message/placeholders";
 
-const baseMessage = new ExpectMessageBuilder(
-  `Expected ${place.name} to ${place.not} include ${place.expected.value}`
-)
+const baseMessage = new ExpectMessageBuilder(`Expected ${place.name} to ${place.not} include ${place.expected.value}`)
   .trailingFailureSuffix(", but it was missing")
   .nestedMetadata({
     [place.path]: place.actual.value,
   });
 
-const include: CustomMethodImpl<unknown[]> = (
-  _,
-  actual,
-  expectedValue: defined
-) => {
+const include: CustomMethodImpl<unknown[]> = (_, actual, expectedValue: defined) => {
   const message = baseMessage.use().expectedValue(expectedValue);
 
   if (actual === undefined) {
-    return message
-      .name("the value")
-      .trailingFailureSuffix(", but it was undefined")
-      .fail();
+    return message.name("the value").trailingFailureSuffix(", but it was undefined").fail();
   }
 
   if (typeOf(actual) !== "table") {
@@ -48,9 +39,7 @@ const include: CustomMethodImpl<unknown[]> = (
       .fail();
   }
 
-  return (actual as defined[]).includes(expectedValue)
-    ? message.pass()
-    : message.fail();
+  return (actual as defined[]).includes(expectedValue) ? message.pass() : message.fail();
 };
 
 declare module "@rbxts/expect" {

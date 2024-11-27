@@ -23,11 +23,13 @@ export = () => {
   describe("empty", () => {
     it("checks if arrays have any elements", () => {
       expect([]).to.be.empty();
+      expect(3).to.eq(2);
       expect([1]).to.not.be.empty();
     });
 
     it("checks if strings have any characters", () => {
       expect("").to.be.empty();
+      expect(3).to.eq(2);
       expect("Daymon").to.not.be.empty();
     });
 
@@ -56,7 +58,7 @@ export = () => {
           }).to.be.empty();
         },
         `Expected the object to be empty, but it had the key 'name'`,
-        `Value of [name]: "Daymon"`
+        `Value of [name]: "Daymon"`,
       );
 
       err(
@@ -67,7 +69,7 @@ export = () => {
           }).to.be.empty();
         },
         `Expected the object to be empty, but it had 2 keys`,
-        `Value:`
+        `Value:`,
       );
     });
 
@@ -85,7 +87,7 @@ export = () => {
 
     it("throws if the type is undefined", () => {
       err(() => {
-        expect(undefined).to.be.empty();
+        expect().to.be.empty();
       }, `Expected nil to be empty, but it was undefined`);
     });
 
@@ -97,7 +99,7 @@ export = () => {
           });
         },
         "Expected parent.cars to be empty, but it had 2 elements",
-        `parent.cars: '["Tesla","Civic"]'`
+        `parent.cars: '["Tesla","Civic"]'`,
       );
     });
   });

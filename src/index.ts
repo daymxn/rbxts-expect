@@ -70,3 +70,9 @@ export {
   isProxy,
   withProxy,
 } from "./util";
+
+/**
+ * Temp value for triggering API
+ * @public
+ */
+export const temp = 5;

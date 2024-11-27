@@ -57,11 +57,11 @@ export = () => {
 
     it("throws when it's undefined", () => {
       err(() => {
-        expect(undefined).to.be.even();
+        expect().to.be.even();
       }, "Expected the value to be even, but it was undefined");
 
       err(() => {
-        expect(undefined).to.be.odd();
+        expect().to.be.odd();
       }, "Expected the value to be odd, but it was undefined");
     });
 
@@ -83,7 +83,7 @@ export = () => {
           });
         },
         `Expected parent.age to be even, but it was odd`,
-        `parent.age: '5'`
+        `parent.age: '5'`,
       );
 
       err(
@@ -93,7 +93,7 @@ export = () => {
           });
         },
         `Expected age to be odd, but it was even`,
-        `age: '4'`
+        `age: '4'`,
       );
     });
   });

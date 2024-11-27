@@ -65,19 +65,19 @@ export = () => {
 
     it("throws when it's undefined", () => {
       err(() => {
-        expect(undefined).to.be.greaterThan(2);
+        expect().to.be.greaterThan(2);
       }, "Expected the value to be greater than '2', but it was undefined");
 
       err(() => {
-        expect(undefined).to.be.gte(2);
+        expect().to.be.gte(2);
       }, "Expected the value to be greater than or equal to '2', but it was undefined");
 
       err(() => {
-        expect(undefined).to.be.lessThan(1);
+        expect().to.be.lessThan(1);
       }, "Expected the value to be less than '1', but it was undefined");
 
       err(() => {
-        expect(undefined).to.be.lte(1);
+        expect().to.be.lte(1);
       }, "Expected the value to be less than or equal to '1', but it was undefined");
     });
 
@@ -107,7 +107,7 @@ export = () => {
           });
         },
         `Expected parent.age to be greater than '10'`,
-        `parent.age: '5'`
+        `parent.age: '5'`,
       );
 
       err(
@@ -117,7 +117,7 @@ export = () => {
           });
         },
         `Expected parent.age to be greater than or equal to '10'`,
-        `parent.age: '5'`
+        `parent.age: '5'`,
       );
 
       err(
@@ -127,7 +127,7 @@ export = () => {
           });
         },
         `Expected parent.age to be less than '1'`,
-        `parent.age: '5'`
+        `parent.age: '5'`,
       );
 
       err(
@@ -137,7 +137,7 @@ export = () => {
           });
         },
         `Expected parent.age to be less than or equal to '1'`,
-        `parent.age: '5'`
+        `parent.age: '5'`,
       );
     });
   });

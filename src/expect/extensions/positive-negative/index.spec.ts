@@ -63,11 +63,11 @@ export = () => {
 
     it("throws when it's undefined", () => {
       err(() => {
-        expect(undefined).to.be.positive();
+        expect().to.be.positive();
       }, "Expected the value to be a positive number, but it was undefined");
 
       err(() => {
-        expect(undefined).to.be.negative();
+        expect().to.be.negative();
       }, "Expected the value to be a negative number, but it was undefined");
     });
 
@@ -89,7 +89,7 @@ export = () => {
           });
         },
         `Expected parent.age to be a negative number, but it was positive`,
-        `parent.age: '5'`
+        `parent.age: '5'`,
       );
 
       err(
@@ -99,7 +99,7 @@ export = () => {
           });
         },
         `Expected parent.age to NOT be a positive number, but it was`,
-        `parent.age: '5'`
+        `parent.age: '5'`,
       );
     });
   });

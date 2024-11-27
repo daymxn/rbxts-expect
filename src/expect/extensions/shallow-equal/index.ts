@@ -20,7 +20,7 @@ import { ExpectMessageBuilder } from "@src/message";
 import { place } from "@src/message/placeholders";
 
 const baseMessage = new ExpectMessageBuilder(
-  `Expected ${place.name} to ${place.not} strictly equal ${place.expected.value} (${place.expected.type})`
+  `Expected ${place.name} to ${place.not} strictly equal ${place.expected.value} (${place.expected.type})`,
 )
   .name(`${place.actual.value} (${place.actual.type})`)
   .nestedMetadata({
@@ -31,10 +31,7 @@ const equal: CustomMethodImpl = (_, actual, expected: defined) => {
   const message = baseMessage.use().expectedValue(expected);
 
   if (actual === undefined && expected !== undefined) {
-    return message
-      .name("the value")
-      .trailingFailureSuffix(", but it was undefined")
-      .fail();
+    return message.name("the value").trailingFailureSuffix(", but it was undefined").fail();
   }
 
   return actual === expected ? message.pass() : message.fail();

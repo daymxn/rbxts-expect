@@ -49,7 +49,7 @@ export = () => {
 
         throw "Expected the function to throw.";
       } catch (e) {
-        expect(e).to.have.substring("Expected iThrow to");
+        expect(e).to.have.slice(Math.max(0, "Expected iThrow to"));
       }
     });
 
@@ -59,7 +59,7 @@ export = () => {
 
         throw "Expected the function to throw.";
       } catch (e) {
-        expect(e).to.have.substring("Expected the function to");
+        expect(e).to.have.slice(Math.max(0, "Expected the function to"));
       }
     });
   });
@@ -77,7 +77,7 @@ export = () => {
           expect(iThrow).to.not.throw();
         },
         "Expected iThrow to NOT throw, but it did with the message:",
-        "Test Message"
+        "Test Message",
       );
     });
 
@@ -98,7 +98,7 @@ export = () => {
           });
         },
         "Expected parent.data to NOT throw, but it did with the message:",
-        "Test Message"
+        "Test Message",
       );
     });
 
@@ -108,7 +108,7 @@ export = () => {
           expect(iThrow).to.throw("Your Message");
         },
         'Expected iThrow to throw with the substring "Your Message", but it threw a message without it:',
-        "Test Message"
+        "Test Message",
       );
     });
 
@@ -118,17 +118,17 @@ export = () => {
           expect(iThrow).to.throwMatch("^Message");
         },
         "Expected iThrow to throw with a message that matched /^Message/, but it threw a message without it:",
-        "Test Message"
+        "Test Message",
       );
     });
 
     it("throws if it's undefined", () => {
       err(() => {
-        expect(undefined).to.throwMatch("^Message");
+        expect().to.throwMatch("^Message");
       }, "Expected the value to throw with a message that matched /^Message/, but it was undefined");
 
       err(() => {
-        expect(undefined).to.throw("Your Message");
+        expect().to.throw("Your Message");
       }, `Expected the value to throw with the substring "Your Message", but it was undefined`);
     });
 

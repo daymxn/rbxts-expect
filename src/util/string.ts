@@ -15,20 +15,7 @@
  * limitations under the License.
  */
 
-const SPECIAL_CHARS = [
-  "$",
-  "%",
-  "^",
-  "*",
-  "(",
-  ")",
-  ".",
-  "[",
-  "]",
-  "+",
-  "-",
-  "?",
-];
+const SPECIAL_CHARS = ["$", "%", "^", "*", "(", ")", ".", "[", "]", "+", "-", "?"];
 const SPECIAL_CHARS_PATTERN = `[${SPECIAL_CHARS.map((it) => `%${it}`).join("")}]`;
 
 /**

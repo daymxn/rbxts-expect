@@ -21,9 +21,7 @@ import { ExpectMessageBuilder } from "@src/message";
 import { place } from "@src/message/placeholders";
 import { matches } from "@src/util/string";
 
-const baseMessage = new ExpectMessageBuilder(
-  `Expected ${place.name} to ${place.not} throw`
-);
+const baseMessage = new ExpectMessageBuilder(`Expected ${place.name} to ${place.not} throw`);
 
 const throws: CustomMethodImpl = (_, actual, substring?: string) => {
   const message = baseMessage.use();
@@ -33,10 +31,7 @@ const throws: CustomMethodImpl = (_, actual, substring?: string) => {
   }
 
   if (actual === undefined) {
-    return message
-      .name("the value")
-      .trailingFailureSuffix(", but it was undefined")
-      .fail();
+    return message.name("the value").trailingFailureSuffix(", but it was undefined").fail();
   }
 
   if (!typeIs(actual, "function")) {
@@ -47,7 +42,7 @@ const throws: CustomMethodImpl = (_, actual, substring?: string) => {
   }
 
   const functionName = debug.info(actual, "n")[0] ?? "";
-  message.name(functionName !== "" ? functionName : "the function");
+  message.name(functionName === "" ? "the function" : functionName);
 
   try {
     actual();
@@ -56,14 +51,12 @@ const throws: CustomMethodImpl = (_, actual, substring?: string) => {
   } catch (e) {
     const err = e as string;
 
-    if (substring !== undefined) {
+    if (substring === undefined) {
+      return message.negationSuffix(`, but it did with the message:\n${err}`).pass();
+    } else {
       return includes(err, substring)
         ? message.metadata({ ErrorMessage: err }).pass()
         : message.suffix(`, but it threw a message without it:\n${err}`).fail();
-    } else {
-      return message
-        .negationSuffix(`, but it did with the message:\n${err}`)
-        .pass();
     }
   }
 };
@@ -72,10 +65,7 @@ const throwsMatch: CustomMethodImpl = (_, actual, pattern: string) => {
   const message = baseMessage.use(` with a message that matched /${pattern}/`);
 
   if (actual === undefined) {
-    return message
-      .name("the value")
-      .trailingFailureSuffix(", but it was undefined")
-      .fail();
+    return message.name("the value").trailingFailureSuffix(", but it was undefined").fail();
   }
 
   if (!typeIs(actual, "function")) {
@@ -86,7 +76,7 @@ const throwsMatch: CustomMethodImpl = (_, actual, pattern: string) => {
   }
 
   const functionName = debug.info(actual, "n")[0] ?? "";
-  message.name(functionName !== "" ? functionName : "the function");
+  message.name(functionName === "" ? "the function" : functionName);
 
   try {
     actual();

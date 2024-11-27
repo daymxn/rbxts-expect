@@ -21,28 +21,19 @@ import { CustomMethodImpl, extendMethods } from "@src/expect/extend";
 import { ExpectMessageBuilder } from "@src/message";
 import { place } from "@src/message/placeholders";
 
-const baseMessage = new ExpectMessageBuilder(
-  `Expected ${place.name} to ${place.not} be `
-)
+const baseMessage = new ExpectMessageBuilder(`Expected ${place.name} to ${place.not} be `)
   .name(`${place.actual.value} (${place.actual.type})`)
   .nestedMetadata({
     [place.path]: `${place.actual.value} (${place.actual.type})`,
   });
 
-function validateIsEnumType(
-  actual: keyof LuaEnum | undefined,
-  enumType: LuaEnum
-) {
+function validateIsEnumType(actual: keyof LuaEnum | undefined, enumType: LuaEnum) {
   const enumValues = Object.keys(enumType).sort().join(" | ");
   const enumValue = actual !== undefined && enumType[actual];
 
   const message = baseMessage.use(`a valid enum of '(${enumValues})'`);
 
-  if (actual === undefined)
-    return message
-      .name("the value")
-      .trailingFailureSuffix(", but it was undefined")
-      .fail();
+  if (actual === undefined) return message.name("the value").trailingFailureSuffix(", but it was undefined").fail();
 
   if (enumValue === undefined) return message.fail();
 
@@ -52,11 +43,7 @@ function validateIsEnumType(
     .pass();
 }
 
-function validateIsEnumValue(
-  actual: keyof LuaEnum | undefined,
-  enumType: LuaEnum,
-  value: keyof LuaEnum
-) {
+function validateIsEnumValue(actual: keyof LuaEnum | undefined, enumType: LuaEnum, value: keyof LuaEnum) {
   const enumValue = actual !== undefined && enumType[actual];
   const expectedValue = enumType[value];
 
@@ -71,21 +58,14 @@ function validateIsEnumValue(
   return enumValue === expectedValue ? message.pass() : message.fail();
 }
 
-const beEnum: CustomMethodImpl<keyof LuaEnum> = (
-  source,
-  actual,
-  enumType: LuaEnum,
-  value?: keyof LuaEnum
-) => {
-  if (value !== undefined) {
-    return validateIsEnumValue(actual, enumType, value).inspect(() => {
-      source.enum_type = enumType;
-    });
-  } else {
-    return validateIsEnumType(actual, enumType).inspect(() => {
-      source.enum_type = enumType;
-    });
-  }
+const beEnum: CustomMethodImpl<keyof LuaEnum> = (source, actual, enumType: LuaEnum, value?: keyof LuaEnum) => {
+  return value === undefined
+    ? validateIsEnumType(actual, enumType).inspect(() => {
+        source.enum_type = enumType;
+      })
+    : validateIsEnumValue(actual, enumType, value).inspect(() => {
+        source.enum_type = enumType;
+      });
 };
 
 declare module "@rbxts/expect" {
@@ -159,10 +139,7 @@ declare module "@rbxts/expect" {
      *
      * @public
      */
-    enum<R>(
-      enumType: R & Record<number, string>,
-      value: R[keyof R]
-    ): Assertion<EnumValue<R>>;
+    enum<R>(enumType: R & Record<number, string>, value: R[keyof R]): Assertion<EnumValue<R>>;
 
     /**
      * Asserts that the value is an enum of type `R`, and equal to the `value`.
@@ -193,10 +170,7 @@ declare module "@rbxts/expect" {
      *
      * @public
      */
-    enum<R>(
-      enumType: R & Record<number, string>,
-      value: keyof R
-    ): Assertion<EnumValue<R>>;
+    enum<R>(enumType: R & Record<number, string>, value: keyof R): Assertion<EnumValue<R>>;
   }
 }
 

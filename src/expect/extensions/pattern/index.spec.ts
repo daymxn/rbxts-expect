@@ -22,9 +22,7 @@ import { err, TEST_SON } from "@src/util/tests";
 export = () => {
   describe("pattern", () => {
     it("looks for a string pattern in the string", () => {
-      expect("My Name")
-        .to.have.the.pattern("^%a")
-        .but.not.have.the.pattern("^$l");
+      expect("My Name").to.have.the.pattern("^%a").but.not.have.the.pattern("^$l");
     });
   });
 
@@ -41,13 +39,13 @@ export = () => {
           expect("Hello World").to.not.have.the.pattern("%u%l");
         },
         'Expected "Hello World" to NOT have a match for the pattern /%u%l/, but it did',
-        'Match: "He"'
+        'Match: "He"',
       );
     });
 
     it("throws when it's undefined", () => {
       err(() => {
-        expect(undefined).to.have.the.pattern("Goodbye");
+        expect().to.have.the.pattern("Goodbye");
       }, "Expected the value to have a match for the pattern /Goodbye/, but it was undefined");
     });
 
@@ -65,7 +63,7 @@ export = () => {
           });
         },
         "Expected parent.name to have a match for the pattern /^%l/, but it was missing",
-        'parent.name: "Daymon"'
+        'parent.name: "Daymon"',
       );
     });
   });

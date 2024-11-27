@@ -66,7 +66,7 @@ export = () => {
           expect([1, 2, 3]).to.startWith([1, 4, 5]);
         },
         `Expected '[1,2,3]' to be an array that starts with '[1,4,5]', but it was missing 2 elements`,
-        `Missing: '[4,5]'`
+        `Missing: '[4,5]'`,
       );
     });
 
@@ -84,7 +84,7 @@ export = () => {
 
     it("throws if the type is undefined", () => {
       err(() => {
-        expect(undefined).to.startWith("day");
+        expect().to.startWith("day");
       }, `Expected the value to be a string that starts with "day", but it was undefined`);
 
       err(() => {
@@ -100,7 +100,7 @@ export = () => {
           });
         },
         `Expected parent.cars to be an array that starts with '["Civic"]', but it was missing all of them`,
-        `parent.cars: '["Tesla","Civic"]'`
+        `parent.cars: '["Tesla","Civic"]'`,
       );
 
       err(
@@ -110,7 +110,7 @@ export = () => {
           });
         },
         `Expected parent.name to be a string that starts with "Bry", but it was missing`,
-        `parent.name: "Daymon"`
+        `parent.name: "Daymon"`,
       );
     });
   });

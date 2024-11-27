@@ -19,9 +19,7 @@ import { CustomMethodImpl, extendMethods } from "@src/expect/extend";
 import { ExpectMessageBuilder } from "@src/message";
 import { place } from "@src/message/placeholders";
 
-const baseMessage = new ExpectMessageBuilder(
-  `Expected ${place.name} to ${place.not} have a match for the pattern `
-)
+const baseMessage = new ExpectMessageBuilder(`Expected ${place.name} to ${place.not} have a match for the pattern `)
   .trailingFailureSuffix(`, but it ${place.reason}`)
   .negationSuffix(", but it did")
   .nestedMetadata({
@@ -36,9 +34,7 @@ const hasPattern: CustomMethodImpl = (_, actual, pattern: string) => {
   }
 
   if (!typeIs(actual, "string")) {
-    return message
-      .name(`${place.actual.value} (${place.actual.type})`)
-      .failWithReason("wasn't a string");
+    return message.name(`${place.actual.value} (${place.actual.type})`).failWithReason("wasn't a string");
   }
 
   const match = actual.match(pattern);

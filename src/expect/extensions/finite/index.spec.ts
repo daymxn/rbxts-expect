@@ -32,7 +32,7 @@ export = () => {
 
     it("checks if value is a number", () => {
       expect("5").to.not.be.finite();
-      expect(undefined).to.not.be.finite();
+      expect().to.not.be.finite();
       expect([1, 2, 3]).to.not.be.finite();
     });
   });
@@ -50,7 +50,7 @@ export = () => {
 
     it("throws when it's undefined", () => {
       err(() => {
-        expect(undefined).to.be.finite();
+        expect().to.be.finite();
       }, "Expected the value to be a finite number, but it was undefined");
     });
 
@@ -72,7 +72,7 @@ export = () => {
           });
         },
         `Expected parent.name to be a finite number, but it wasn't a number`,
-        `parent.name: "Daymon"`
+        `parent.name: "Daymon"`,
       );
     });
   });

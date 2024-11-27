@@ -1,0 +1,67 @@
+{
+  "api": {
+    "apiDir": "./api",
+    "apiFile": null,
+    "report": "./api-diff.txt",
+    "rollup": "./dist/index.d.ts",
+    "source": "./src/index.ts",
+    "transformers": {
+      "combineModuleAugmentations": true,
+      "fixIdentifierNames": true,
+      "packageDocs": true
+    }
+  },
+  "docs": {
+    "apiFolder": "./dist",
+    "output": "./dist/docs",
+    "wikiPath": "./wiki/docs/api"
+  },
+  "global": {
+    "build": true,
+    "dev": false,
+    "docs": true,
+    "json": null,
+    "logLevel": "info",
+    "rollup": true,
+    "silence": true,
+    "trace": false,
+    "tty": null
+  },
+  "lint": {
+    "cache": false,
+    "config": "eslint.config.ts",
+    "patterns": [
+      "."
+    ]
+  },
+  "registry": {
+    "global": true,
+    "host": "0.0.0.0",
+    "local": false,
+    "name": "verdaccio",
+    "pm2": true,
+    "port": 4873,
+    "scope": "@rbxts",
+    "verdaccio": true
+  },
+  "release": {
+    "autoPushTags": true,
+    "gitTags": true,
+    "ignorePackage": null,
+    "local": false,
+    "snapshot": false,
+    "tag": null
+  },
+  "tests": {
+    "console": true,
+    "jsonReportPath": "./report.json",
+    "markdownReportPath": "./report.md",
+    "rbxlOutputPath": "node_modules/bs-cli/dist/assets/tests/test.rbxl",
+    "rebuild": true,
+    "rojoProject": "./test.project.json",
+    "showPass": false,
+    "showSkip": true,
+    "testsPath": "node_modules/bs-cli/dist/assets/tests/lune",
+    "trim": true
+  }
+}

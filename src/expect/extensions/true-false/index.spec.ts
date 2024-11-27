@@ -53,7 +53,7 @@ export = () => {
       expect(false).to.be.falsy();
       expect(true).to.not.be.falsy();
 
-      expect(undefined).to.be.falsy();
+      expect().to.be.falsy();
     });
   });
 
@@ -80,15 +80,15 @@ export = () => {
 
     it("throws when it's undefined", () => {
       err(() => {
-        expect(undefined).to.be.true();
+        expect().to.be.true();
       }, `Expected the value to be 'true', but it was undefined`);
 
       err(() => {
-        expect(undefined).to.be.false();
+        expect().to.be.false();
       }, `Expected the value to be 'false', but it was undefined`);
 
       err(() => {
-        expect(undefined).to.be.truthy();
+        expect().to.be.truthy();
       }, `Expected the value to be truthy, but it was undefined`);
     });
 
@@ -110,7 +110,7 @@ export = () => {
           });
         },
         `Expected parent.name to be 'true', but it wasn't a boolean`,
-        'parent.name: "Daymon"'
+        'parent.name: "Daymon"',
       );
 
       err(
@@ -120,7 +120,7 @@ export = () => {
           });
         },
         `Expected parent.name to be 'false', but it wasn't a boolean`,
-        'parent.name: "Daymon"'
+        'parent.name: "Daymon"',
       );
 
       err(() => {
@@ -136,7 +136,7 @@ export = () => {
           });
         },
         `Expected parent.name to be falsy, but it was not`,
-        'parent.name: "Daymon"'
+        'parent.name: "Daymon"',
       );
     });
   });

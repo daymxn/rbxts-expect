@@ -46,7 +46,7 @@ export = () => {
 
     it("throws if it's undefined", () => {
       err(() => {
-        expect(undefined).to.be.anyOf([1, 2]);
+        expect().to.be.anyOf([1, 2]);
       }, "Expected the value to be any of '[1,2]', but it was undefined");
     });
 
@@ -61,14 +61,9 @@ export = () => {
     it("uses enum values", () => {
       err(
         () => {
-          expect(NormalEnum.First)
-            .to.be.enum(NormalEnum)
-            .that.is.anyOf([NormalEnum.Second, NormalEnum.Third]);
+          expect(NormalEnum.First).to.be.enum(NormalEnum).that.is.anyOf([NormalEnum.Second, NormalEnum.Third]);
         },
-        "Expected '%s' (enum/number) to be any of '%s'".format(
-          "First",
-          '["Second","Third"]'
-        )
+        "Expected '%s' (enum/number) to be any of '%s'".format("First", '["Second","Third"]'),
       );
     });
   });

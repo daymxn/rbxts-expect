@@ -19,7 +19,7 @@ import { expect } from "@src/index";
 import { withProxy } from "@src/util/proxy";
 import { err, TEST_SON } from "@src/util/tests";
 
-const EPSILON = 2.220446049250313e-16;
+const EPSILON = 2.220_446_049_250_313e-16;
 
 export = () => {
   describe("near", () => {
@@ -56,7 +56,7 @@ export = () => {
 
     it("throws when it's undefined", () => {
       err(() => {
-        expect(undefined).to.be.near(1);
+        expect().to.be.near(1);
       }, "Expected the value to be a number close to '1', but it was undefined");
     });
 
@@ -74,7 +74,7 @@ export = () => {
           });
         },
         `Expected parent.age to be a number close to '25', but it was too low`,
-        `parent.age: '5'`
+        `parent.age: '5'`,
       );
     });
   });

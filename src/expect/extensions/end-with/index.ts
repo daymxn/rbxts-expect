@@ -23,30 +23,20 @@ import { ExpectMessageBuilder } from "@src/message";
 import { place } from "@src/message/placeholders";
 import { getIndexOrNull, isArray } from "@src/util/object";
 
-const baseMessage = new ExpectMessageBuilder(
-  `Expected ${place.name} to ${place.not} be `
-)
+const baseMessage = new ExpectMessageBuilder(`Expected ${place.name} to ${place.not} be `)
   .trailingFailureSuffix(`, but it ${place.reason}`)
   .nestedMetadata({ [place.path]: place.actual.value })
   .negationSuffix(`, but it did`);
 
-function validateArrayEndsWith(
-  source: Assertion,
-  actual: unknown,
-  expected: defined[]
-) {
-  const message = baseMessage
-    .use(`an array that ends with ${place.expected.value}`)
-    .expectedValue(expected);
+function validateArrayEndsWith(source: Assertion, actual: unknown, expected: defined[]) {
+  const message = baseMessage.use(`an array that ends with ${place.expected.value}`).expectedValue(expected);
 
   if (actual === undefined) {
     return message.name("the value").failWithReason("was undefined");
   }
 
   if (!(source.is_array ?? isArray(actual))) {
-    return message
-      .name(`${place.actual.value} (${place.actual.type})`)
-      .failWithReason("wasn't an array");
+    return message.name(`${place.actual.value} (${place.actual.type})`).failWithReason("wasn't an array");
   }
 
   const missing = reverseArray(expected).filter((it, index) => {
@@ -68,35 +58,23 @@ function validateArrayEndsWith(
 }
 
 function validateStringEndsWith(actual: unknown, expected: string) {
-  const message = baseMessage
-    .use(`a string that ends with ${place.expected.value}`)
-    .expectedValue(expected);
+  const message = baseMessage.use(`a string that ends with ${place.expected.value}`).expectedValue(expected);
 
   if (actual === undefined) {
     return message.name("the value").failWithReason("was undefined");
   }
 
   if (!typeIs(actual, "string")) {
-    return message
-      .name(`${place.actual.value} (${place.actual.type})`)
-      .failWithReason("wasn't a string");
+    return message.name(`${place.actual.value} (${place.actual.type})`).failWithReason("wasn't a string");
   }
 
-  return endsWith(actual, expected)
-    ? message.pass()
-    : message.failWithReason("was missing");
+  return endsWith(actual, expected) ? message.pass() : message.failWithReason("was missing");
 }
 
-const endWith: CustomMethodImpl = (
-  source,
-  actual,
-  expected: string | defined[]
-) => {
-  if (typeIs(expected, "string")) {
-    return validateStringEndsWith(actual, expected);
-  } else {
-    return validateArrayEndsWith(source, actual, expected);
-  }
+const endWith: CustomMethodImpl = (source, actual, expected: string | defined[]) => {
+  return typeIs(expected, "string")
+    ? validateStringEndsWith(actual, expected)
+    : validateArrayEndsWith(source, actual, expected);
 };
 
 declare module "@rbxts/expect" {
@@ -118,6 +96,23 @@ declare module "@rbxts/expect" {
     endWith(elements: InferArrayElement<T>[]): this;
 
     /**
+     * Asserts that the actual value is a string that ends with
+     * the specified string.
+     *
+     * @param str - A string that should be at the end of the actual value.
+     *
+     * @returns This instance for chaining.
+     *
+     * @example
+     * ```ts
+     * expect("Daymon").to.endWith("mon");
+     * ```
+     *
+     * @public
+     */
+    endWith(str: string): Assertion<string>;
+
+    /**
      * Asserts that the array ends with the specified elements.
      *
      * @remarks
@@ -135,23 +130,6 @@ declare module "@rbxts/expect" {
      * @public
      */
     endsWith(elements: InferArrayElement<T>[]): this;
-
-    /**
-     * Asserts that the actual value is a string that ends with
-     * the specified string.
-     *
-     * @param str - A string that should be at the end of the actual value.
-     *
-     * @returns This instance for chaining.
-     *
-     * @example
-     * ```ts
-     * expect("Daymon").to.endWith("mon");
-     * ```
-     *
-     * @public
-     */
-    endWith(str: string): Assertion<string>;
 
     /**
      * Asserts that the actual value is a string that ends with

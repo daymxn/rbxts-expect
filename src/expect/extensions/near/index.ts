@@ -19,10 +19,10 @@ import { CustomMethodImpl, extendMethods } from "@src/expect/extend";
 import { ExpectMessageBuilder } from "@src/message";
 import { place } from "@src/message/placeholders";
 
-const EPSILON = 2.220446049250313e-16;
+const EPSILON = 2.220_446_049_250_313e-16;
 
 const baseMessage = new ExpectMessageBuilder(
-  `Expected ${place.name} to ${place.not} be a number close to ${place.expected.value}`
+  `Expected ${place.name} to ${place.not} be a number close to ${place.expected.value}`,
 )
   .trailingFailureSuffix(`, but it ${place.reason}`)
   .negationSuffix(", but it was")
@@ -30,12 +30,7 @@ const baseMessage = new ExpectMessageBuilder(
     [place.path]: place.actual.value,
   });
 
-const near: CustomMethodImpl = (
-  _,
-  actual,
-  target: number,
-  margin: number = EPSILON
-) => {
+const near: CustomMethodImpl = (_, actual, target: number, margin: number = EPSILON) => {
   const message = baseMessage.use().expectedValue(target);
 
   if (actual === undefined) {
@@ -43,18 +38,14 @@ const near: CustomMethodImpl = (
   }
 
   if (!typeIs(actual, "number")) {
-    return message
-      .name(`${place.actual.value} (${place.actual.type})`)
-      .failWithReason("wasn't a number");
+    return message.name(`${place.actual.value} (${place.actual.type})`).failWithReason("wasn't a number");
   }
 
   const difference = target - actual;
 
   if (math.abs(difference) <= margin) return message.pass();
 
-  return difference > 0
-    ? message.failWithReason("was too low")
-    : message.failWithReason("was too high");
+  return difference > 0 ? message.failWithReason("was too low") : message.failWithReason("was too high");
 };
 
 declare module "@rbxts/expect" {

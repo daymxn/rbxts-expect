@@ -15,12 +15,7 @@
  * limitations under the License.
  */
 
-import type {
-  expect,
-  extendMethods,
-  extendNOPs,
-  extendNegations,
-} from "@src/expect";
+import type { expect, extendMethods, extendNOPs, extendNegations } from "@src/expect";
 import type { Placeholder } from "@src/message";
 import type { Proxy } from "@src/util/proxy";
 
@@ -146,9 +141,7 @@ export type Filter<T = unknown> = (value: T) => boolean;
  *
  * @public
  */
-export type TypeCheckCallback<T = defined> = (
-  value: T
-) => boolean | string | void;
+export type TypeCheckCallback<T = defined> = (value: T) => boolean | string | void;
 
 /**
  * A user-defined enum, as it would be defined in the transpiled Lua.

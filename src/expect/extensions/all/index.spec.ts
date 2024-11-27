@@ -41,7 +41,7 @@ export = () => {
         },
         `Expected '[1,2]' to all pass some check, but there was an element that failed the check`,
         "Index: 2",
-        "Value: '2"
+        "Value: '2",
       );
 
       err(() => {
@@ -56,7 +56,7 @@ export = () => {
         },
         `Expected '[1,2]' to all equal 1, but there was an element that failed the check`,
         "Index: 2",
-        "Value: '2"
+        "Value: '2",
       );
 
       err(() => {
@@ -70,10 +70,7 @@ export = () => {
       }, `Expected the values to all pass some check, but it was undefined`);
 
       err(() => {
-        expect(undefined as unknown as unknown[]).to.all(
-          "like pizza",
-          () => true
-        );
+        expect(undefined as unknown as unknown[]).to.all("like pizza", () => true);
       }, `Expected the values to all like pizza, but it was undefined`);
     });
 
@@ -97,21 +94,19 @@ export = () => {
         "Expected parent.cars to all pass some check, but there was an element that failed the check",
         `parent.cars: '["Tesla","Civic"]'`,
         "Index: 1",
-        `Value: "Tesla"`
+        `Value: "Tesla"`,
       );
 
       err(
         () => {
           withProxy(TEST_SON, (proxy) => {
-            expect(proxy.parent?.cars).to.all(`start with "Civ"`, (it) =>
-              startsWith(it, "Civ")
-            );
+            expect(proxy.parent?.cars).to.all(`start with "Civ"`, (it) => startsWith(it, "Civ"));
           });
         },
         `Expected parent.cars to all start with "Civ", but there was an element that failed the check`,
         `parent.cars: '["Tesla","Civic"]'`,
         "Index: 1",
-        `Value: "Tesla"`
+        `Value: "Tesla"`,
       );
     });
   });

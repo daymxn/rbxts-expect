@@ -53,7 +53,7 @@ export = () => {
           });
         },
         'Expected parent.cars to include "Spaceship", but it was missing',
-        `parent.cars: '["Tesla","Civic"]'`
+        `parent.cars: '["Tesla","Civic"]'`,
       );
     });
   });

@@ -24,14 +24,11 @@ import { CustomMethodImpl, extendMethods } from "@src/expect/extend";
 import { ExpectMessageBuilder } from "@src/message";
 import { place } from "@src/message/placeholders";
 
-const baseMessage = new ExpectMessageBuilder(
-  `Expected ${place.name} to ${place.not} be an array`
-).nestedMetadata({ [place.path]: place.actual.value });
+const baseMessage = new ExpectMessageBuilder(`Expected ${place.name} to ${place.not} be an array`).nestedMetadata({
+  [place.path]: place.actual.value,
+});
 
-function validateArrayTypeByCallback(
-  actual: defined[],
-  targetType: TypeCheckCallback<defined>
-) {
+function validateArrayTypeByCallback(actual: defined[], targetType: TypeCheckCallback<defined>) {
   const message = baseMessage
     .use(" of a certain (user-defined) type")
     .trailingFailureSuffix(", but there was an element that was not");
@@ -55,45 +52,32 @@ function validateArrayTypeByCallback(
   return message.pass();
 }
 
-function validateArrayTypeByCheckableType(
-  actual: defined[],
-  targetType: keyof CheckableTypes
-) {
+function validateArrayTypeByCheckableType(actual: defined[], targetType: keyof CheckableTypes) {
   const message = baseMessage.use(` of type '${targetType}'`);
 
   for (const [index, value] of ipairs(actual)) {
     message.metadata({ Index: index, Value: value });
 
     if (targetType !== typeOf(value)) {
-      return message
-        .suffix(`, but there was an element that was a '${typeOf(value)}'`)
-        .fail();
+      return message.suffix(`, but there was an element that was a '${typeOf(value)}'`).fail();
     }
   }
 
   return message.pass();
 }
 
-function validateArrayType(
-  actual: defined[],
-  targetType: TypeCheckCallback<defined> | keyof CheckableTypes
-) {
-  if (typeIs(targetType, "function")) {
-    return validateArrayTypeByCallback(actual, targetType);
-  } else {
-    return validateArrayTypeByCheckableType(actual, targetType);
-  }
+function validateArrayType(actual: defined[], targetType: TypeCheckCallback<defined> | keyof CheckableTypes) {
+  return typeIs(targetType, "function")
+    ? validateArrayTypeByCallback(actual, targetType)
+    : validateArrayTypeByCheckableType(actual, targetType);
 }
 
 const array: CustomMethodImpl = (source, actual, targetType) => {
-  const message = baseMessage
-    .use()
-    .trailingFailurePrefix(`, but it ${place.reason}`);
+  const message = baseMessage.use().trailingFailurePrefix(`, but it ${place.reason}`);
 
   if (actual === undefined) return message.failWithReason("was undefined");
 
-  if (!typeIs(actual, "table"))
-    return message.failWithReason(`was a '${typeOf(actual)}'`);
+  if (!typeIs(actual, "table")) return message.failWithReason(`was a '${typeOf(actual)}'`);
 
   const entries = Object.entries(actual);
 
@@ -103,29 +87,21 @@ const array: CustomMethodImpl = (source, actual, targetType) => {
   for (const [key, value] of entries) {
     message.failureMetadata({ [`Value of [${key}]`]: value });
 
-    if (!typeIs(key, "number"))
-      return message.failWithReason(
-        `had a non number key '${key}' (${typeOf(key)})`
-      );
+    if (!typeIs(key, "number")) return message.failWithReason(`had a non number key '${key}' (${typeOf(key)})`);
 
-    if (key < 1)
-      return message.failWithReason(`had an out of bounds key '${key}'`);
+    if (key < 1) return message.failWithReason(`had an out of bounds key '${key}'`);
 
     if (key > arraySize)
-      return message.failWithReason(
-        `had an out of bounds key '${key}'. Are there holes in the array?`
-      );
+      return message.failWithReason(`had an out of bounds key '${key}'. Are there holes in the array?`);
   }
 
-  if (targetType !== undefined) {
-    return validateArrayType(actual as defined[], targetType).inspect(() => {
-      source.is_array = true;
-    });
-  } else {
-    return message.pass().inspect(() => {
-      source.is_array = true;
-    });
-  }
+  return targetType === undefined
+    ? message.pass().inspect(() => {
+        source.is_array = true;
+      })
+    : validateArrayType(actual as defined[], targetType).inspect(() => {
+        source.is_array = true;
+      });
 };
 
 declare module "@rbxts/expect" {

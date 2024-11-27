@@ -55,7 +55,7 @@ const nopMethods: Set<string> = new Set();
  * @public
  */
 export function extendNOPs(methods: ReadonlyArray<string>) {
-  methods.forEach((it) => nopMethods.add(it));
+  for (const it of methods) nopMethods.add(it);
 }
 
 /**

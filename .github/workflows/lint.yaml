@@ -5,7 +5,6 @@ on:
   pull_request:
     paths:
       - "src/**"
-      - "scripts/**"
   push:
     branches:
       - main
@@ -18,13 +17,21 @@ jobs:
         with:
           fetch-depth: 0
 
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
       - uses: actions/setup-node@v4
         with:
-          node-version: 18
-          cache: npm
+          node-version: 22.11.0
+          cache: pnpm
 
       - name: Install dependencies
-        run: npm ci
+        run: pnpm install
 
       - name: Lint check
-        run: npm run lint:check
+        run: pnpm exec eslint --flag unstable_ts_config .
+
+      # TODO(): Add back when bug is fixed in bs for flat configs
+      #- name: Lint check
+      #  run: pnpm bs lint:check

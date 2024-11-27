@@ -61,7 +61,7 @@ export = () => {
           }).to.have.size(2);
         },
         `Expected the object to have exactly '2' key(s), but it actually had '1'`,
-        `Value:`
+        `Value:`,
       );
 
       err(
@@ -71,7 +71,7 @@ export = () => {
           }).to.not.have.size(1);
         },
         `Expected the object to NOT have exactly '1' key(s), but it did`,
-        `Value:`
+        `Value:`,
       );
     });
 
@@ -93,7 +93,7 @@ export = () => {
 
     it("throws if the type is undefined", () => {
       err(() => {
-        expect(undefined).to.have.size(1);
+        expect().to.have.size(1);
       }, `Expected nil to have a size of '1', but it was undefined`);
     });
 
@@ -105,7 +105,7 @@ export = () => {
           });
         },
         "Expected parent.cars to have exactly '3' element(s), but it actually had '2'",
-        `parent.cars: '["Tesla","Civic"]'`
+        `parent.cars: '["Tesla","Civic"]'`,
       );
     });
   });

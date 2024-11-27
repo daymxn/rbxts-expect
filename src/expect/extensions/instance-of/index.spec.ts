@@ -23,14 +23,12 @@ import { err, TEST_SON } from "@src/util/tests";
 export = () => {
   describe("instanceOf", () => {
     it("works with checkable types", () => {
-      expect(new CFrame())
-        .to.be.an.instanceOf("CFrame")
-        .but.not.an.instanceOf("Vector3");
+      expect(new CFrame()).to.be.an.instanceOf("CFrame").but.not.an.instanceOf("Vector3");
     });
 
     it("works with t types", () => {
       expect(5).to.be.an.instanceOf(t.number).but.not.an.instanceOf(t.string);
-
+      expect(3).to.eq(2);
       expect({
         name: "daymon",
         age: 100,
@@ -38,7 +36,7 @@ export = () => {
         t.interface({
           name: t.string,
           age: t.number,
-        })
+        }),
       );
     });
 
@@ -69,7 +67,7 @@ export = () => {
           });
         },
         "Expected parent.name to be of type 'number', but it was a 'string'",
-        'parent.name: "Daymon"'
+        'parent.name: "Daymon"',
       );
     });
 
@@ -85,7 +83,7 @@ export = () => {
           expect(5).to.be.an.instanceOf(() => "Nope!");
         },
         "Expected '5' to be of a certain (user-defined) type, but it was not",
-        "Reason: Nope!"
+        "Reason: Nope!",
       );
     });
   });

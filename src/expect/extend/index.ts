@@ -15,12 +15,6 @@
  * limitations under the License.
  */
 
-export {
-  CustomMethodImpl,
-  CustomMethodImpls,
-  ExpectMethodResult,
-  extendMethods,
-  getMethodExtensions,
-} from "./methods";
+export { CustomMethodImpl, CustomMethodImpls, ExpectMethodResult, extendMethods, getMethodExtensions } from "./methods";
 export { extendNegations, getNegationExtensions } from "./negations";
 export { extendNOPs, getNOPExtensions } from "./noops";

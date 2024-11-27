@@ -61,7 +61,7 @@ const negations: Set<string> = new Set();
  * @public
  */
 export function extendNegations(methods: ReadonlyArray<string>) {
-  methods.forEach((it) => negations.add(it));
+  for (const it of methods) negations.add(it);
 }
 
 /**

@@ -58,7 +58,7 @@ export = () => {
 
     it("throws when it's undefined", () => {
       err(() => {
-        expect(undefined).to.be.between(1, 2);
+        expect().to.be.between(1, 2);
       }, "Expected the value to be a number between 1 and 2, but it was undefined");
     });
 
@@ -76,7 +76,7 @@ export = () => {
           });
         },
         `Expected parent.age to be a number between 25 and 30, but it was too low`,
-        `parent.age: '5'`
+        `parent.age: '5'`,
       );
     });
   });

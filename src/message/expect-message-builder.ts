@@ -380,7 +380,7 @@ export class ExpectMessageBuilder {
   constructor(
     prefix: string = place.reason,
     negationPrefix?: string,
-    options: Partial<ExpectMessageBuilderOptions> = {}
+    options: Partial<ExpectMessageBuilderOptions> = {},
   ) {
     this.data = {
       prefix,
@@ -414,11 +414,7 @@ export class ExpectMessageBuilder {
    * instead, although there's not any functional different at this moment.
    */
   public copy(): ExpectMessageBuilder {
-    const newInstance = new ExpectMessageBuilder(
-      this.data.prefix,
-      this.data.negationPrefix,
-      copy(this.options)
-    );
+    const newInstance = new ExpectMessageBuilder(this.data.prefix, this.data.negationPrefix, copy(this.options));
     newInstance.data = deepCopy(this.data);
 
     return newInstance;
@@ -459,10 +455,7 @@ export class ExpectMessageBuilder {
    *
    * @see {@link ExpectMessageBuilder.pass | pass}, {@link ExpectMessageBuilder.fail | fail}
    */
-  public use(
-    trailingPrefix?: string,
-    trailingFailurePrefix?: string
-  ): ExpectMessageBuilder {
+  public use(trailingPrefix?: string, trailingFailurePrefix?: string): ExpectMessageBuilder {
     const instance = this.copy();
 
     if (trailingPrefix !== undefined) {
@@ -472,8 +465,7 @@ export class ExpectMessageBuilder {
       }
     }
 
-    instance.data.trailingFailurePrefix =
-      trailingFailurePrefix ?? instance.data.trailingFailurePrefix;
+    instance.data.trailingFailurePrefix = trailingFailurePrefix ?? instance.data.trailingFailurePrefix;
 
     return instance;
   }
@@ -701,11 +693,7 @@ export class ExpectMessageBuilder {
    * @see {@link Placeholder.name}, {@link ExpectMessageBuilder.path | path}
    */
   public name(value?: unknown): this {
-    if (value !== undefined) {
-      this.data.name = tostring(value);
-    } else {
-      this.data.name = undefined;
-    }
+    this.data.name = value === undefined ? undefined : tostring(value);
 
     return this;
   }
@@ -1567,10 +1555,10 @@ export class ExpectMessageBuilder {
     this.buildOthers(builder, negated);
     builder.appendLine("");
     this.buildReason(builder);
-    if (this.data.path !== undefined) {
-      this.buildMetadata(builder, this.data.nestedMetadata);
-    } else {
+    if (this.data.path === undefined) {
       this.buildMetadata(builder, this.data.surfaceMetadata);
+    } else {
+      this.buildMetadata(builder, this.data.nestedMetadata);
     }
 
     if (!pass) this.buildMetadata(builder, this.data.failureMetadata);
@@ -1625,7 +1613,7 @@ export class ExpectMessageBuilder {
     overrideOptions: Partial<ExpectMessageBuilderOptions> = {},
     array: boolean = false,
     collapsable: boolean = false,
-    collapseLength: number = getDefaultExpectConfig().collapseLength
+    collapseLength: number = getDefaultExpectConfig().collapseLength,
   ) {
     if (value === undefined) return place.undefined;
 
@@ -1641,11 +1629,7 @@ export class ExpectMessageBuilder {
 
     if (collapsable && transform.size() > collapseLength) {
       if (valueType === "table") {
-        if (array) {
-          transform = "[...]";
-        } else {
-          transform = "{...}";
-        }
+        transform = array ? "[...]" : "{...}";
       } else if (valueType === "string") {
         transform = '"..."';
       } else {
@@ -1693,21 +1677,18 @@ export class ExpectMessageBuilder {
   }
 
   private buildReason(builder: StringBuilder) {
-    if (this.data.reason !== undefined) {
+    if (this.data.reason === undefined) {
+      builder.remove(place.reason, this.options.trimSpaces);
+    } else {
       if (builder.has(place.reason)) {
         builder.replace(place.reason, this.data.reason);
       } else {
         builder.appendLine(`Reason: ${this.data.reason}`);
       }
-    } else {
-      builder.remove(place.reason, this.options.trimSpaces);
     }
   }
 
-  private buildMetadata(
-    builder: StringBuilder,
-    metadata: Record<string, unknown>
-  ) {
+  private buildMetadata(builder: StringBuilder, metadata: Record<string, unknown>) {
     // sort the entries so that index, key, and value are the first three lines
     const entries = Object.entries(metadata).sort((a, b) => {
       const keyA = a[0].lower();
@@ -1724,17 +1705,17 @@ export class ExpectMessageBuilder {
     }
   }
 
-  private buildVariableData(
-    builder: StringBuilder,
-    variable: "actual" | "expected"
-  ) {
+  private buildVariableData(builder: StringBuilder, variable: "actual" | "expected") {
     const data = this.data[variable];
     const holders = place[variable];
 
     const valueType = data.type ?? typeOf(data.value);
 
     builder.replace(holders.type, valueType);
-    if (data.value !== undefined) {
+    if (data.value === undefined) {
+      builder.replace(holders.value, place.nil);
+      builder.replace(holders.fullValue, place.nil);
+    } else {
       const array = isArray(data.value);
 
       const collapsed = this.encode(data.value, data.type, {}, array, true);
@@ -1746,31 +1727,20 @@ export class ExpectMessageBuilder {
       if (this.options.attachFullOnCollapse && collapsed !== full) {
         builder.appendLine(`${capitalize(variable)} (full): ${full}`);
       }
-    } else {
-      builder.replace(holders.value, place.nil);
-      builder.replace(holders.fullValue, place.nil);
     }
   }
 
-  private replaceOrRemove(
-    builder: StringBuilder,
-    placeholder: string,
-    value?: string | number
-  ) {
-    if (value !== undefined) {
-      builder.replace(placeholder, tostring(value));
-    } else {
+  private replaceOrRemove(builder: StringBuilder, placeholder: string, value?: string | number) {
+    if (value === undefined) {
       builder.remove(placeholder, this.options.trimSpaces);
+    } else {
+      builder.replace(placeholder, tostring(value));
     }
   }
 
   private buildOthers(builder: StringBuilder, negated: boolean) {
     this.replaceOrRemove(builder, place.path, this.data.path);
-    this.replaceOrRemove(
-      builder,
-      place.name,
-      this.data.path ?? this.data.name ?? place.actual.value
-    );
+    this.replaceOrRemove(builder, place.name, this.data.path ?? this.data.name ?? place.actual.value);
     this.replaceOrRemove(builder, place.index, this.data.index);
 
     builder.replace(place.nil, "nil");

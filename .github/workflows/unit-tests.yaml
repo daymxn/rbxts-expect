@@ -20,29 +20,30 @@ jobs:
         with:
           fetch-depth: 0
 
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
-          cache: npm
+          node-version: 22.11.0
+          cache: pnpm
 
-      - name: Install NPM dependencies
-        run: npm ci
+      - name: Install dependencies
+        run: pnpm install
 
       - name: Install Rokit
         uses: CompeyDev/setup-rokit@v0.1.2
 
-      - name: Prepare tests
-        run: npm run test:update
-
       - name: Run tests
-        run: npm run test:report
+        run: pnpm bs test:report
       
       - name: Log report
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        run: "cat temp/report.md"
+        run: "cat report.md"
 
       - name: Add comment
         if: github.event_name == 'pull_request'
         uses: mshick/add-pr-comment@a65df5f64fc741e91c59b8359a4bc56e57aaf5b1
         with:
-          message-path: temp/report.md
+          message-path: report.md

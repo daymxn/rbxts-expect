@@ -21,16 +21,12 @@ import { CustomMethodImpl, extendMethods } from "@src/expect/extend";
 import { ExpectMessageBuilder } from "@src/message";
 import { place } from "@src/message/placeholders";
 
-const baseMessage = new ExpectMessageBuilder(
-  `Expected ${place.name} to ${place.not} be of `
-).nestedMetadata({
+const baseMessage = new ExpectMessageBuilder(`Expected ${place.name} to ${place.not} be of `).nestedMetadata({
   [place.path]: place.actual.value,
 });
 
 function validateTypeByCallback(actual: unknown, callback: Callback) {
-  const message = baseMessage
-    .use("a certain (user-defined) type")
-    .trailingFailureSuffix(`, but it was not`);
+  const message = baseMessage.use("a certain (user-defined) type").trailingFailureSuffix(`, but it was not`);
 
   try {
     const result: unknown = callback(actual);
@@ -45,33 +41,20 @@ function validateTypeByCallback(actual: unknown, callback: Callback) {
   }
 }
 
-function validateTypeByCheckableType(
-  actual: unknown,
-  typeName: keyof CheckableTypes
-) {
-  const message = baseMessage
-    .use(`type '${typeName}'`)
-    .trailingFailureSuffix(`, but it was a '${place.actual.type}'`);
+function validateTypeByCheckableType(actual: unknown, typeName: keyof CheckableTypes) {
+  const message = baseMessage.use(`type '${typeName}'`).trailingFailureSuffix(`, but it was a '${place.actual.type}'`);
 
-  return typeName !== typeOf(actual) ? message.fail() : message.pass();
+  return typeName === typeOf(actual) ? message.pass() : message.fail();
 }
 
-const instanceOf: CustomMethodImpl = (
-  _,
-  actual,
-  targetType: keyof CheckableTypes | Callback
-) => {
-  if (typeIs(targetType, "function")) {
-    return validateTypeByCallback(actual, targetType);
-  } else {
-    return validateTypeByCheckableType(actual, targetType);
-  }
+const instanceOf: CustomMethodImpl = (_, actual, targetType: keyof CheckableTypes | Callback) => {
+  return typeIs(targetType, "function")
+    ? validateTypeByCallback(actual, targetType)
+    : validateTypeByCheckableType(actual, targetType);
 };
 
-const certainType =
-  (name: keyof CheckableTypes) =>
-  (source: Assertion<unknown>, actual: unknown) =>
-    instanceOf(source, actual, name as never);
+const certainType = (name: keyof CheckableTypes) => (source: Assertion<unknown>, actual: unknown) =>
+  instanceOf(source, actual, name as never);
 
 declare module "@rbxts/expect" {
   interface Assertion<T> {

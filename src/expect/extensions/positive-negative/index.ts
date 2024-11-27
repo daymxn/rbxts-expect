@@ -19,28 +19,20 @@ import { CustomMethodImpl, extendMethods } from "@src/expect/extend";
 import { ExpectMessageBuilder } from "@src/message";
 import { place } from "@src/message/placeholders";
 
-const baseMessage = new ExpectMessageBuilder(
-  `Expected ${place.name} to ${place.not} be a `
-)
+const baseMessage = new ExpectMessageBuilder(`Expected ${place.name} to ${place.not} be a `)
   .trailingFailureSuffix(`, but it ${place.reason}`)
   .negationSuffix(", but it was")
   .nestedMetadata({
     [place.path]: place.actual.value,
   });
 
-function verifyComparison(
-  message: ExpectMessageBuilder,
-  actual: unknown,
-  positive: boolean
-) {
+function verifyComparison(message: ExpectMessageBuilder, actual: unknown, positive: boolean) {
   if (actual === undefined) {
     return message.name("the value").failWithReason("was undefined");
   }
 
   if (!typeIs(actual, "number")) {
-    return message
-      .name(`${place.actual.value} (${place.actual.type})`)
-      .failWithReason("wasn't a number");
+    return message.name(`${place.actual.value} (${place.actual.type})`).failWithReason("wasn't a number");
   }
 
   if (actual === 0) return message.failWithReason("was neutral");
