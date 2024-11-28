@@ -64,8 +64,8 @@ importers:
         specifier: 8.16.0
         version: 8.16.0(eslint@9.15.0(jiti@2.4.0))(typescript@5.5.3)
       bs-cli:
-        specifier: github:daymxn/bs-cli#main
-        version: https://codeload.github.com/daymxn/bs-cli/tar.gz/ab4ee959fb40807f5a9b707266eb276890eb8454(@changesets/cli@2.27.10)(@microsoft/api-documenter@7.26.0(@types/node@22.5.5))(@microsoft/api-extractor@7.48.0(@types/node@22.5.5))(eslint@9.15.0(jiti@2.4.0))(ts-node@10.9.2(@types/node@22.5.5)(typescript@5.5.3))(tsup@8.3.5(@microsoft/api-extractor@7.48.0(@types/node@22.5.5))(jiti@2.4.0)(typescript@5.5.3))(typanion@3.14.0)
+        specifier: github:daymxn/bs-cli#2b79bb6ebdf8dbe0a87e044395be85484d22e2c9
+        version: https://codeload.github.com/daymxn/bs-cli/tar.gz/2b79bb6ebdf8dbe0a87e044395be85484d22e2c9(@changesets/cli@2.27.10)(@microsoft/api-documenter@7.26.0(@types/node@22.5.5))(@microsoft/api-extractor@7.48.0(@types/node@22.5.5))(eslint@9.15.0(jiti@2.4.0))(ts-node@10.9.2(@types/node@22.5.5)(typescript@5.5.3))(tsup@8.3.5(@microsoft/api-extractor@7.48.0(@types/node@22.5.5))(jiti@2.4.0)(typescript@5.5.3))(typanion@3.14.0)
       eslint:
         specifier: 9.15.0
         version: 9.15.0(jiti@2.4.0)
@@ -1067,8 +1067,8 @@ packages:
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
 
-  bs-cli@https://codeload.github.com/daymxn/bs-cli/tar.gz/ab4ee959fb40807f5a9b707266eb276890eb8454:
-    resolution: {tarball: https://codeload.github.com/daymxn/bs-cli/tar.gz/ab4ee959fb40807f5a9b707266eb276890eb8454}
+  bs-cli@https://codeload.github.com/daymxn/bs-cli/tar.gz/2b79bb6ebdf8dbe0a87e044395be85484d22e2c9:
+    resolution: {tarball: https://codeload.github.com/daymxn/bs-cli/tar.gz/2b79bb6ebdf8dbe0a87e044395be85484d22e2c9}
     version: 1.0.0
     engines: {node: '>=22.9.0'}
     hasBin: true
@@ -1264,10 +1264,6 @@ packages:
 
   croner@4.1.97:
     resolution: {integrity: sha512-/f6gpQuxDaqXu+1kwQYSckUglPaOrHdbIlBAu0YuW8/Cdb45XwXYNUBXg3r/9Mo6n540Kn/smKcZWko5x99KrQ==}
-
-  cross-spawn@7.0.3:
-    resolution: {integrity: sha512-iRDPJKUPVEND7dHPO8rkbOnPpyDygcDFtWjpeWNCgy8WP2rXcxXL8TskReQl6OrB2G7+UJrags1q15Fudc7G6w==}
-    engines: {node: '>= 8'}
 
   cross-spawn@7.0.6:
     resolution: {integrity: sha512-uV2QOWP2nWzsy2aMp8aRibhi9dlzF5Hgh5SHaB9OiTGEyDTiJJyx0uy51QXdyWbtAHNua4XJzUKca3OzKUd3vA==}
@@ -4583,7 +4579,7 @@ snapshots:
       node-releases: 2.0.18
       update-browserslist-db: 1.1.1(browserslist@4.24.2)
 
-  bs-cli@https://codeload.github.com/daymxn/bs-cli/tar.gz/ab4ee959fb40807f5a9b707266eb276890eb8454(@changesets/cli@2.27.10)(@microsoft/api-documenter@7.26.0(@types/node@22.5.5))(@microsoft/api-extractor@7.48.0(@types/node@22.5.5))(eslint@9.15.0(jiti@2.4.0))(ts-node@10.9.2(@types/node@22.5.5)(typescript@5.5.3))(tsup@8.3.5(@microsoft/api-extractor@7.48.0(@types/node@22.5.5))(jiti@2.4.0)(typescript@5.5.3))(typanion@3.14.0):
+  bs-cli@https://codeload.github.com/daymxn/bs-cli/tar.gz/2b79bb6ebdf8dbe0a87e044395be85484d22e2c9(@changesets/cli@2.27.10)(@microsoft/api-documenter@7.26.0(@types/node@22.5.5))(@microsoft/api-extractor@7.48.0(@types/node@22.5.5))(eslint@9.15.0(jiti@2.4.0))(ts-node@10.9.2(@types/node@22.5.5)(typescript@5.5.3))(tsup@8.3.5(@microsoft/api-extractor@7.48.0(@types/node@22.5.5))(jiti@2.4.0)(typescript@5.5.3))(typanion@3.14.0):
     dependencies:
       '@oclif/core': 4.0.33
       '@oclif/plugin-help': 6.2.18
@@ -4775,12 +4771,6 @@ snapshots:
   create-require@1.1.1: {}
 
   croner@4.1.97: {}
-
-  cross-spawn@7.0.3:
-    dependencies:
-      path-key: 3.1.1
-      shebang-command: 2.0.0
-      which: 2.0.2
 
   cross-spawn@7.0.6:
     dependencies:
@@ -5080,7 +5070,7 @@ snapshots:
   execa@9.5.1:
     dependencies:
       '@sindresorhus/merge-streams': 4.0.0
-      cross-spawn: 7.0.3
+      cross-spawn: 7.0.6
       figures: 6.1.0
       get-stream: 9.0.1
       human-signals: 8.0.0
