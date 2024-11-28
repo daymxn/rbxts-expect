@@ -62,7 +62,7 @@
     "@types/eslint__js": "^8.42.3",
     "@typescript-eslint/eslint-plugin": "8.16.0",
     "@typescript-eslint/parser": "8.16.0",
-    "bs-cli": "github:daymxn/bs-cli#2b79bb6ebdf8dbe0a87e044395be85484d22e2c9",
+    "bs-cli": "github:daymxn/bs-cli#5f969d504c3a15b59097dff807bb9a9965695528",
     "eslint": "9.15.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-headers": "^1.2.0",
