@@ -71,10 +71,8 @@ export {
   withProxy,
 } from "./util";
 
-const x = /fsdf/;
-
 /**
  * Temp value for triggering API
  * @public
  */
-export const temp = 5;
+export const temp = 5
