@@ -29,7 +29,7 @@ jobs:
         run: pnpm install
 
       - name: Run Diff
-        run: pnpm bs api:report --trace
+        run: pnpm bs api:report
 
       - name: Check for API report
         id: check-diff

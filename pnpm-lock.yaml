@@ -34,8 +34,8 @@ importers:
         specifier: ^2.27.10
         version: 2.27.10
       '@daymxn/bs':
-        specifier: ^0.0.3
-        version: 0.0.3(@changesets/cli@2.27.10)(@microsoft/api-documenter@7.26.0(@types/node@22.5.5))(@microsoft/api-extractor@7.48.0(@types/node@22.5.5))(eslint@9.15.0(jiti@2.4.0))(ts-node@10.9.2(@types/node@22.5.5)(typescript@5.5.3))(tsup@8.3.5(@microsoft/api-extractor@7.48.0(@types/node@22.5.5))(jiti@2.4.0)(typescript@5.5.3))(typanion@3.14.0)
+        specifier: ^0.1.0
+        version: 0.1.0(@changesets/cli@2.27.10)(@microsoft/api-documenter@7.26.0(@types/node@22.5.5))(@microsoft/api-extractor@7.48.0(@types/node@22.5.5))(eslint@9.15.0(jiti@2.4.0))(ts-node@10.9.2(@types/node@22.5.5)(typescript@5.5.3))(tsup@8.3.5(@microsoft/api-extractor@7.48.0(@types/node@22.5.5))(jiti@2.4.0)(typescript@5.5.3))(typanion@3.14.0)
       '@eslint/js':
         specifier: ^9.15.0
         version: 9.15.0
@@ -183,8 +183,8 @@ packages:
     resolution: {integrity: sha512-v+XHd9XmWbufxF1/bTaVm2yhbxY+TB4YtWRqF2zaXBlDNMkls34KiATz0AVDLavL3iB6bQk9/7n3oY1EoLSWGA==}
     engines: {node: '>= 6'}
 
-  '@daymxn/bs@0.0.3':
-    resolution: {integrity: sha512-SHi5vKuXZWTsGCVkzo63t8VD6f8rgzYgwtDAAPrjFa3Xy8idy0J2Ui9Ty5dzlY8jqV2gSjg5dH8zb1XybwG6/g==}
+  '@daymxn/bs@0.1.0':
+    resolution: {integrity: sha512-ztWzL5vb3MtDj80Ob4pGGMsIE2boCRGYLwZpIAhIwrzbfqnB7k8ubqDLEZajwCwDrfWaKyhGXk7UcyorsGCkkA==}
     engines: {node: '>=22.9.0'}
     hasBin: true
     peerDependencies:
@@ -3592,7 +3592,7 @@ snapshots:
       tunnel-agent: 0.6.0
       uuid: 8.3.2
 
-  '@daymxn/bs@0.0.3(@changesets/cli@2.27.10)(@microsoft/api-documenter@7.26.0(@types/node@22.5.5))(@microsoft/api-extractor@7.48.0(@types/node@22.5.5))(eslint@9.15.0(jiti@2.4.0))(ts-node@10.9.2(@types/node@22.5.5)(typescript@5.5.3))(tsup@8.3.5(@microsoft/api-extractor@7.48.0(@types/node@22.5.5))(jiti@2.4.0)(typescript@5.5.3))(typanion@3.14.0)':
+  '@daymxn/bs@0.1.0(@changesets/cli@2.27.10)(@microsoft/api-documenter@7.26.0(@types/node@22.5.5))(@microsoft/api-extractor@7.48.0(@types/node@22.5.5))(eslint@9.15.0(jiti@2.4.0))(ts-node@10.9.2(@types/node@22.5.5)(typescript@5.5.3))(tsup@8.3.5(@microsoft/api-extractor@7.48.0(@types/node@22.5.5))(jiti@2.4.0)(typescript@5.5.3))(typanion@3.14.0)':
     dependencies:
       '@oclif/core': 4.0.33
       '@oclif/plugin-help': 6.2.18
