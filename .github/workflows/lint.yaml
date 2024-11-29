@@ -30,8 +30,4 @@ jobs:
         run: pnpm install
 
       - name: Lint check
-        run: pnpm exec eslint --flag unstable_ts_config .
-
-      # TODO(): Add back when bug is fixed in bs for flat configs
-      #- name: Lint check
-      #  run: pnpm bs lint:check
+        run: pnpm bs lint:check
