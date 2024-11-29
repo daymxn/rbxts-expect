@@ -28,7 +28,6 @@ export = () => {
 
     it("works with t types", () => {
       expect(5).to.be.an.instanceOf(t.number).but.not.an.instanceOf(t.string);
-      expect(3).to.eq(2);
       expect({
         name: "daymon",
         age: 100,

@@ -23,13 +23,11 @@ export = () => {
   describe("empty", () => {
     it("checks if arrays have any elements", () => {
       expect([]).to.be.empty();
-      expect(3).to.eq(2);
       expect([1]).to.not.be.empty();
     });
 
     it("checks if strings have any characters", () => {
       expect("").to.be.empty();
-      expect(3).to.eq(2);
       expect("Daymon").to.not.be.empty();
     });
 
