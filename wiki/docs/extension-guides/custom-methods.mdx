@@ -32,9 +32,9 @@ export type CustomMethodImpl<T = unknown> = (source: Assertion<T>, actual: T, ..
 
 The `source` parameter of a custom method is just a mapping to the parent `Assertion` that created the call. The
 `Assertion` interface is the closest thing to an "instance" of the `expect` function; it carries all the methods that
-you call after `expect`, and optionally some [metadata](#Metadata) for custom methods to use.
+you call after `expect`, and optionally some [metadata](#metadata) for custom methods to use.
 
-You'll rarely need to use it, but it comes in handy when dealing with [metadata](#Metadata).
+You'll rarely need to use it, but it comes in handy when dealing with [metadata](#metadata).
 
 ```ts
 import { CustomMethodImpl } from "@src/expect/extend";

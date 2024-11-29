@@ -1,3 +1,4 @@
+/* eslint-disable headers/header-format, unicorn/filename-case */
 /**
  * @license
  * Copyright 2024 Daymon Littrell-Reyes

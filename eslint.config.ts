@@ -118,6 +118,11 @@ export default tseslint.config(
     ignores: ["out", "**/.docusaurus", "example", "**/dist"],
   },
   {
+    linterOptions: {
+      reportUnusedDisableDirectives: "off"
+    }
+  },
+  {
     languageOptions: {
       parserOptions: {
         tsconfigRootDir: import.meta.dirname,
