@@ -15,15 +15,6 @@
  * limitations under the License.
  */
 
-export {
-  ExpectMessageBuilder,
-  ExpectMessageBuilderOptions,
-  VariableData,
-} from "./expect-message-builder";
+export { ExpectMessageBuilder, ExpectMessageBuilderOptions, VariableData } from "./expect-message-builder";
 
-export {
-  ActualPlaceholder,
-  ExpectedPlaceholder,
-  Placeholder,
-  place,
-} from "./placeholders";
+export { ActualPlaceholder, ExpectedPlaceholder, Placeholder, place } from "./placeholders";

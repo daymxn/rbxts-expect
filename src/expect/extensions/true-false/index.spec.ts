@@ -110,7 +110,7 @@ export = () => {
           });
         },
         `Expected parent.name to be 'true', but it wasn't a boolean`,
-        'parent.name: "Daymon"'
+        'parent.name: "Daymon"',
       );
 
       err(
@@ -120,7 +120,7 @@ export = () => {
           });
         },
         `Expected parent.name to be 'false', but it wasn't a boolean`,
-        'parent.name: "Daymon"'
+        'parent.name: "Daymon"',
       );
 
       err(() => {
@@ -136,7 +136,7 @@ export = () => {
           });
         },
         `Expected parent.name to be falsy, but it was not`,
-        'parent.name: "Daymon"'
+        'parent.name: "Daymon"',
       );
     });
   });

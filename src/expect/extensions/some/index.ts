@@ -25,7 +25,7 @@ import { isArray } from "@src/util/object";
 
 const baseMessage = new ExpectMessageBuilder(
   `Expected ${place.name} to have at least one element that ${place.reason}`,
-  `Expected ${place.name} to ${place.not} have any elements that ${place.reason}`
+  `Expected ${place.name} to ${place.not} have any elements that ${place.reason}`,
 )
   .reason("passes some check")
   .nestedMetadata({
@@ -36,7 +36,7 @@ const some: CustomMethodImpl<unknown[]> = (
   source,
   actual,
   reasonOrCallback: string | Filter,
-  maybeCallback?: Filter
+  maybeCallback?: Filter,
 ) => {
   const message = baseMessage.use();
 
@@ -45,15 +45,11 @@ const some: CustomMethodImpl<unknown[]> = (
   }
 
   if (actual === undefined) {
-    return message
-      .name("the value")
-      .trailingFailureSuffix(", but it was undefined")
-      .fail();
+    return message.name("the value").trailingFailureSuffix(", but it was undefined").fail();
   }
 
   const actualIsArray = source.is_array ?? isArray(actual);
-  if (!actualIsArray)
-    return message.trailingFailurePrefix(", but it wasn't an array").fail();
+  if (!actualIsArray) return message.trailingFailurePrefix(", but it wasn't an array").fail();
 
   const callback = (maybeCallback ?? reasonOrCallback) as Filter;
 

@@ -60,9 +60,7 @@ function discoverStackLevel() {
   const trace = getTraceBack();
 
   const expectLevel = trace.findIndex(
-    (file) =>
-      includes(file, "TS.expect") ||
-      includes(file, "rbxts_include.node_modules.@rbxts.expect")
+    (file) => includes(file, "TS.expect") || includes(file, "rbxts_include.node_modules.@rbxts.expect"),
   );
   const targetLevel = trace.size() - expectLevel - 1;
 
@@ -96,11 +94,7 @@ const isTesting = (_G as Record<string, boolean>)["RUNNING_GLOBAL"];
  *
  * @returns A method version of the callback.
  */
-function MapAssertion<T>(
-  method: CustomMethodImpl<unknown>,
-  value: T,
-  customMessage?: string
-) {
+function MapAssertion<T>(method: CustomMethodImpl<unknown>, value: T, customMessage?: string) {
   return (source: Assertion<T>, ...args: never[]) => {
     const result = method(source, value, ...args);
 
@@ -113,9 +107,7 @@ function MapAssertion<T>(
     }
 
     const finalMessage =
-      customMessage !== undefined
-        ? customMessage
-        : message.actualValue(value).build(result.isOk(), source._negated);
+      customMessage === undefined ? message.actualValue(value).build(result.isOk(), source._negated) : customMessage;
 
     if (isTesting) {
       throw finalMessage;
@@ -175,7 +167,7 @@ export function expect<T>(value: T, customMessage?: string): Assertion<T> {
   }
 
   const mappedAssertions = mapObjectValues(getMethodExtensions(), (method) =>
-    MapAssertion(method, newAssert.value, customMessage)
+    MapAssertion(method, newAssert.value, customMessage),
   );
 
   Object.assign(newAssert, mappedAssertions);

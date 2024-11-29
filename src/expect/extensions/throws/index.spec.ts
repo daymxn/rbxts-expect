@@ -77,7 +77,7 @@ export = () => {
           expect(iThrow).to.not.throw();
         },
         "Expected iThrow to NOT throw, but it did with the message:",
-        "Test Message"
+        "Test Message",
       );
     });
 
@@ -98,7 +98,7 @@ export = () => {
           });
         },
         "Expected parent.data to NOT throw, but it did with the message:",
-        "Test Message"
+        "Test Message",
       );
     });
 
@@ -108,7 +108,7 @@ export = () => {
           expect(iThrow).to.throw("Your Message");
         },
         'Expected iThrow to throw with the substring "Your Message", but it threw a message without it:',
-        "Test Message"
+        "Test Message",
       );
     });
 
@@ -118,7 +118,7 @@ export = () => {
           expect(iThrow).to.throwMatch("^Message");
         },
         "Expected iThrow to throw with a message that matched /^Message/, but it threw a message without it:",
-        "Test Message"
+        "Test Message",
       );
     });
 

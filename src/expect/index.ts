@@ -17,12 +17,7 @@
 
 import "./extensions";
 
-export {
-  ExpectConfig,
-  getDefaultExpectConfig,
-  resetDefaultExpectConfig,
-  setDefaultExpectConfig,
-} from "./config";
+export { ExpectConfig, getDefaultExpectConfig, resetDefaultExpectConfig, setDefaultExpectConfig } from "./config";
 
 export { expect } from "./expect";
 
@@ -35,11 +30,4 @@ export {
   extendNegations,
 } from "./extend";
 
-export {
-  Assertion,
-  EnumValue,
-  Filter,
-  InferArrayElement,
-  LuaEnum,
-  TypeCheckCallback,
-} from "./types";
+export { Assertion, EnumValue, Filter, InferArrayElement, LuaEnum, TypeCheckCallback } from "./types";

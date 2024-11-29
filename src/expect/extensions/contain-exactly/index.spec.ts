@@ -22,10 +22,7 @@ import { err, TEST_SON } from "@src/util/tests";
 export = () => {
   describe("containExactly", () => {
     it("checks if two arrays contain the same values", () => {
-      expect([1, 2, 3])
-        .to.containExactly([1, 2, 3])
-        .but.not.containExactly([1, 2, 3, 4])
-        .or.containExactly([1, 2]);
+      expect([1, 2, 3]).to.containExactly([1, 2, 3]).but.not.containExactly([1, 2, 3, 4]).or.containExactly([1, 2]);
     });
 
     it("doesn't care about order", () => {
@@ -47,7 +44,7 @@ export = () => {
           expect([1, 2]).to.containExactly([1, 2, 3]);
         },
         `Expected '[1,2]' to contain exactly '[1,2,3]', but it was missing elements`,
-        "Missing elements: '[3]'"
+        "Missing elements: '[3]'",
       );
     });
 
@@ -57,7 +54,7 @@ export = () => {
           expect([1, 2, 3]).to.containExactly([1, 2]);
         },
         `Expected '[1,2,3]' to contain exactly '[1,2]', but it had extra elements`,
-        "Extra elements: '[3]'"
+        "Extra elements: '[3]'",
       );
     });
 
@@ -68,7 +65,7 @@ export = () => {
         },
         `Expected '[1,2]' to contain exactly '[1,3]', but it was elements missing and it had extra elements`,
         "Extra elements: '[2]'",
-        "Missing elements: '[3]'"
+        "Missing elements: '[3]'",
       );
     });
 
@@ -93,7 +90,7 @@ export = () => {
         },
         `Expected parent.cars to contain exactly '["Tesla"]', but it had extra elements`,
         `parent.cars: '["Tesla","Civic"]'`,
-        `Extra elements: '["Civic"]'`
+        `Extra elements: '["Civic"]'`,
       );
     });
   });

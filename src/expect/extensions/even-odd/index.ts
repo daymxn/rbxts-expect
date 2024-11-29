@@ -19,38 +19,26 @@ import { CustomMethodImpl, extendMethods } from "@src/expect/extend";
 import { ExpectMessageBuilder } from "@src/message";
 import { place } from "@src/message/placeholders";
 
-const baseMessage = new ExpectMessageBuilder(
-  `Expected ${place.name} to ${place.not} be `
-)
+const baseMessage = new ExpectMessageBuilder(`Expected ${place.name} to ${place.not} be `)
   .suffix(`, but it ${place.reason}`)
   .negationSuffix(", but it was")
   .nestedMetadata({
     [place.path]: place.actual.value,
   });
 
-function verifyEvenOdd(
-  message: ExpectMessageBuilder,
-  actual: unknown,
-  even: boolean
-) {
+function verifyEvenOdd(message: ExpectMessageBuilder, actual: unknown, even: boolean) {
   if (actual === undefined) {
     return message.name("the value").failWithReason("was undefined");
   }
 
   if (!typeIs(actual, "number")) {
-    return message
-      .name(`${place.actual.value} (${place.actual.type})`)
-      .failWithReason("wasn't a number");
+    return message.name(`${place.actual.value} (${place.actual.type})`).failWithReason("wasn't a number");
   }
 
   if (even) {
-    return actual % 2 === 0
-      ? message.pass()
-      : message.failWithReason("was odd");
+    return actual % 2 === 0 ? message.pass() : message.failWithReason("was odd");
   } else {
-    return actual % 2 === 0
-      ? message.failWithReason("was even")
-      : message.pass();
+    return actual % 2 === 0 ? message.failWithReason("was even") : message.pass();
   }
 }
 

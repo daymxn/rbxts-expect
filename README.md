@@ -1,7 +1,7 @@
 <h1 align="center">
  <br>
  <br>
-<img width="320" src="./static/logo.svg" alt="rbxts-expect"/>
+<img width="320" src="./assets/logo.svg" alt="rbxts-expect"/>
  <br>
  <br>
  <br>

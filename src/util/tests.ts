@@ -153,6 +153,6 @@ export function err(callback: () => unknown, ...messages: string[]) {
       `;
         }
       }
-    }
+    },
   );
 }

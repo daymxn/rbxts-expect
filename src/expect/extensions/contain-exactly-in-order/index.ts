@@ -21,18 +21,14 @@ import { ExpectMessageBuilder } from "@src/message";
 import { place } from "@src/message/placeholders";
 
 const baseMessage = new ExpectMessageBuilder(
-  `Expected ${place.name} to ${place.not} contain exactly ${place.expected.value}`
+  `Expected ${place.name} to ${place.not} contain exactly ${place.expected.value}`,
 )
   .trailingFailurePrefix(`, but it ${place.reason}`)
   .nestedMetadata({
     [place.path]: place.actual.value,
   });
 
-const containExactlyInOrder: CustomMethodImpl<unknown[]> = (
-  _,
-  actual,
-  expectedValue: defined[]
-) => {
+const containExactlyInOrder: CustomMethodImpl<unknown[]> = (_, actual, expectedValue: defined[]) => {
   const message = baseMessage.use().expectedValue(expectedValue);
 
   if (actual === undefined) {
@@ -40,9 +36,7 @@ const containExactlyInOrder: CustomMethodImpl<unknown[]> = (
   }
 
   if (typeOf(actual) !== "table") {
-    return message
-      .name(`${place.actual.value} (${place.actual.type})`)
-      .failWithReason("wasn't an array");
+    return message.name(`${place.actual.value} (${place.actual.type})`).failWithReason("wasn't an array");
   }
 
   const result = deepEqual(actual, expectedValue, {
@@ -66,9 +60,7 @@ const containExactlyInOrder: CustomMethodImpl<unknown[]> = (
             [`Expected ${result.path}`]: `${message.encode(result.rightValue)} (${result.rightType})`,
             [`Actual ${result.path}`]: `${message.encode(result.leftValue)} (${result.leftType})`,
           })
-          .failWithReason(
-            `had a different type of element at '${result.path}'`
-          );
+          .failWithReason(`had a different type of element at '${result.path}'`);
       }
       case FailureType.DIFFERENT_REFERENCE: {
         return message
@@ -76,24 +68,20 @@ const containExactlyInOrder: CustomMethodImpl<unknown[]> = (
             [`Expected ${result.path}`]: message.encode(result.rightValue),
             [`Actual ${result.path}`]: message.encode(result.leftValue),
           })
-          .failWithReason(
-            `had a different reference for the element at '${result.path}' (${result.leftType})`
-          );
+          .failWithReason(`had a different reference for the element at '${result.path}' (${result.leftType})`);
       }
       case FailureType.MISSING_ARRAY_VALUE: {
-        if (!result.leftMissing.isEmpty()) {
-          return message
-            .metadata({
-              ["Missing elements"]: message.encode(result.leftMissing),
-            })
-            .failWithReason("was missing elements");
-        } else {
-          return message
-            .metadata({
-              ["Extra elements"]: message.encode(result.rightMissing),
-            })
-            .failWithReason("had extra elements");
-        }
+        return result.leftMissing.isEmpty()
+          ? message
+              .metadata({
+                ["Extra elements"]: message.encode(result.rightMissing),
+              })
+              .failWithReason("had extra elements")
+          : message
+              .metadata({
+                ["Missing elements"]: message.encode(result.leftMissing),
+              })
+              .failWithReason("was missing elements");
       }
       default: {
         if (result.leftValue === undefined) {
@@ -114,9 +102,7 @@ const containExactlyInOrder: CustomMethodImpl<unknown[]> = (
               [`Expected ${result.path}`]: message.encode(result.rightValue),
               [`Actual ${result.path}`]: message.encode(result.leftValue),
             })
-            .failWithReason(
-              `had a different value for the element at '${result.path}'`
-            );
+            .failWithReason(`had a different value for the element at '${result.path}'`);
         }
       }
     }

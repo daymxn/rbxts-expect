@@ -22,11 +22,7 @@ import { err, TEST_SON } from "@src/util/tests";
 export = () => {
   describe("defined", () => {
     it("checks if value is not null", () => {
-      expect("daymon")
-        .to.be.ok()
-        .and.to.be.defined()
-        .and.to.exist()
-        .and.also.exists();
+      expect("daymon").to.be.ok().and.to.be.defined().and.to.exist().and.also.exists();
 
       expect(undefined).to.not.be.ok();
     });
@@ -59,7 +55,7 @@ export = () => {
           });
         },
         `Expected parent.age to be undefined, but it was defined`,
-        `parent.age: '5'`
+        `parent.age: '5'`,
       );
 
       err(
@@ -69,7 +65,7 @@ export = () => {
           });
         },
         `Expected data to be defined, but it was undefined`,
-        `Actual: '{`
+        `Actual: '{`,
       );
     });
   });

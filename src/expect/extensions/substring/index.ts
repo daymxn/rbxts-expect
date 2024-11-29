@@ -21,7 +21,7 @@ import { ExpectMessageBuilder } from "@src/message";
 import { place } from "@src/message/placeholders";
 
 const baseMessage = new ExpectMessageBuilder(
-  `Expected ${place.name} to ${place.not} have the substring ${place.expected.value}`
+  `Expected ${place.name} to ${place.not} have the substring ${place.expected.value}`,
 ).nestedMetadata({
   [place.path]: place.actual.value,
 });
@@ -30,10 +30,7 @@ const substring: CustomMethodImpl = (_, actual, str: string) => {
   const message = baseMessage.use().expectedValue(str);
 
   if (actual === undefined) {
-    return message
-      .name("the value")
-      .trailingFailureSuffix(", but it was undefined")
-      .fail();
+    return message.name("the value").trailingFailureSuffix(", but it was undefined").fail();
   }
 
   if (!typeIs(actual, "string")) {

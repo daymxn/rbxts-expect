@@ -19,19 +19,14 @@ import { CustomMethodImpl, extendMethods } from "@src/expect/extend";
 import { ExpectMessageBuilder } from "@src/message";
 import { place } from "@src/message/placeholders";
 
-const baseMessage = new ExpectMessageBuilder(
-  `Expected ${place.name} to ${place.not} be any of ${place.expected.value}`
-)
+const baseMessage = new ExpectMessageBuilder(`Expected ${place.name} to ${place.not} be any of ${place.expected.value}`)
   .name(`${place.actual.value} (${place.actual.type})`)
   .nestedMetadata({ Value: place.actual.value });
 
 const anyOf: CustomMethodImpl = (source, actual, values: defined[]) => {
   const message = baseMessage.use().expectedValue(values);
   if (actual === undefined) {
-    return message
-      .name("the value")
-      .trailingFailureSuffix(", but it was undefined")
-      .fail();
+    return message.name("the value").trailingFailureSuffix(", but it was undefined").fail();
   }
 
   if (source.enum_type) {

@@ -56,7 +56,7 @@ export = () => {
           }).to.be.empty();
         },
         `Expected the object to be empty, but it had the key 'name'`,
-        `Value of [name]: "Daymon"`
+        `Value of [name]: "Daymon"`,
       );
 
       err(
@@ -67,7 +67,7 @@ export = () => {
           }).to.be.empty();
         },
         `Expected the object to be empty, but it had 2 keys`,
-        `Value:`
+        `Value:`,
       );
     });
 
@@ -97,7 +97,7 @@ export = () => {
           });
         },
         "Expected parent.cars to be empty, but it had 2 elements",
-        `parent.cars: '["Tesla","Civic"]'`
+        `parent.cars: '["Tesla","Civic"]'`,
       );
     });
   });

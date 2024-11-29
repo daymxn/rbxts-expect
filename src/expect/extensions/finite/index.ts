@@ -19,9 +19,7 @@ import { CustomMethodImpl, extendMethods } from "@src/expect/extend";
 import { ExpectMessageBuilder } from "@src/message";
 import { place } from "@src/message/placeholders";
 
-const baseMessage = new ExpectMessageBuilder(
-  `Expected ${place.name} to ${place.not} be a finite number`
-)
+const baseMessage = new ExpectMessageBuilder(`Expected ${place.name} to ${place.not} be a finite number`)
   .trailingFailureSuffix(`, but it ${place.reason}`)
   .negationSuffix(", but it was")
   .nestedMetadata({
@@ -36,9 +34,7 @@ const finite: CustomMethodImpl = (_, actual) => {
   }
 
   if (!typeIs(actual, "number")) {
-    return message
-      .name(`${place.actual.value} (${place.actual.type})`)
-      .failWithReason("wasn't a number");
+    return message.name(`${place.actual.value} (${place.actual.type})`).failWithReason("wasn't a number");
   }
 
   if (math.huge === actual) {

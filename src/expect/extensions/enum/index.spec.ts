@@ -47,10 +47,7 @@ export = () => {
       expect(NormalEnum.First).to.not.be.enum(NormalEnum, NormalEnum.Second);
 
       expect(StringEnum.FirstStr).to.be.enum(StringEnum, StringEnum.FirstStr);
-      expect(StringEnum.FirstStr).to.not.be.enum(
-        StringEnum,
-        StringEnum.SecondStr
-      );
+      expect(StringEnum.FirstStr).to.not.be.enum(StringEnum, StringEnum.SecondStr);
     });
   });
 
@@ -88,14 +85,11 @@ export = () => {
           person.parent!["data"] = NormalEnum.First;
 
           withProxy(person, (proxy) => {
-            expect(proxy.parent?.data).to.be.enum(
-              NormalEnum,
-              NormalEnum.Second
-            );
+            expect(proxy.parent?.data).to.be.enum(NormalEnum, NormalEnum.Second);
           });
         },
         "Expected parent.data to be the enum 'Second'",
-        "parent.data: 'First' (enum/number)"
+        "parent.data: 'First' (enum/number)",
       );
     });
   });

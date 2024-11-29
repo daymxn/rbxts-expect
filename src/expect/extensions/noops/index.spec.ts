@@ -25,11 +25,7 @@ export = () => {
     });
 
     it("all work", () => {
-      expect(
-        5
-      ).to.the.and.be.been.is.an.a.or.of.that.which.does.still.also.but.have.shallowEqual(
-        5
-      );
+      expect(5).to.the.and.be.been.is.an.a.or.of.that.which.does.still.also.but.have.shallowEqual(5);
     });
   });
 };

@@ -20,28 +20,20 @@ import { ExpectMessageBuilder } from "@src/message";
 import { place } from "@src/message/placeholders";
 import { isLuauTruthy } from "@src/util/roblox";
 
-const baseMessage = new ExpectMessageBuilder(
-  `Expected ${place.name} to ${place.not} be `
-)
+const baseMessage = new ExpectMessageBuilder(`Expected ${place.name} to ${place.not} be `)
   .trailingFailureSuffix(`, but it ${place.reason}`)
   .negationSuffix(", but it was")
   .nestedMetadata({
     [place.path]: place.actual.value,
   });
 
-function validateIsBoolean(
-  message: ExpectMessageBuilder,
-  actual: unknown,
-  expected: boolean
-) {
+function validateIsBoolean(message: ExpectMessageBuilder, actual: unknown, expected: boolean) {
   if (actual === undefined) {
     return message.name("the value").failWithReason("was undefined");
   }
 
   if (!typeIs(actual, "boolean")) {
-    return message
-      .name(`${place.actual.value} (${place.actual.type})`)
-      .failWithReason("wasn't a boolean");
+    return message.name(`${place.actual.value} (${place.actual.type})`).failWithReason("wasn't a boolean");
   }
 
   if (expected) {
@@ -70,17 +62,13 @@ const isTruthy: CustomMethodImpl = (_, actual) => {
     return message.name("the value").failWithReason("was undefined");
   }
 
-  return isLuauTruthy(actual)
-    ? message.pass()
-    : message.failWithReason("was not");
+  return isLuauTruthy(actual) ? message.pass() : message.failWithReason("was not");
 };
 
 const isFalsy: CustomMethodImpl = (_, actual) => {
   const message = baseMessage.use(`falsy`);
 
-  return isLuauTruthy(actual)
-    ? message.failWithReason("was not")
-    : message.pass();
+  return isLuauTruthy(actual) ? message.failWithReason("was not") : message.pass();
 };
 
 declare module "@rbxts/expect" {

@@ -83,7 +83,7 @@ export = () => {
           });
         },
         `Expected parent.age to be even, but it was odd`,
-        `parent.age: '5'`
+        `parent.age: '5'`,
       );
 
       err(
@@ -93,7 +93,7 @@ export = () => {
           });
         },
         `Expected age to be odd, but it was even`,
-        `age: '4'`
+        `age: '4'`,
       );
     });
   });

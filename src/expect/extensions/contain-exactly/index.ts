@@ -21,18 +21,14 @@ import { ExpectMessageBuilder } from "@src/message";
 import { place } from "@src/message/placeholders";
 
 const baseMessage = new ExpectMessageBuilder(
-  `Expected ${place.name} to ${place.not} contain exactly ${place.expected.value}`
+  `Expected ${place.name} to ${place.not} contain exactly ${place.expected.value}`,
 )
   .trailingFailurePrefix(`, but it ${place.reason}`)
   .nestedMetadata({
     [place.path]: place.actual.value,
   });
 
-const containExactly: CustomMethodImpl<unknown[]> = (
-  _,
-  actual,
-  expectedValue: defined[]
-) => {
+const containExactly: CustomMethodImpl<unknown[]> = (_, actual, expectedValue: defined[]) => {
   const message = baseMessage.use().expectedValue(expectedValue);
 
   if (actual === undefined) {
@@ -40,9 +36,7 @@ const containExactly: CustomMethodImpl<unknown[]> = (
   }
 
   if (typeOf(actual) !== "table") {
-    return message
-      .name(`${place.actual.value} (${place.actual.type})`)
-      .failWithReason("wasn't an array");
+    return message.name(`${place.actual.value} (${place.actual.type})`).failWithReason("wasn't an array");
   }
 
   const result = deepEqual(actual, expectedValue, { checkRightMissing: true });

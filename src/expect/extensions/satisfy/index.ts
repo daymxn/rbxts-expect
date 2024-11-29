@@ -20,9 +20,7 @@ import { CustomMethodImpl, extendMethods } from "@src/expect/extend";
 import { ExpectMessageBuilder } from "@src/message";
 import { place } from "@src/message/placeholders";
 
-const baseMessage = new ExpectMessageBuilder(
-  `Expected ${place.name} to ${place.not} satisfy `
-)
+const baseMessage = new ExpectMessageBuilder(`Expected ${place.name} to ${place.not} satisfy `)
   .name(`${place.actual.value} (${place.actual.type})`)
   .nestedMetadata({
     [place.path]: `${place.actual.value} (${place.actual.type})`,
@@ -30,15 +28,13 @@ const baseMessage = new ExpectMessageBuilder(
 
 const satisfy: CustomMethodImpl = (_, actual, expected: Filter) => {
   const maybeName = debug.info(expected, "n")[0] ?? "";
-  const name = maybeName !== "" ? maybeName : "a given callback";
+  const name = maybeName === "" ? "a given callback" : maybeName;
 
   const message = baseMessage.use(name);
 
   const result = expected(actual);
 
-  return result
-    ? message.pass()
-    : message.trailingFailureSuffix(", but it didn't").fail();
+  return result ? message.pass() : message.trailingFailureSuffix(", but it didn't").fail();
 };
 
 declare module "@rbxts/expect" {

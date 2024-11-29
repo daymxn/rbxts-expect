@@ -76,7 +76,7 @@ export = () => {
           });
         },
         `Expected parent.age to be a number between 25 and 30, but it was too low`,
-        `parent.age: '5'`
+        `parent.age: '5'`,
       );
     });
   });

@@ -32,10 +32,7 @@ import { ExpectMessageBuilder } from "@src/message";
  *
  * @public
  */
-export type ExpectMethodResult = Result<
-  ExpectMessageBuilder,
-  ExpectMessageBuilder
->;
+export type ExpectMethodResult = Result<ExpectMessageBuilder, ExpectMessageBuilder>;
 
 /**
  * The implementation of a {@link expect} method.
@@ -75,11 +72,7 @@ export type ExpectMethodResult = Result<
  *
  * @public
  */
-export type CustomMethodImpl<T = unknown> = (
-  source: Assertion<T>,
-  actual: T,
-  ...args: never[]
-) => ExpectMethodResult;
+export type CustomMethodImpl<T = unknown> = (source: Assertion<T>, actual: T, ...args: never[]) => ExpectMethodResult;
 
 /**
  * An object of {@link expect} method names to {@link CustomMethodImpl | implementations}.

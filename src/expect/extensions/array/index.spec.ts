@@ -78,25 +78,15 @@ export = () => {
 
   describe("arrayOf", () => {
     it("works with checkable types", () => {
-      expect([new CFrame()])
-        .to.be.an.arrayOf("CFrame")
-        .but.not.an.arrayOf("Vector3");
+      expect([new CFrame()]).to.be.an.arrayOf("CFrame").but.not.an.arrayOf("Vector3");
 
-      expect([5, "5"])
-        .to.be.an.array()
-        .but.not.an.arrayOf("number")
-        .or.an.arrayOf("string");
+      expect([5, "5"]).to.be.an.array().but.not.an.arrayOf("number").or.an.arrayOf("string");
     });
 
     it("works with t types", () => {
-      expect([new CFrame()])
-        .to.be.an.arrayOf(t.CFrame)
-        .but.not.an.arrayOf(t.Vector3);
+      expect([new CFrame()]).to.be.an.arrayOf(t.CFrame).but.not.an.arrayOf(t.Vector3);
 
-      expect([5, "5"])
-        .to.be.an.array()
-        .but.not.an.arrayOf(t.number)
-        .or.an.arrayOf(t.string);
+      expect([5, "5"]).to.be.an.array().but.not.an.arrayOf(t.number).or.an.arrayOf(t.string);
 
       expect([
         {
@@ -107,7 +97,7 @@ export = () => {
         t.interface({
           name: t.string,
           age: t.number,
-        })
+        }),
       );
     });
 
@@ -202,7 +192,7 @@ export = () => {
         },
         "Expected '[1]' to be an array of a certain (user-defined) type, but there was an element that was not",
         "Index: 1",
-        "Value: 1"
+        "Value: 1",
       );
     });
 
@@ -212,7 +202,7 @@ export = () => {
           expect([1]).to.be.an.arrayOf(() => "Nope!");
         },
         "Expected '[1]' to be an array of a certain (user-defined) type, but there was an element that was not",
-        "Reason: Nope!"
+        "Reason: Nope!",
       );
     });
   });

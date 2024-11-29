@@ -33,9 +33,7 @@ export = () => {
 
     it("works with roblox types", () => {
       expect(new Vector3(1, 2, 3)).to.deepEqual(new Vector3(1, 2, 3));
-      expect(new CFrame())
-        .to.deepEqual(new CFrame())
-        .but.not.deepEqual(new Vector3());
+      expect(new CFrame()).to.deepEqual(new CFrame()).but.not.deepEqual(new Vector3());
 
       const instance = new Instance("Part");
 
@@ -62,7 +60,7 @@ export = () => {
         },
         `Expected '5' to deep equal "5", but they have different types`,
         'Expected: "5" (string)',
-        "Actual: '5' (number)"
+        "Actual: '5' (number)",
       );
     });
 
@@ -81,7 +79,7 @@ export = () => {
         'Expected: "5" (string)',
         "Actual: '5' (number)",
         `Expected (full):`,
-        "Actual (full):"
+        "Actual (full):",
       );
     });
 
@@ -92,7 +90,7 @@ export = () => {
         },
         `Expected '5' to deep equal '4', but they have different values`,
         "Expected: '4' (number)",
-        "Actual: '5' (number)"
+        "Actual: '5' (number)",
       );
     });
 
@@ -111,7 +109,7 @@ export = () => {
         "Expected: '4' (number)",
         "Actual: '5' (number)",
         `Expected (full):`,
-        "Actual (full):"
+        "Actual (full):",
       );
     });
 
@@ -134,7 +132,7 @@ export = () => {
         },
         `Expected '{...}' to deep equal '{...}', but 'car' points to a different value of reference type 'Instance'`,
         `Expected (full):`,
-        "Actual (full):"
+        "Actual (full):",
       );
     });
 
@@ -146,7 +144,7 @@ export = () => {
         `Expected '[1,2,3]' to deep equal '[1,2,3,4]', but there were elements missing`,
         "Expected: '[1,2,3,4]'",
         "Actual: '[1,2,3]'",
-        "Missing: '[4]'"
+        "Missing: '[4]'",
       );
     });
 
@@ -166,7 +164,7 @@ export = () => {
         `Actual: '["Tesla"]'`,
         `Missing: '["Civic"]'`,
         `Expected (full):`,
-        "Actual (full):"
+        "Actual (full):",
       );
     });
 
@@ -178,7 +176,7 @@ export = () => {
         `Expected '[1,2]' to deep equal '[1]', but there were extra elements`,
         "Expected: '[1]'",
         "Actual: '[1,2]'",
-        "Extra Elements: '[2]'"
+        "Extra Elements: '[2]'",
       );
     });
 
@@ -198,7 +196,7 @@ export = () => {
         `Actual: '["Tesla","Civic"]'`,
         `Extra Elements: '["Civic"]'`,
         `Expected (full):`,
-        "Actual (full):"
+        "Actual (full):",
       );
     });
 
@@ -214,7 +212,7 @@ export = () => {
         },
         `Expected '{"name":"Daymon"}' to deep equal '{...}', but 'age' was missing`,
         'Expected: "5" (string)',
-        "Expected (full):"
+        "Expected (full):",
       );
     });
 
@@ -230,7 +228,7 @@ export = () => {
         },
         `Expected '{...}' to deep equal '{"name":"Daymon"}', but it had the extra key 'age'`,
         'age: "5" (string)',
-        "Actual (full):"
+        "Actual (full):",
       );
     });
 
@@ -246,7 +244,7 @@ export = () => {
         },
         `Expected parent to deep equal`,
         `but it had the extra key 'data.extra'`,
-        "data.extra: '6' (number)"
+        "data.extra: '6' (number)",
       );
     });
   });

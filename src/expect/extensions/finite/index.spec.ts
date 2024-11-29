@@ -72,7 +72,7 @@ export = () => {
           });
         },
         `Expected parent.name to be a finite number, but it wasn't a number`,
-        `parent.name: "Daymon"`
+        `parent.name: "Daymon"`,
       );
     });
   });

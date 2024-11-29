@@ -30,10 +30,10 @@ export = () => {
     });
 
     it("does deep comparisons", () => {
-      expect([
+      expect([new Vector3(1, 2, 3), new Vector3(3, 2, 1)]).to.containExactlyInOrder([
         new Vector3(1, 2, 3),
         new Vector3(3, 2, 1),
-      ]).to.containExactlyInOrder([new Vector3(1, 2, 3), new Vector3(3, 2, 1)]);
+      ]);
     });
   });
 
@@ -44,7 +44,7 @@ export = () => {
           expect([1, 2]).to.containExactlyInOrder([1, 2, 3]);
         },
         `Expected '[1,2]' to contain exactly '[1,2,3]', but it was missing elements`,
-        "Missing elements: '[3]'"
+        "Missing elements: '[3]'",
       );
     });
 
@@ -54,7 +54,7 @@ export = () => {
           expect([1, 2, 3]).to.containExactlyInOrder([1, 2]);
         },
         `Expected '[1,2,3]' to contain exactly '[1,2]', but it had an extra element`,
-        "Extra element: '3'"
+        "Extra element: '3'",
       );
     });
 
@@ -65,7 +65,7 @@ export = () => {
         },
         `Expected '[1,2,3]' to contain exactly '[1,3,2]', but it had a different value for the element at '[1]'`,
         "Actual [1]: '2'",
-        "Expected [1]: '3'"
+        "Expected [1]: '3'",
       );
     });
 
@@ -76,22 +76,18 @@ export = () => {
         },
         `Expected '[1,"2",3]' to contain exactly '[1,2,3]', but it had a different type of element at '[1]`,
         `Actual [1]: "2" (string)`,
-        `Expected [1]: '2' (number)`
+        `Expected [1]: '2' (number)`,
       );
     });
 
     it("throws if the elements have different reference values", () => {
       err(
         () => {
-          expect([1, new Instance("Part"), 3]).to.containExactlyInOrder([
-            1,
-            new Instance("Part"),
-            3,
-          ]);
+          expect([1, new Instance("Part"), 3]).to.containExactlyInOrder([1, new Instance("Part"), 3]);
         },
         `Expected '[1,null,3]' to contain exactly '[1,null,3]', but it had a different reference for the element at '[1]' (Instance)`,
         "Actual [1]: 'Part'",
-        "Expected [1]: 'Part'"
+        "Expected [1]: 'Part'",
       );
     });
 
@@ -116,7 +112,7 @@ export = () => {
         },
         `Expected parent.cars to contain exactly '["Tesla"]', but it had an extra element`,
         `parent.cars: '["Tesla","Civic"]'`,
-        `Extra element: "Civic"`
+        `Extra element: "Civic"`,
       );
     });
   });

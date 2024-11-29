@@ -5,13 +5,13 @@ The website for `@rbxts/expect`.
 Built with docusaurus.
 
 ```sh
-npm run start
+pnpm start
 ```
 
 You can use `--no-open` to avoid opening a web page on start.
 
 ```sh
-npm run start -- --no-open
+pnpm start -- --no-open
 ```
 
 ## API docs
@@ -20,7 +20,7 @@ The API docs are built from the root project directory
 with an npm script.
 
 ```sh
-npm run api
+pnpm bs api
 ```
 
 If you have the website in watch mode, it might cause a stack overflow if you

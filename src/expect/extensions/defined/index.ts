@@ -18,15 +18,9 @@
 import { CustomMethodImpl, extendMethods } from "@src/expect/extend";
 import { ExpectMessageBuilder } from "@src/message";
 import { place } from "@src/message/placeholders";
-import {
-  computeFullProxyPath,
-  getNearestDefinedProxy,
-  getProxyValue,
-} from "@src/util/proxy";
+import { computeFullProxyPath, getNearestDefinedProxy, getProxyValue } from "@src/util/proxy";
 
-const baseMessage = new ExpectMessageBuilder(
-  `Expected ${place.name} to ${place.not} be `
-)
+const baseMessage = new ExpectMessageBuilder(`Expected ${place.name} to ${place.not} be `)
   .name(`${place.actual.value} (${place.actual.type})`)
   .suffix(`, but it ${place.reason}`)
   .negationSuffix(", but it was");
@@ -39,8 +33,7 @@ const beDefined: CustomMethodImpl = (source, actual) => {
       const nearestDefinedProxy = getNearestDefinedProxy(source._proxy);
       if (nearestDefinedProxy) {
         message.nestedMetadata({
-          [computeFullProxyPath(nearestDefinedProxy) ?? "Actual"]:
-            message.encode(getProxyValue(nearestDefinedProxy)),
+          [computeFullProxyPath(nearestDefinedProxy) ?? "Actual"]: message.encode(getProxyValue(nearestDefinedProxy)),
         });
       } else {
         message.nestedMetadata({

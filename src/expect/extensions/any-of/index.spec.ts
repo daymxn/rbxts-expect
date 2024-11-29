@@ -61,14 +61,9 @@ export = () => {
     it("uses enum values", () => {
       err(
         () => {
-          expect(NormalEnum.First)
-            .to.be.enum(NormalEnum)
-            .that.is.anyOf([NormalEnum.Second, NormalEnum.Third]);
+          expect(NormalEnum.First).to.be.enum(NormalEnum).that.is.anyOf([NormalEnum.Second, NormalEnum.Third]);
         },
-        "Expected '%s' (enum/number) to be any of '%s'".format(
-          "First",
-          '["Second","Third"]'
-        )
+        "Expected '%s' (enum/number) to be any of '%s'".format("First", '["Second","Third"]'),
       );
     });
   });

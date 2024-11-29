@@ -89,7 +89,7 @@ export = () => {
           });
         },
         `Expected parent.age to be a negative number, but it was positive`,
-        `parent.age: '5'`
+        `parent.age: '5'`,
       );
 
       err(
@@ -99,7 +99,7 @@ export = () => {
           });
         },
         `Expected parent.age to NOT be a positive number, but it was`,
-        `parent.age: '5'`
+        `parent.age: '5'`,
       );
     });
   });

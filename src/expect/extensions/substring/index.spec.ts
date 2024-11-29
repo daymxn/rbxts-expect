@@ -22,9 +22,7 @@ import { err, TEST_SON } from "@src/util/tests";
 export = () => {
   describe("substring", () => {
     it("looks for a string in the string", () => {
-      expect("My Name")
-        .to.have.the.substring("My")
-        .but.not.have.the.substring("Your");
+      expect("My Name").to.have.the.substring("My").but.not.have.the.substring("Your");
     });
 
     it("does not use patterns", () => {
@@ -59,7 +57,7 @@ export = () => {
           });
         },
         'Expected parent.name to have the substring "Bryan"',
-        'parent.name: "Daymon"'
+        'parent.name: "Daymon"',
       );
     });
   });

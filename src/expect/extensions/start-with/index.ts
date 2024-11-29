@@ -22,35 +22,23 @@ import { ExpectMessageBuilder } from "@src/message";
 import { place } from "@src/message/placeholders";
 import { getIndexOrNull, isArray } from "@src/util/object";
 
-const baseMessage = new ExpectMessageBuilder(
-  `Expected ${place.name} to ${place.not} be `
-)
+const baseMessage = new ExpectMessageBuilder(`Expected ${place.name} to ${place.not} be `)
   .trailingFailureSuffix(`, but it ${place.reason}`)
   .nestedMetadata({ [place.path]: place.actual.value })
   .negationSuffix(`, but it did`);
 
-function validateArrayStartsWith(
-  source: Assertion,
-  actual: unknown,
-  expected: defined[]
-) {
-  const message = baseMessage
-    .use(`an array that starts with ${place.expected.value}`)
-    .expectedValue(expected);
+function validateArrayStartsWith(source: Assertion, actual: unknown, expected: defined[]) {
+  const message = baseMessage.use(`an array that starts with ${place.expected.value}`).expectedValue(expected);
 
   if (actual === undefined) {
     return message.name("the value").failWithReason("was undefined");
   }
 
   if (!(source.is_array ?? isArray(actual))) {
-    return message
-      .name(`${place.actual.value} (${place.actual.type})`)
-      .failWithReason("wasn't an array");
+    return message.name(`${place.actual.value} (${place.actual.type})`).failWithReason("wasn't an array");
   }
 
-  const missing = expected.filter(
-    (it, index) => getIndexOrNull(actual, index) !== it
-  );
+  const missing = expected.filter((it, index) => getIndexOrNull(actual, index) !== it);
 
   if (missing.isEmpty()) return message.pass();
 
@@ -66,35 +54,23 @@ function validateArrayStartsWith(
 }
 
 function validateStringStartsWith(actual: unknown, expected: string) {
-  const message = baseMessage
-    .use(`a string that starts with ${place.expected.value}`)
-    .expectedValue(expected);
+  const message = baseMessage.use(`a string that starts with ${place.expected.value}`).expectedValue(expected);
 
   if (actual === undefined) {
     return message.name("the value").failWithReason("was undefined");
   }
 
   if (!typeIs(actual, "string")) {
-    return message
-      .name(`${place.actual.value} (${place.actual.type})`)
-      .failWithReason("wasn't a string");
+    return message.name(`${place.actual.value} (${place.actual.type})`).failWithReason("wasn't a string");
   }
 
-  return startsWith(actual, expected)
-    ? message.pass()
-    : message.failWithReason("was missing");
+  return startsWith(actual, expected) ? message.pass() : message.failWithReason("was missing");
 }
 
-const startWith: CustomMethodImpl = (
-  source,
-  actual,
-  expected: string | defined[]
-) => {
-  if (typeIs(expected, "string")) {
-    return validateStringStartsWith(actual, expected);
-  } else {
-    return validateArrayStartsWith(source, actual, expected);
-  }
+const startWith: CustomMethodImpl = (source, actual, expected: string | defined[]) => {
+  return typeIs(expected, "string")
+    ? validateStringStartsWith(actual, expected)
+    : validateArrayStartsWith(source, actual, expected);
 };
 
 declare module "@rbxts/expect" {
@@ -116,6 +92,23 @@ declare module "@rbxts/expect" {
     startWith(elements: InferArrayElement<T>[]): this;
 
     /**
+     * Asserts that the actual value is a string that starts with
+     * the specified string.
+     *
+     * @param str - A string that should be at the start of the actual value.
+     *
+     * @returns This instance for chaining.
+     *
+     * @example
+     * ```ts
+     * expect("Daymon").to.startWith("Day");
+     * ```
+     *
+     * @public
+     */
+    startWith(str: string): Assertion<string>;
+
+    /**
      * Asserts that the array starts with the specified elements.
      *
      * @remarks
@@ -133,23 +126,6 @@ declare module "@rbxts/expect" {
      * @public
      */
     startsWith(elements: InferArrayElement<T>[]): this;
-
-    /**
-     * Asserts that the actual value is a string that starts with
-     * the specified string.
-     *
-     * @param str - A string that should be at the start of the actual value.
-     *
-     * @returns This instance for chaining.
-     *
-     * @example
-     * ```ts
-     * expect("Daymon").to.startWith("Day");
-     * ```
-     *
-     * @public
-     */
-    startWith(str: string): Assertion<string>;
 
     /**
      * Asserts that the actual value is a string that starts with

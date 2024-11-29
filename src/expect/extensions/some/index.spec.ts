@@ -23,9 +23,7 @@ import { err, TEST_SON } from "@src/util/tests";
 export = () => {
   describe("some", () => {
     it("checks if the array has some element", () => {
-      expect([1, 2, 3])
-        .to.have.some((it) => it === 2)
-        .but.not.some((it) => it === 4);
+      expect([1, 2, 3]).to.have.includes(2).but.not.includes(4);
 
       expect([1, 2, 3])
         .to.have.some("equals two", (it) => it === 2)
@@ -36,15 +34,17 @@ export = () => {
   describe("error message", () => {
     it("throws if the check fails", () => {
       err(() => {
+        // eslint-disable-next-line unicorn/prefer-includes
         expect([1, 2]).to.have.some((it) => it === 3);
       }, `Expected '[1,2]' to have at least one element that passes some check`);
 
       err(
         () => {
+          // eslint-disable-next-line unicorn/prefer-includes
           expect([1, 2]).to.not.have.some((it) => it === 2);
         },
         `Expected '[1,2]' to NOT have any elements that passes some check, but it did at index '2'`,
-        "Value of [2]: '2'"
+        "Value of [2]: '2'",
       );
     });
 
@@ -58,7 +58,7 @@ export = () => {
           expect([1, 2]).to.not.have.some("equal 2", (it) => it === 2);
         },
         `Expected '[1,2]' to NOT have any elements that equal 2, but it did at index '2'`,
-        "Value of [2]: '2'"
+        "Value of [2]: '2'",
       );
     });
 
@@ -68,10 +68,7 @@ export = () => {
       }, `Expected the value to have at least one element that passes some check, but it was undefined`);
 
       err(() => {
-        expect(undefined as unknown as unknown[]).to.have.some(
-          "likes pizza",
-          () => true
-        );
+        expect(undefined as unknown as unknown[]).to.have.some("likes pizza", () => true);
       }, `Expected the value to have at least one element that likes pizza, but it was undefined`);
     });
 
@@ -81,10 +78,7 @@ export = () => {
       }, `Expected '5' to have at least one element that passes some check, but it wasn't an array`);
 
       err(() => {
-        expect(5 as unknown as unknown[]).to.have.some(
-          "likes pizza",
-          () => true
-        );
+        expect(5 as unknown as unknown[]).to.have.some("likes pizza", () => true);
       }, `Expected '5' to have at least one element that likes pizza, but it wasn't an array`);
     });
 
@@ -96,21 +90,18 @@ export = () => {
           });
         },
         "Expected parent.cars to have at least one element that passes some check",
-        `parent.cars: '["Tesla","Civic"]'`
+        `parent.cars: '["Tesla","Civic"]'`,
       );
 
       err(
         () => {
           withProxy(TEST_SON, (proxy) => {
-            expect(proxy.parent?.cars).to.not.have.some(
-              `start with "Civ"`,
-              (it) => startsWith(it, "Civ")
-            );
+            expect(proxy.parent?.cars).to.not.have.some(`start with "Civ"`, (it) => startsWith(it, "Civ"));
           });
         },
         `Expected parent.cars to NOT have any elements that start with "Civ", but it did at index '2'`,
         `parent.cars: '["Tesla","Civic"]'`,
-        `Value of [2]: "Civic"`
+        `Value of [2]: "Civic"`,
       );
     });
   });

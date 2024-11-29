@@ -22,10 +22,7 @@ import { err, TEST_SON } from "@src/util/tests";
 export = () => {
   describe("key", () => {
     it("looks for a key in the table", () => {
-      expect({ name: "daymon" })
-        .to.have.the.key("name")
-        .and.the.property("name")
-        .but.not.have.the.key("age");
+      expect({ name: "daymon" }).to.have.the.key("name").and.the.property("name").but.not.have.the.key("age");
     });
   });
 
@@ -36,7 +33,7 @@ export = () => {
           expect(TEST_SON).to.have.the.key("child");
         },
         `Expected '{...}' to have the key "child", but it was missing`,
-        `Actual (full):`
+        `Actual (full):`,
       );
     });
 
@@ -47,7 +44,7 @@ export = () => {
         },
         `Expected '{...}' to NOT have the key "name"`,
         `name: "Kyle"`,
-        `Actual (full):`
+        `Actual (full):`,
       );
     });
 
@@ -71,7 +68,7 @@ export = () => {
           });
         },
         'Expected parent to have the key "parent", but it was missing',
-        "parent:"
+        "parent:",
       );
     });
   });

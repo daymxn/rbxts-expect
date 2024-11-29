@@ -107,7 +107,7 @@ export = () => {
           });
         },
         `Expected parent.age to be greater than '10'`,
-        `parent.age: '5'`
+        `parent.age: '5'`,
       );
 
       err(
@@ -117,7 +117,7 @@ export = () => {
           });
         },
         `Expected parent.age to be greater than or equal to '10'`,
-        `parent.age: '5'`
+        `parent.age: '5'`,
       );
 
       err(
@@ -127,7 +127,7 @@ export = () => {
           });
         },
         `Expected parent.age to be less than '1'`,
-        `parent.age: '5'`
+        `parent.age: '5'`,
       );
 
       err(
@@ -137,7 +137,7 @@ export = () => {
           });
         },
         `Expected parent.age to be less than or equal to '1'`,
-        `parent.age: '5'`
+        `parent.age: '5'`,
       );
     });
   });

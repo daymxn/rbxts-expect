@@ -19,30 +19,21 @@ import { CustomMethodImpl, extendMethods } from "@src/expect/extend";
 import { ExpectMessageBuilder } from "@src/message";
 import { place } from "@src/message/placeholders";
 
-const baseMessage = new ExpectMessageBuilder(
-  `Expected ${place.name} to ${place.not} be a number between `
-)
+const baseMessage = new ExpectMessageBuilder(`Expected ${place.name} to ${place.not} be a number between `)
   .negationSuffix(", but it was")
   .nestedMetadata({
     [place.path]: place.actual.value,
   });
 
-const between: CustomMethodImpl = (
-  _,
-  actual,
-  minValue: number,
-  maxValue: number
-) => {
-  const message = baseMessage
-    .use(`${minValue} and ${maxValue}`)
-    .trailingFailureSuffix(`, but it ${place.reason}`);
+const between: CustomMethodImpl = (_, actual, minValue: number, maxValue: number) => {
+  const message = baseMessage.use(`${minValue} and ${maxValue}`).trailingFailureSuffix(`, but it ${place.reason}`);
 
   if (maxValue < minValue)
     warn(
       `"between" called with a 'maxValue' that is less than the 'minValue'.`,
       "This is undefined behavior, and may behave unexpectedly.",
       `\nminValue: ${minValue}`,
-      `\nmaxValue: ${maxValue}`
+      `\nmaxValue: ${maxValue}`,
     );
 
   if (actual === undefined) {
@@ -50,9 +41,7 @@ const between: CustomMethodImpl = (
   }
 
   if (!typeIs(actual, "number")) {
-    return message
-      .name(`${place.actual.value} (${place.actual.type})`)
-      .failWithReason("wasn't a number");
+    return message.name(`${place.actual.value} (${place.actual.type})`).failWithReason("wasn't a number");
   }
 
   if (actual > maxValue) return message.failWithReason("was too high");

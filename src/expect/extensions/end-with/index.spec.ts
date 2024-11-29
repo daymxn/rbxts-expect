@@ -66,7 +66,7 @@ export = () => {
           expect([1, 2, 3, 4]).to.endWith([1, 2, 4]);
         },
         `Expected '[1,2,3,4]' to be an array that ends with '[1,2,4]', but it was missing 2 elements`,
-        `Missing: '[1,2]'`
+        `Missing: '[1,2]'`,
       );
     });
 
@@ -100,7 +100,7 @@ export = () => {
           });
         },
         `Expected parent.cars to be an array that ends with '["Tesla"]', but it was missing all of them`,
-        `parent.cars: '["Tesla","Civic"]'`
+        `parent.cars: '["Tesla","Civic"]'`,
       );
 
       err(
@@ -110,7 +110,7 @@ export = () => {
           });
         },
         `Expected parent.name to be a string that ends with "yle", but it was missing`,
-        `parent.name: "Daymon"`
+        `parent.name: "Daymon"`,
       );
     });
   });

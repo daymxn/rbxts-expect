@@ -53,7 +53,7 @@ export = () => {
           });
         },
         `Expected parent.age to satisfy a given callback, but it didn't`,
-        "parent.age: '5' (number)"
+        "parent.age: '5' (number)",
       );
     });
   });

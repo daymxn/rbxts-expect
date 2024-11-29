@@ -1,4 +1,19 @@
 {
+  "json.schemas": [
+    {
+      "fileMatch": [
+        "package.json",
+        "tsup.config.json"
+      ],
+      "url": "https://cdn.jsdelivr.net/npm/tsup/schema.json"
+    },
+    {
+      "fileMatch": [
+        "/bs.config.json"
+      ],
+      "url": ".vscode/bs-config-schema.json"
+    }
+  ],
   "typescript.tsdk": "node_modules/typescript/lib",
   "files.eol": "\n",
   "[typescript]": {
@@ -10,24 +25,21 @@
     "editor.formatOnSave": true
   },
   "eslint.run": "onType",
+  "eslint.useFlatConfig": true,
   "eslint.format.enable": true,
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit"
+  },
+  "eslint.options": {
+    "flags": [
+      "unstable_ts_config"
+    ]
   },
   "eslint.validate": [
     "typescript",
     "typescriptreact"
   ],
   "testez-companion.timeout": 5,
-  "json.schemas": [
-    {
-      "url": "https://cdn.jsdelivr.net/npm/tsup/schema.json",
-      "fileMatch": [
-        "package.json",
-        "tsup.config.json"
-      ]
-    }
-  ],
   "yaml.schemas": {
     "https://json.schemastore.org/github-workflow.json": "file:///f%3A/Programming/Games/Roblox/expect/.github/workflows/deploy.yaml"
   },
@@ -37,5 +49,5 @@
   },
   "[luau]": {
     "editor.defaultFormatter": "JohnnyMorganz.stylua"
-  },
+  }
 }

@@ -86,7 +86,7 @@ export function computeFullProxyPath<T>(proxy: Proxy<T>) {
 export function isProxy<T>(value: T): value is Proxy<T> {
   try {
     return rawget(value, "_is_proxy") === true;
-  } catch (e) {
+  } catch {
     return false;
   }
 }
@@ -214,12 +214,7 @@ export interface ProxyInstance<T> {
   _proxy_path?: string;
 }
 
-const proxyProperties = [
-  "_is_proxy",
-  "_proxy_value",
-  "_proxy_parent",
-  "_proxy_path",
-];
+const proxyProperties = new Set(["_is_proxy", "_proxy_value", "_proxy_parent", "_proxy_path"]);
 
 /**
  * A wrapper around a value `T` that provides meta context
@@ -259,7 +254,7 @@ const proxyProperties = [
 export type Proxy<T> = T & ProxyInstance<T>;
 
 function OnIndex<T>(Self: Proxy<T>, index: unknown) {
-  if (proxyProperties.includes(tostring(index))) {
+  if (proxyProperties.has(tostring(index))) {
     throw `You can't acces '${index}' directly. Instead, either use 'rawget', or call one of the helper methods like 'getProxyValue'.`;
   }
 
@@ -293,9 +288,7 @@ function OnIndex<T>(Self: Proxy<T>, index: unknown) {
  *
  * @public
  */
-export function getNearestDefinedProxy<T = unknown, R = unknown>(
-  proxy: Proxy<T>
-): Proxy<R> | undefined {
+export function getNearestDefinedProxy<T = unknown, R = unknown>(proxy: Proxy<T>): Proxy<R> | undefined {
   let current: Proxy<T> | undefined = proxy;
 
   while (current && getProxyValue(current) === undefined) {
@@ -378,11 +371,7 @@ export function getProxyParent<T = unknown, R = unknown>(proxy: Proxy<T>) {
  *
  * @public
  */
-export function createProxy<T>(
-  value: T,
-  parent?: Proxy<unknown>,
-  path?: string
-): Proxy<T> {
+export function createProxy<T>(value: T, parent?: Proxy<unknown>, path?: string): Proxy<T> {
   const baseProxy = {
     _is_proxy: true,
     _proxy_value: value,
@@ -422,9 +411,6 @@ export function createProxy<T>(
  *
  * @public
  */
-export function withProxy<T, R = unknown>(
-  value: T,
-  callback: (proxy: Proxy<T>) => R
-): R {
+export function withProxy<T, R = unknown>(value: T, callback: (proxy: Proxy<T>) => R): R {
   return callback(createProxy(value));
 }

@@ -21,7 +21,7 @@ import { ExpectMessageBuilder } from "@src/message";
 import { place } from "@src/message/placeholders";
 
 const baseMessage = new ExpectMessageBuilder(
-  `Expected ${place.name} to ${place.not} have the key ${place.expected.value}`
+  `Expected ${place.name} to ${place.not} have the key ${place.expected.value}`,
 )
   .trailingFailureSuffix(`, but it ${place.reason}`)
   .nestedMetadata({
@@ -36,9 +36,7 @@ const hasKey: CustomMethodImpl = (_, actual, key: string) => {
   }
 
   if (!typeIs(actual, "table")) {
-    return message
-      .name(`${place.actual.value} (${place.actual.type})`)
-      .failWithReason("wasn't a table");
+    return message.name(`${place.actual.value} (${place.actual.type})`).failWithReason("wasn't a table");
   }
 
   if (key in actual) {

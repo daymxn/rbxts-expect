@@ -20,7 +20,7 @@ import { ExpectMessageBuilder } from "@src/message";
 import { place } from "@src/message/placeholders";
 
 const baseMessage = new ExpectMessageBuilder(
-  `Expected ${place.name} to ${place.not} be ${place.reason} ${place.expected.value}`
+  `Expected ${place.name} to ${place.not} be ${place.reason} ${place.expected.value}`,
 )
   .negationSuffix(", but it was")
   .nestedMetadata({
@@ -32,15 +32,12 @@ function verifyComparison(
   actual: unknown,
   expected: number,
   greater: boolean,
-  equal: boolean
+  equal: boolean,
 ) {
   message.expectedValue(expected);
 
   if (actual === undefined) {
-    return message
-      .name("the value")
-      .trailingFailureSuffix(", but it was undefined")
-      .fail();
+    return message.name("the value").trailingFailureSuffix(", but it was undefined").fail();
   }
 
   if (!typeIs(actual, "number")) {
@@ -67,11 +64,7 @@ const greaterThan: CustomMethodImpl = (_, actual, expected: number) => {
   return verifyComparison(message, actual, expected, true, false);
 };
 
-const greaterThanOrEqualTo: CustomMethodImpl = (
-  _,
-  actual,
-  expected: number
-) => {
+const greaterThanOrEqualTo: CustomMethodImpl = (_, actual, expected: number) => {
   const message = baseMessage.use().reason("greater than or equal to");
 
   return verifyComparison(message, actual, expected, true, true);

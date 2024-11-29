@@ -49,7 +49,7 @@ export = () => {
           });
         },
         'Expected parent.age to strictly equal "5" (string)',
-        "parent.age: '5' (number)"
+        "parent.age: '5' (number)",
       );
     });
   });

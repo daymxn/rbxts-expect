@@ -23,9 +23,7 @@ import { ExpectMessageBuilder } from "@src/message";
 import { place } from "@src/message/placeholders";
 import { isArray } from "@src/util/object";
 
-const baseMessage = new ExpectMessageBuilder(
-  `Expected ${place.name} to ${place.not} all ${place.reason}`
-)
+const baseMessage = new ExpectMessageBuilder(`Expected ${place.name} to ${place.not} all ${place.reason}`)
   .negationSuffix(`, but they did`)
   .reason("pass some check")
   .nestedMetadata({
@@ -36,7 +34,7 @@ const all: CustomMethodImpl<unknown[]> = (
   source,
   actual,
   reasonOrCallback: string | Filter,
-  maybeCallback?: Filter
+  maybeCallback?: Filter,
 ) => {
   const message = baseMessage.use();
 
@@ -45,15 +43,11 @@ const all: CustomMethodImpl<unknown[]> = (
   }
 
   if (actual === undefined) {
-    return message
-      .name("the values")
-      .trailingFailureSuffix(", but it was undefined")
-      .fail();
+    return message.name("the values").trailingFailureSuffix(", but it was undefined").fail();
   }
 
   const actualIsArray = source.is_array ?? isArray(actual);
-  if (!actualIsArray)
-    return message.trailingFailurePrefix(", but it wasn't an array").fail();
+  if (!actualIsArray) return message.trailingFailurePrefix(", but it wasn't an array").fail();
 
   const callback = (maybeCallback ?? reasonOrCallback) as Filter;
 
@@ -62,9 +56,7 @@ const all: CustomMethodImpl<unknown[]> = (
 
     if (!result) {
       return message
-        .trailingFailureSuffix(
-          ", but there was an element that failed the check"
-        )
+        .trailingFailureSuffix(", but there was an element that failed the check")
         .metadata({
           Index,
           Value: message.encode(value),

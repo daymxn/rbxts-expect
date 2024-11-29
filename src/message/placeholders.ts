@@ -16,10 +16,7 @@
  */
 
 import type { Assertion, expect, ExpectConfig } from "@src/expect";
-import type {
-  ExpectMessageBuilder,
-  ExpectMessageBuilderOptions,
-} from "@src/message";
+import type { ExpectMessageBuilder, ExpectMessageBuilderOptions } from "@src/message";
 import type { Proxy } from "@src/util";
 import { escape } from "@src/util/string";
 

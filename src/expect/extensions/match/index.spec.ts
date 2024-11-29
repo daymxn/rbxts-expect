@@ -15,11 +15,7 @@
  * limitations under the License.
  */
 
-import {
-  expect,
-  resetDefaultExpectConfig,
-  setDefaultExpectConfig,
-} from "@src/index";
+import { expect, resetDefaultExpectConfig, setDefaultExpectConfig } from "@src/index";
 import { withProxy } from "@src/util/proxy";
 import { err, TEST_SON } from "@src/util/tests";
 
@@ -71,7 +67,7 @@ export = () => {
         'Expected: "5" (string)',
         "Actual: '5' (number)",
         `Expected (full):`,
-        "Actual (full):"
+        "Actual (full):",
       );
     });
 
@@ -89,7 +85,7 @@ export = () => {
         "Expected: '4' (number)",
         "Actual: '5' (number)",
         `Expected (full):`,
-        "Actual (full):"
+        "Actual (full):",
       );
     });
 
@@ -105,7 +101,7 @@ export = () => {
         },
         `Expected '{...}' to match '{...}', but 'car' points to a different value of reference type 'Instance'`,
         `Expected (full):`,
-        "Actual (full):"
+        "Actual (full):",
       );
     });
 
@@ -124,7 +120,7 @@ export = () => {
         `Actual: '["Tesla"]'`,
         `Missing: '["Civic"]'`,
         `Expected (full):`,
-        "Actual (full):"
+        "Actual (full):",
       );
     });
 
@@ -140,7 +136,7 @@ export = () => {
         },
         `Expected '{...}' to match '{...}', but 'age' was missing`,
         'Expected: "5" (string)',
-        "Expected (full):"
+        "Expected (full):",
       );
     });
 
@@ -155,7 +151,7 @@ export = () => {
         `Expected: '20' (number)`,
         "Actual: '5' (number)",
         "Expected (full):",
-        "Actual (full):"
+        "Actual (full):",
       );
     });
   });

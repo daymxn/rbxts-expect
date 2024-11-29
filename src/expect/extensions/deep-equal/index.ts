@@ -22,7 +22,7 @@ import { place } from "@src/message/placeholders";
 import { isProxy } from "@src/util/proxy";
 
 const baseMessage = new ExpectMessageBuilder(
-  `Expected ${place.name} to ${place.not} deep equal ${place.expected.value}`
+  `Expected ${place.name} to ${place.not} deep equal ${place.expected.value}`,
 );
 
 const eql: CustomMethodImpl = (_, actual, expected: defined) => {
@@ -30,7 +30,7 @@ const eql: CustomMethodImpl = (_, actual, expected: defined) => {
 
   if (isProxy(expected)) {
     warn(
-      "Using proxies on the right side of assertions is undefined behavior. For further context, see http://rbxts-expect.daymxn.com/docs/usage-guide#proxies"
+      "Using proxies on the right side of assertions is undefined behavior. For further context, see http://rbxts-expect.daymxn.com/docs/usage-guide#proxies",
     );
   }
 
@@ -40,126 +40,110 @@ const eql: CustomMethodImpl = (_, actual, expected: defined) => {
 
   switch (result.failType) {
     case FailureType.DIFFERENT_REFERENCE: {
-      if (result.path === "") {
-        return message
-          .suffix(
-            `, but they point to different values of reference type '${place.actual.type}'`
-          )
-          .metadata({
-            Actual: place.actual.value,
-            Expected: place.expected.value,
-          })
-          .fail();
-      } else {
-        return message
-          .suffix(
-            `, but '${result.path}' points to a different value of reference type '${result.leftType}'`
-          )
+      return result.path === ""
+        ? message
+            .suffix(`, but they point to different values of reference type '${place.actual.type}'`)
+            .metadata({
+              Actual: place.actual.value,
+              Expected: place.expected.value,
+            })
+            .fail()
+        : message
+            .suffix(`, but '${result.path}' points to a different value of reference type '${result.leftType}'`)
 
-          .metadata({
-            Actual: message.encode(result.leftValue),
-            Expected: message.encode(result.rightValue),
-          })
-          .fail();
-      }
+            .metadata({
+              Actual: message.encode(result.leftValue),
+              Expected: message.encode(result.rightValue),
+            })
+            .fail();
     }
     case FailureType.DIFFERENT_TYPES: {
-      if (result.path === "") {
-        return message
-          .suffix(`, but they have different types`)
-          .metadata({
-            Actual: `${place.actual.value} (${place.actual.type})`,
-            Expected: `${place.expected.value} (${place.expected.type})`,
-          })
-          .fail();
-      } else {
-        return message
-          .suffix(`, but '${result.path}' has a different type`)
-          .metadata({
-            Actual: `${message.encode(result.leftValue)} (${result.leftType})`,
-            Expected: `${message.encode(result.rightValue)} (${result.rightType})`,
-          })
-          .fail();
-      }
+      return result.path === ""
+        ? message
+            .suffix(`, but they have different types`)
+            .metadata({
+              Actual: `${place.actual.value} (${place.actual.type})`,
+              Expected: `${place.expected.value} (${place.expected.type})`,
+            })
+            .fail()
+        : message
+            .suffix(`, but '${result.path}' has a different type`)
+            .metadata({
+              Actual: `${message.encode(result.leftValue)} (${result.leftType})`,
+              Expected: `${message.encode(result.rightValue)} (${result.rightType})`,
+            })
+            .fail();
     }
     case FailureType.DIFFERENT_VALUES: {
-      if (result.path === "") {
-        return message
-          .suffix(`, but they have different values`)
-          .metadata({
-            Actual: `${place.actual.value} (${place.actual.type})`,
-            Expected: `${place.expected.value} (${place.expected.type})`,
-          })
-          .fail();
-      } else {
-        return message
-          .suffix(`, but '${result.path}' has a different value`)
-          .metadata({
-            Actual: `${message.encode(result.leftValue)} (${result.leftType})`,
-            Expected: `${message.encode(result.rightValue)} (${result.rightType})`,
-          })
-          .fail();
-      }
+      return result.path === ""
+        ? message
+            .suffix(`, but they have different values`)
+            .metadata({
+              Actual: `${place.actual.value} (${place.actual.type})`,
+              Expected: `${place.expected.value} (${place.expected.type})`,
+            })
+            .fail()
+        : message
+            .suffix(`, but '${result.path}' has a different value`)
+            .metadata({
+              Actual: `${message.encode(result.leftValue)} (${result.leftType})`,
+              Expected: `${message.encode(result.rightValue)} (${result.rightType})`,
+            })
+            .fail();
     }
     case FailureType.MISSING_ARRAY_VALUE: {
       if (result.path === "") {
-        if (!result.leftMissing.isEmpty()) {
-          return message
-            .suffix(`, but there were elements missing`)
-            .metadata({
-              Actual: `${place.actual.value}`,
-              Expected: `${place.expected.value}`,
-              Missing: message.encode(result.leftMissing),
-            })
-            .fail();
-        } else {
-          return message
-            .suffix(`, but there were extra elements`)
-            .metadata({
-              Actual: `${place.actual.value}`,
-              Expected: `${place.expected.value}`,
-              [`Extra Elements`]: message.encode(result.rightMissing),
-            })
-            .fail();
-        }
+        return result.leftMissing.isEmpty()
+          ? message
+              .suffix(`, but there were extra elements`)
+              .metadata({
+                Actual: `${place.actual.value}`,
+                Expected: `${place.expected.value}`,
+                [`Extra Elements`]: message.encode(result.rightMissing),
+              })
+              .fail()
+          : message
+              .suffix(`, but there were elements missing`)
+              .metadata({
+                Actual: `${place.actual.value}`,
+                Expected: `${place.expected.value}`,
+                Missing: message.encode(result.leftMissing),
+              })
+              .fail();
       } else {
-        if (!result.leftMissing.isEmpty()) {
-          return message
-            .suffix(`, but '${result.path}' was missing some elements`)
-            .metadata({
-              Actual: message.encode(result.leftValue),
-              Expected: message.encode(result.rightValue),
-              Missing: message.encode(result.leftMissing),
-            })
-            .fail();
-        } else {
-          return message
-            .suffix(`, but '${result.path}' had extra elements`)
-            .metadata({
-              Actual: message.encode(result.leftValue),
-              Expected: message.encode(result.rightValue),
-              [`Extra Elements`]: message.encode(result.rightMissing),
-            })
-            .fail();
-        }
+        return result.leftMissing.isEmpty()
+          ? message
+              .suffix(`, but '${result.path}' had extra elements`)
+              .metadata({
+                Actual: message.encode(result.leftValue),
+                Expected: message.encode(result.rightValue),
+                [`Extra Elements`]: message.encode(result.rightMissing),
+              })
+              .fail()
+          : message
+              .suffix(`, but '${result.path}' was missing some elements`)
+              .metadata({
+                Actual: message.encode(result.leftValue),
+                Expected: message.encode(result.rightValue),
+                Missing: message.encode(result.leftMissing),
+              })
+              .fail();
       }
     }
     case FailureType.MISSING: {
-      if (result.leftValue === undefined) {
-        return message
-          .suffix(`, but '${result.path}' was missing`)
-          .metadata({
-            Expected: `${message.encode(result.rightValue)} (${result.rightType})`,
-          })
-          .fail();
-      } else {
-        return message
-          .suffix(`, but it had the extra key '${result.path}'`)
-          .metadata({
-            [result.path]: `${message.encode(result.leftValue)} (${result.leftType})`,
-          })
-          .fail();
-      }
+      return result.leftValue === undefined
+        ? message
+            .suffix(`, but '${result.path}' was missing`)
+            .metadata({
+              Expected: `${message.encode(result.rightValue)} (${result.rightType})`,
+            })
+            .fail()
+        : message
+            .suffix(`, but it had the extra key '${result.path}'`)
+            .metadata({
+              [result.path]: `${message.encode(result.leftValue)} (${result.leftType})`,
+            })
+            .fail();
     }
   }
 };
