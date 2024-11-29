@@ -17455,7 +17455,7 @@ snapshots:
 
   yup@0.32.11:
     dependencies:
-      '@babel/runtime': 7.25.6
+      '@babel/runtime': 7.26.0
       '@types/lodash': 4.17.13
       lodash: 4.17.21
       lodash-es: 4.17.21
