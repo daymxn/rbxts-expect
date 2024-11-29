@@ -54,6 +54,8 @@
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.10",
+    "@daymxn/bs": "^0.0.2",
+    "@eslint/js": "^9.15.0",
     "@microsoft/api-documenter": "^7.26.0",
     "@microsoft/api-extractor": "^7.48.0",
     "@rbxts/compiler-types": "^3.0.0-types.0",
@@ -62,13 +64,13 @@
     "@types/eslint__js": "^8.42.3",
     "@typescript-eslint/eslint-plugin": "8.16.0",
     "@typescript-eslint/parser": "8.16.0",
-    "@daymxn/bs": "^0.0.1",
     "eslint": "9.15.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-headers": "^1.2.0",
     "eslint-plugin-prettier": "^5.2.1",
-    "eslint-plugin-roblox-ts": "github:daymxn/eslint-plugin-roblox-ts#feat/upgrade-to-eslint-9",
+    "eslint-plugin-roblox-ts": "github:daymxn/eslint-plugin-roblox-ts#daymon-eslint-9",
     "eslint-plugin-unicorn": "^56.0.1",
+    "jiti": "^2.4.0",
     "prettier": "^3.4.1",
     "prettier-plugin-organize-imports": "^4.1.0",
     "roblox-ts": "^3.0.0-next",
@@ -78,15 +80,13 @@
     "typescript-eslint": "^8.16.0"
   },
   "dependencies": {
-    "@eslint/js": "^9.15.0",
     "@rbxts/deep-equal": "^0.8.1",
     "@rbxts/object-utils": "^1.0.4",
     "@rbxts/reverse-array": "^1.0.3",
     "@rbxts/rust-classes": "0.13.0",
     "@rbxts/services": "^1.5.5",
     "@rbxts/string-utils": "^1.0.3",
-    "@rbxts/t": "^3.1.1",
-    "jiti": "^2.4.0"
+    "@rbxts/t": "^3.1.1"
   },
   "peerDependencies": {
     "roblox-ts": "^3.0.0"

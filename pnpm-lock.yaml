@@ -8,9 +8,6 @@ importers:
 
   .:
     dependencies:
-      '@eslint/js':
-        specifier: ^9.15.0
-        version: 9.15.0
       '@rbxts/deep-equal':
         specifier: ^0.8.1
         version: 0.8.1
@@ -32,16 +29,16 @@ importers:
       '@rbxts/t':
         specifier: ^3.1.1
         version: 3.1.1
-      jiti:
-        specifier: ^2.4.0
-        version: 2.4.0
     devDependencies:
       '@changesets/cli':
         specifier: ^2.27.10
         version: 2.27.10
       '@daymxn/bs':
-        specifier: ^0.0.1
-        version: 0.0.1(@changesets/cli@2.27.10)(@microsoft/api-documenter@7.26.0(@types/node@22.5.5))(@microsoft/api-extractor@7.48.0(@types/node@22.5.5))(eslint@9.15.0(jiti@2.4.0))(ts-node@10.9.2(@types/node@22.5.5)(typescript@5.5.3))(tsup@8.3.5(@microsoft/api-extractor@7.48.0(@types/node@22.5.5))(jiti@2.4.0)(typescript@5.5.3))(typanion@3.14.0)
+        specifier: ^0.0.2
+        version: 0.0.2(@changesets/cli@2.27.10)(@microsoft/api-documenter@7.26.0(@types/node@22.5.5))(@microsoft/api-extractor@7.48.0(@types/node@22.5.5))(eslint@9.15.0(jiti@2.4.0))(ts-node@10.9.2(@types/node@22.5.5)(typescript@5.5.3))(tsup@8.3.5(@microsoft/api-extractor@7.48.0(@types/node@22.5.5))(jiti@2.4.0)(typescript@5.5.3))(typanion@3.14.0)
+      '@eslint/js':
+        specifier: ^9.15.0
+        version: 9.15.0
       '@microsoft/api-documenter':
         specifier: ^7.26.0
         version: 7.26.0(@types/node@22.5.5)
@@ -79,11 +76,14 @@ importers:
         specifier: ^5.2.1
         version: 5.2.1(@types/eslint@9.6.1)(eslint-config-prettier@9.1.0(eslint@9.15.0(jiti@2.4.0)))(eslint@9.15.0(jiti@2.4.0))(prettier@3.4.1)
       eslint-plugin-roblox-ts:
-        specifier: github:daymxn/eslint-plugin-roblox-ts#feat/upgrade-to-eslint-9
-        version: https://codeload.github.com/daymxn/eslint-plugin-roblox-ts/tar.gz/e14f5548d753d8c92e633eb2a91f37141f5a5bbf(eslint@9.15.0(jiti@2.4.0))(typescript@5.5.3)
+        specifier: github:daymxn/eslint-plugin-roblox-ts#daymon-eslint-9
+        version: https://codeload.github.com/daymxn/eslint-plugin-roblox-ts/tar.gz/62b0c3f95bd732bcdeee32ac3b94836cf478f8aa(eslint@9.15.0(jiti@2.4.0))(typescript@5.5.3)
       eslint-plugin-unicorn:
         specifier: ^56.0.1
         version: 56.0.1(eslint@9.15.0(jiti@2.4.0))
+      jiti:
+        specifier: ^2.4.0
+        version: 2.4.0
       prettier:
         specifier: ^3.4.1
         version: 3.4.1
@@ -183,8 +183,8 @@ packages:
     resolution: {integrity: sha512-v+XHd9XmWbufxF1/bTaVm2yhbxY+TB4YtWRqF2zaXBlDNMkls34KiATz0AVDLavL3iB6bQk9/7n3oY1EoLSWGA==}
     engines: {node: '>= 6'}
 
-  '@daymxn/bs@0.0.1':
-    resolution: {integrity: sha512-pVCQoOVolbYL764FVHgu/Bk7Y2gkARKpfctNxZXd6COlqlrR73mI5mYVODXwkXu6yZFTc1RIojHnnEW2a5tx1w==}
+  '@daymxn/bs@0.0.2':
+    resolution: {integrity: sha512-vAL8iMcz18HkGAdcvmSCjXBEyloyhHn+23Ve3PPEE1QGJQpvvpUYBLjI8EsbttuDSiJxXdbVrpQOZWuaTi7cPQ==}
     engines: {node: '>=22.9.0'}
     hasBin: true
     peerDependencies:
@@ -1469,8 +1469,8 @@ packages:
       eslint-config-prettier:
         optional: true
 
-  eslint-plugin-roblox-ts@https://codeload.github.com/daymxn/eslint-plugin-roblox-ts/tar.gz/e14f5548d753d8c92e633eb2a91f37141f5a5bbf:
-    resolution: {tarball: https://codeload.github.com/daymxn/eslint-plugin-roblox-ts/tar.gz/e14f5548d753d8c92e633eb2a91f37141f5a5bbf}
+  eslint-plugin-roblox-ts@https://codeload.github.com/daymxn/eslint-plugin-roblox-ts/tar.gz/62b0c3f95bd732bcdeee32ac3b94836cf478f8aa:
+    resolution: {tarball: https://codeload.github.com/daymxn/eslint-plugin-roblox-ts/tar.gz/62b0c3f95bd732bcdeee32ac3b94836cf478f8aa}
     version: 0.0.36
     engines: {node: '>=0.10.0'}
     peerDependencies:
@@ -2697,8 +2697,8 @@ packages:
   proxy-from-env@1.1.0:
     resolution: {integrity: sha512-D+zkORCbA9f1tdWRK0RaCR3GPv50cMxcrz4X8k5LTSUD1Dkw47mKJEZQNunItRTkWwgtaUSo1RVFRIG9ZXiFYg==}
 
-  psl@1.13.0:
-    resolution: {integrity: sha512-BFwmFXiJoFqlUpZ5Qssolv15DMyc84gTBds1BjsV1BfXEo1UyyD7GsmN67n7J77uRhoSNW1AXtXKPLcBFQn9Aw==}
+  psl@1.14.0:
+    resolution: {integrity: sha512-Syk1bnf6fRZ9wQs03AtKJHcM12cKbOLo9L8JtCCdYj5/DTsHmTyXM4BK5ouWeG2P6kZ4nmFvuNTdtaqfobCOCg==}
 
   pump@2.0.1:
     resolution: {integrity: sha512-ruPMNRkN3MHP1cWJc9OWr+T/xDP0jhXYCLfJcBuX54hhfIBnaQmAUMfDcG4DM5UMWByBbJY69QSphm3jtDKIkA==}
@@ -3592,7 +3592,7 @@ snapshots:
       tunnel-agent: 0.6.0
       uuid: 8.3.2
 
-  '@daymxn/bs@0.0.1(@changesets/cli@2.27.10)(@microsoft/api-documenter@7.26.0(@types/node@22.5.5))(@microsoft/api-extractor@7.48.0(@types/node@22.5.5))(eslint@9.15.0(jiti@2.4.0))(ts-node@10.9.2(@types/node@22.5.5)(typescript@5.5.3))(tsup@8.3.5(@microsoft/api-extractor@7.48.0(@types/node@22.5.5))(jiti@2.4.0)(typescript@5.5.3))(typanion@3.14.0)':
+  '@daymxn/bs@0.0.2(@changesets/cli@2.27.10)(@microsoft/api-documenter@7.26.0(@types/node@22.5.5))(@microsoft/api-extractor@7.48.0(@types/node@22.5.5))(eslint@9.15.0(jiti@2.4.0))(ts-node@10.9.2(@types/node@22.5.5)(typescript@5.5.3))(tsup@8.3.5(@microsoft/api-extractor@7.48.0(@types/node@22.5.5))(jiti@2.4.0)(typescript@5.5.3))(typanion@3.14.0)':
     dependencies:
       '@oclif/core': 4.0.33
       '@oclif/plugin-help': 6.2.18
@@ -4955,7 +4955,7 @@ snapshots:
       '@types/eslint': 9.6.1
       eslint-config-prettier: 9.1.0(eslint@9.15.0(jiti@2.4.0))
 
-  eslint-plugin-roblox-ts@https://codeload.github.com/daymxn/eslint-plugin-roblox-ts/tar.gz/e14f5548d753d8c92e633eb2a91f37141f5a5bbf(eslint@9.15.0(jiti@2.4.0))(typescript@5.5.3):
+  eslint-plugin-roblox-ts@https://codeload.github.com/daymxn/eslint-plugin-roblox-ts/tar.gz/62b0c3f95bd732bcdeee32ac3b94836cf478f8aa(eslint@9.15.0(jiti@2.4.0))(typescript@5.5.3):
     dependencies:
       '@types/node': 22.5.5
       '@typescript-eslint/utils': 8.16.0(eslint@9.15.0(jiti@2.4.0))(typescript@5.5.3)
@@ -6131,7 +6131,7 @@ snapshots:
 
   proxy-from-env@1.1.0: {}
 
-  psl@1.13.0:
+  psl@1.14.0:
     dependencies:
       punycode: 2.3.1
 
@@ -6585,7 +6585,7 @@ snapshots:
 
   tough-cookie@4.1.4:
     dependencies:
-      psl: 1.13.0
+      psl: 1.14.0
       punycode: 2.3.1
       universalify: 0.2.0
       url-parse: 1.5.10
