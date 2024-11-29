@@ -115,12 +115,12 @@ export default tseslint.config(
     extends: [eslintPluginRoblox.configs.recommended as object],
   },
   {
-    ignores: ["out", "**/.docusaurus", "example", "**/dist"],
+    ignores: ["out", "wiki", "example", "**/dist"],
   },
   {
     linterOptions: {
-      reportUnusedDisableDirectives: "off"
-    }
+      reportUnusedDisableDirectives: "off",
+    },
   },
   {
     languageOptions: {
